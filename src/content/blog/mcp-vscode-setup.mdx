@@ -1,0 +1,67 @@
+---
+title: "Setting Up MCP Servers in VS Code — Complete Guide"
+description: "Learn what the Model Context Protocol (MCP) is and how to configure MCP servers directly within VS Code to supercharge your AI tools."
+date: "2025-02-01"
+category: "Tools"
+tags: ["mcp", "vscode", "ai-tools", "developer-tools"]
+draft: false
+---
+
+# Setting Up MCP Servers in VS Code — Complete Guide
+
+## What is MCP?
+
+The Model Context Protocol (MCP) is an open standard that enables AI models to securely connect to local and remote data sources and tools. Think of it as a universal plug-and-play architecture for AI assistants. Instead of building custom integrations for every tool, an AI can simply talk to an "MCP Server" using a standardized protocol.
+
+This means you can easily hook up your AI tools (like Claude Desktop or tools in VS Code) to your local file system, GitHub, Postgres databases, and more.
+
+## Installation Steps
+
+If you are using an AI extension in VS Code that supports MCP, you typically configure servers via a JSON file. Let's look at how to set up the powerful `sqlite` server as an example.
+
+First, you might need to install the server globally if it's an NPM package:
+
+```bash
+npm install -g @modelcontextprotocol/server-sqlite
+```
+
+Or, if using Python tools like `uv`:
+
+```bash
+uv tool install mcp-server-sqlite
+```
+
+## JSON Configuration Example
+
+Next, you need to configure your AI tool to launch the MCP server. This is often done in a configuration file (like `claude_desktop_config.json` or a VS Code extension settings file).
+
+```json
+{
+  "mcpServers": {
+    "sqlite": {
+      "command": "uvx",
+      "args": [
+        "mcp-server-sqlite",
+        "--db-path",
+        "/path/to/my/database.sqlite"
+      ]
+    },
+    "github": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-github"
+      ],
+      "env": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "your-token-here"
+      }
+    }
+  }
+}
+```
+
+## The Tool in Action
+
+Once configured, the AI assistant will automatically detect the tools exposed by these servers. You can ask it to "query my sqlite database for the latest users" or "search for PRs in my github repo," and it will execute the appropriate MCP tool automatically!
+
+*(Imagine a glorious GIF here showing an AI seamlessly querying a local database)*
