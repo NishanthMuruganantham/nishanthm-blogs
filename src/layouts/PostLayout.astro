@@ -1,0 +1,247 @@
+---
+import BaseLayout from "./BaseLayout.astro";
+import { formatDate } from "../lib/utils";
+import PostCard from "../components/PostCard.astro";
+import Giscus from "../components/Giscus.astro";
+import { getCollection } from "astro:content";
+import { getReadingTime } from "../lib/utils";
+
+const { frontmatter, headings, readingTime } = Astro.props;
+const categoryLower = frontmatter.category.toLowerCase();
+
+// Get related posts mapping (based on category or tags)
+const allPosts = await getCollection("blog");
+const relatedPosts = allPosts
+    .filter((p) => !p.data.draft)
+    .filter(
+        (p) =>
+            p.data.title !== frontmatter.title &&
+            (p.data.category === frontmatter.category ||
+                p.data.tags.some((t) => frontmatter.tags.includes(t)))
+    )
+    .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+    .slice(0, 2);
+---
+
+<BaseLayout title={frontmatter.title} description={frontmatter.description}>
+    {/* Reading Progress Bar */}
+    <div
+        id="reading-progress"
+        class="fixed top-0 left-0 h-1 bg-accent z-50 transition-all duration-150 ease-out"
+        style="width: 0%"
+    >
+    </div>
+
+    <div
+        class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 flex flex-col lg:flex-row gap-12 relative items-start"
+    >
+        {/* Main Content */}
+        <article class="flex-1 w-full min-w-0">
+            <header class="mb-10 text-center lg:text-left">
+                <div class="mb-4">
+                    <span
+                        class={`tag tag-${categoryLower} px-3 py-1 rounded-full text-sm font-semibold`}
+                        >{frontmatter.category}</span
+                    >
+                </div>
+                <h1
+                    class="text-4xl md:text-5xl lg:text-6xl font-display font-bold text-text-primary leading-tight mb-6"
+                >
+                    {frontmatter.title}
+                </h1>
+                <p class="text-xl text-text-secondary mb-6">
+                    {frontmatter.description}
+                </p>
+
+                <div
+                    class="flex flex-wrap items-center justify-center lg:justify-start gap-3 text-sm text-text-muted"
+                >
+                    <time datetime={frontmatter.date.toISOString()}
+                        >{formatDate(frontmatter.date)}</time
+                    >
+                    {
+                        frontmatter.updatedDate && (
+                            <>
+                                <span>·</span>
+                                <span>
+                                    Updated:{" "}
+                                    {formatDate(frontmatter.updatedDate)}
+                                </span>
+                            </>
+                        )
+                    }
+                    <span>·</span>
+                    <span>{readingTime}</span>
+                    <span>·</span>
+                    <span>Nishanth Muruganantham</span>
+                </div>
+            </header>
+
+            {
+                frontmatter.cover && (
+                    <div class="mb-12 rounded-2xl overflow-hidden aspect-video border border-white/5 shadow-xl">
+                        <img
+                            src={frontmatter.cover}
+                            alt={frontmatter.title}
+                            class="w-full h-full object-cover"
+                        />
+                    </div>
+                )
+            }
+
+            {/* Prose Body */}
+            <div
+                class="prose prose-invert prose-lg max-w-[720px] mx-auto lg:mx-0 prose-headings:font-display prose-p:leading-relaxed prose-a:text-accent hover:prose-a:text-accent-bright prose-img:rounded-xl"
+            >
+                <slot />
+            </div>
+
+            <footer
+                class="mt-16 pt-8 border-t border-white/10 max-w-[720px] mx-auto lg:mx-0"
+            >
+                <div class="flex flex-wrap gap-2 mb-8">
+                    <span class="text-text-secondary mr-2">Tagged with:</span>
+                    {
+                        frontmatter.tags.map((tag: string) => (
+                            <span class="px-3 py-1 bg-white/5 rounded-full text-sm text-text-secondary w-fit whitespace-nowrap">
+                                #{tag}
+                            </span>
+                        ))
+                    }
+                </div>
+
+                {/* Share & Reactions mapping could go here */}
+
+                <div class="mt-12">
+                    <h2 class="text-2xl font-display font-bold mb-6">
+                        Discussion
+                    </h2>
+                    <Giscus />
+                </div>
+            </footer>
+        </article>
+
+        {/* Sidebar (Table of Contents & Related) */}
+        <aside class="hidden lg:block w-80 shrink-0 sticky top-24">
+            {
+                headings && headings.length > 0 && (
+                    <nav class="mb-12 bg-surface p-6 rounded-2xl border border-white/5">
+                        <h3 class="text-lg font-bold mb-4 font-display">
+                            Table of Contents
+                        </h3>
+                        <ul class="space-y-2 text-sm" id="toc">
+                            {headings
+                                .filter(
+                                    (h: any) => h.depth === 2 || h.depth === 3
+                                )
+                                .map((heading: any) => (
+                                    <li
+                                        class={`${
+                                            heading.depth === 3 ? "ml-4" : ""
+                                        }`}
+                                    >
+                                        <a
+                                            href={`#${heading.slug}`}
+                                            class="text-text-secondary hover:text-accent transition-colors py-1 block"
+                                            data-slug={heading.slug}
+                                        >
+                                            {heading.text}
+                                        </a>
+                                    </li>
+                                ))}
+                        </ul>
+                    </nav>
+                )
+            }
+
+            {
+                relatedPosts.length > 0 && (
+                    <div>
+                        <h3 class="text-lg font-bold mb-4 font-display">
+                            Related Posts
+                        </h3>
+                        <div class="space-y-6">
+                            {relatedPosts.map((p: any) => (
+                                <PostCard
+                                    title={p.data.title}
+                                    description={p.data.description}
+                                    date={p.data.date}
+                                    category={p.data.category}
+                                    tags={p.data.tags}
+                                    slug={p.slug}
+                                    readingTime={
+                                        p.data.readingTime ||
+                                        getReadingTime(p.body)
+                                    }
+                                    cover={p.data.cover}
+                                />
+                            ))}
+                        </div>
+                    </div>
+                )
+            }
+        </aside>
+    </div>
+</BaseLayout>
+
+<script>
+    // Logic for reading progress and ToC scroll spy
+    document.addEventListener("DOMContentLoaded", () => {
+        const progressBar = document.getElementById("reading-progress");
+        const headings = Array.from(
+            document.querySelectorAll(".prose h2, .prose h3")
+        );
+        const tocLinks = document.querySelectorAll("#toc a");
+
+        // Reading Progress functionality
+        const updateProgress = () => {
+            const scrollPoints = window.scrollY;
+            // Calculate full document height minus viewport height for the maximum scrollable area
+            const totalHeight =
+                document.documentElement.scrollHeight -
+                document.documentElement.clientHeight;
+
+            if (totalHeight > 0) {
+                const progress = (scrollPoints / totalHeight) * 100;
+                if (progressBar) {
+                    progressBar.style.width = `${Math.min(100, progress)}%`;
+                }
+            }
+        };
+
+        window.addEventListener("scroll", updateProgress, { passive: true });
+        updateProgress(); // init
+
+        // ToC Intersection Observer highlights
+        const observerOptions = {
+            root: null,
+            rootMargin: "0px 0px -80% 0px",
+            threshold: 0,
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    // Remove active from all
+                    tocLinks.forEach((link) => {
+                        link.classList.remove("text-accent", "font-medium");
+                        link.classList.add("text-text-secondary");
+                    });
+
+                    // Add active to current
+                    const id = entry.target.getAttribute("id");
+                    const activeLink = document.querySelector(
+                        `#toc a[data-slug="${id}"]`
+                    );
+                    if (activeLink) {
+                        activeLink.classList.remove("text-text-secondary");
+                        activeLink.classList.add("text-accent", "font-medium");
+                    }
+                }
+            });
+        }, observerOptions);
+
+        headings.forEach((h) => observer.observe(h));
+    });
+</script>
+<script src="../scripts/post-interactivity.js"></script>

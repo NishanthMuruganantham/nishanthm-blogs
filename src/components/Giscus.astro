@@ -1,0 +1,43 @@
+---
+// Get environment variables or default to placeholder text if they aren't available
+const repo = import.meta.env.PUBLIC_GISCUS_REPO;
+const repoId = import.meta.env.PUBLIC_GISCUS_REPO_ID;
+const category = import.meta.env.PUBLIC_GISCUS_CATEGORY || "Announcements";
+const categoryId = import.meta.env.PUBLIC_GISCUS_CATEGORY_ID;
+
+const isConfigured = repo && repoId && categoryId;
+---
+
+<div class="giscus-wrapper w-full mt-4">
+    {
+        isConfigured ? (
+            <script
+                src="https://giscus.app/client.js"
+                data-repo={repo}
+                data-repo-id={repoId}
+                data-category={category}
+                data-category-id={categoryId}
+                data-mapping="pathname"
+                data-strict="0"
+                data-reactions-enabled="1"
+                data-emit-metadata="0"
+                data-input-position="bottom"
+                data-theme="transparent_dark"
+                data-lang="en"
+                data-loading="lazy"
+                crossorigin="anonymous"
+                async
+            ></script>
+        ) : (
+            <div class="p-6 bg-surface border border-white/10 rounded-xl text-center">
+                <p class="text-text-secondary mb-2">
+                    Comments are not configured yet.
+                </p>
+                <p class="text-sm text-text-muted">
+                    Set PUBLIC_GISCUS_REPO, PUBLIC_GISCUS_REPO_ID, and
+                    PUBLIC_GISCUS_CATEGORY_ID environment variables.
+                </p>
+            </div>
+        )
+    }
+</div>

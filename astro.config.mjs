@@ -15,7 +15,14 @@ export default defineConfig({
     mdx({
       syntaxHighlight: false,
       rehypePlugins: [
-        [rehypePrettyCode, { theme: 'one-dark-pro' }],
+        [rehypePrettyCode, {
+          theme: 'one-dark-pro',
+          keepBackground: true,
+          defaultLang: {
+            block: 'plaintext',
+            inline: 'plaintext',
+          },
+        }],
         rehypeMermaid
       ],
     }),
