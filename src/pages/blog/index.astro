@@ -24,7 +24,6 @@ const serializedPosts = sortedPosts.map((post) => ({
     slug: post.slug,
     cover: post.data.cover,
     readingTime: post.body ? getReadingTime(post.body) : undefined,
-    body: post.body, // Keeping body just for runtime reading time calcs, though we precalc'd it
 }));
 
 // We can strip 'body' before sending to client to save bytes

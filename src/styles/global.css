@@ -324,8 +324,7 @@
   }
 
   .posts-list .post-card__header,
-  .posts-list .post-card__description,
-  .posts-list .post-card__tags {
+  .posts-list .post-card__description {
     display: none;
     /* Hide extraneous info in list view */
   }

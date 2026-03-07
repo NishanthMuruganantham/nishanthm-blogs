@@ -6,17 +6,17 @@ class BlogFilter extends HTMLElement {
         this.activeCategory = 'all';
         this.searchQuery = '';
         this.viewMode = 'grid'; // 'grid' | 'list'
+    }
 
-        // DOM Elements
+    connectedCallback() {
+        // DOM queries must happen in connectedCallback, not constructor
         this.container = this.querySelector('#posts-container');
         this.searchInput = this.querySelector('#search-input');
         this.categoryBtns = this.querySelectorAll('.category-btn');
         this.layoutBtns = this.querySelectorAll('.layout-btn');
         this.emptyState = this.querySelector('#empty-state');
         this.countDisplay = this.querySelector('#result-count');
-    }
 
-    connectedCallback() {
         // 1. Read the initial JSON payload parsed by Astro
         const dataScript = document.getElementById('post-data');
         if (dataScript) {
@@ -46,17 +46,19 @@ class BlogFilter extends HTMLElement {
         });
 
         // Category buttons
-        this.categoryBtns.forEach((btn) => {
+        this.categoryBtns.forEach(btn => {
             btn.addEventListener('click', (e) => {
-                const category = e.target.dataset.category;
+                const category = e.currentTarget.dataset.category;
 
-                // Update active class
-                this.categoryBtns.forEach(b => b.classList.remove('btn-primary'));
-                this.categoryBtns.forEach(b => b.classList.add('btn-ghost'));
-                e.target.classList.remove('btn-ghost');
-                e.target.classList.add('btn-primary');
-
+                // Update State
                 this.activeCategory = category;
+
+                // Visual Update
+                this.categoryBtns.forEach(b => {
+                    b.classList.toggle('btn-primary', b.dataset.category === category);
+                    b.classList.toggle('btn-ghost', b.dataset.category !== category);
+                });
+
                 this.updateURL();
                 this.filterAndRender();
             });
@@ -98,16 +100,20 @@ class BlogFilter extends HTMLElement {
         const q = urlParams.get('q');
         const cat = urlParams.get('category');
 
-        if (q) {
+        if (q && this.searchInput) {
             this.searchQuery = q.toLowerCase();
-            if (this.searchInput) this.searchInput.value = this.searchQuery;
+            this.searchInput.value = this.searchQuery;
         }
 
         if (cat) {
             const targetBtn = Array.from(this.categoryBtns).find(b => b.dataset.category === cat);
             if (targetBtn) {
-                // Trigger click visually updates the button and sets activeCategory without re-fetching
-                targetBtn.click();
+                // Set state and visual only — don't trigger click which fires double render
+                this.activeCategory = cat;
+                this.categoryBtns.forEach(b => {
+                    b.classList.toggle('btn-primary', b.dataset.category === cat);
+                    b.classList.toggle('btn-ghost', b.dataset.category !== cat);
+                });
             }
         }
     }
@@ -143,11 +149,13 @@ class BlogFilter extends HTMLElement {
         // 3. Handle Empty State
         if (filtered.length === 0) {
             this.container.innerHTML = '';
-            if (this.emptyState) this.emptyState.style.display = 'flex';
+            this.emptyState.classList.remove('hidden');
+            this.emptyState.classList.add('flex');
             return;
-        } else {
-            if (this.emptyState) this.emptyState.style.display = 'none';
         }
+
+        this.emptyState.classList.add('hidden');
+        this.emptyState.classList.remove('flex');
 
         // 4. Update Container Class for Grid vs List Layout
         if (this.viewMode === 'list') {
