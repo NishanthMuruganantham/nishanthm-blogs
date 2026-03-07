@@ -1,16 +1,18 @@
---- 
-import "../styles/global.css";
---- 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Home"
+  description="Personal blog by Nishanth M — backend, frontend, tools, and startup experiences."
+>
+  <section class="hero hero-gradient" style="padding: var(--space-section) 1.5rem; max-width: var(--wide-width); margin: 0 auto;">
+    <h1 class="gradient-text" style="font-size: clamp(2rem, 5vw, 3.5rem); margin-bottom: 1rem;">
+      Hey, I'm Nishanth 👋
+    </h1>
+    <p style="color: var(--color-text-secondary); font-size: 1.15rem; max-width: 600px; line-height: 1.7;">
+      I build real systems and document the journey. Exploring backend, frontend,
+      mobile, and everything in between.
+    </p>
+  </section>
+</BaseLayout>
