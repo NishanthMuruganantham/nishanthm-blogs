@@ -71,8 +71,8 @@ class BlogFilter extends HTMLElement {
 
                 // Update active class visually
                 this.layoutBtns.forEach(b => b.classList.remove('text-accent'));
-                this.layoutBtns.forEach(b => b.classList.add('text-muted'));
-                targetBtn.classList.remove('text-muted');
+                this.layoutBtns.forEach(b => b.classList.add('text-text-muted'));
+                targetBtn.classList.remove('text-text-muted');
                 targetBtn.classList.add('text-accent');
 
                 this.viewMode = layout;

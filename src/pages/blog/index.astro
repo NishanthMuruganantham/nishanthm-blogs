@@ -81,7 +81,7 @@ const topCategories = Object.entries(categoryCounts)
                     type="text"
                     id="search-input"
                     placeholder="Search articles by title or tag..."
-                    class="w-full bg-elevated border border-subtle rounded-lg py-3 pl-10 pr-4 text-primary placeholder:text-muted focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent transition-colors"
+                    class="w-full bg-bg-elevated border border-border-subtle rounded-lg py-3 pl-10 pr-4 text-text-primary placeholder:text-text-muted focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent transition-colors"
                 />
             </div>
         </header>
@@ -120,13 +120,16 @@ const topCategories = Object.entries(categoryCounts)
             </div>
 
             <div class="flex items-center gap-4 hidden md:flex">
-                <span class="text-sm font-display text-muted" id="result-count">
+                <span
+                    class="text-sm font-display text-text-muted"
+                    id="result-count"
+                >
                     Showing {sortedPosts.length} posts
                 </span>
 
                 {/* Layout Toggles */}
                 <div
-                    class="flex items-center gap-1 bg-elevated border border-subtle rounded-md p-1"
+                    class="flex items-center gap-1 bg-bg-elevated border border-border-subtle rounded-md p-1"
                     id="layout-toggles"
                 >
                     <button
@@ -164,7 +167,7 @@ const topCategories = Object.entries(categoryCounts)
                         </svg>
                     </button>
                     <button
-                        class="layout-btn p-1.5 rounded text-muted hover:bg-white/5 transition-colors"
+                        class="layout-btn p-1.5 rounded text-text-muted hover:bg-white/5 transition-colors"
                         data-layout="list"
                         aria-label="List view"
                     >
@@ -232,7 +235,7 @@ const topCategories = Object.entries(categoryCounts)
             class="hidden flex-col items-center justify-center py-20 text-center"
         >
             <div
-                class="w-16 h-16 rounded-full bg-elevated flex items-center justify-center mb-4 text-muted border border-subtle"
+                class="w-16 h-16 rounded-full bg-bg-elevated flex items-center justify-center mb-4 text-text-muted border border-border-subtle"
             >
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -249,10 +252,10 @@ const topCategories = Object.entries(categoryCounts)
                     ></path>
                 </svg>
             </div>
-            <h3 class="text-xl font-display font-bold text-primary mb-2">
+            <h3 class="text-xl font-display font-bold text-text-primary mb-2">
                 No posts found
             </h3>
-            <p class="text-secondary max-w-sm mb-6">
+            <p class="text-text-secondary max-w-sm mb-6">
                 We couldn't find any articles matching your current search and
                 category filters.
             </p>
