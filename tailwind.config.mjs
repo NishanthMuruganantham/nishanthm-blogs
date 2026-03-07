@@ -32,6 +32,7 @@ export default {
                 tools: '#a855f7',
                 android: '#22c55e',
                 startup: '#ec4899',
+                life: '#06b6d4',
             },
             fontFamily: {
                 display: ['Space Grotesk', 'sans-serif'],
