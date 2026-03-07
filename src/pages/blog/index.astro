@@ -1,0 +1,274 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PostCard from "../../components/PostCard.astro";
+import { getReadingTime, formatDate } from "../../lib/utils";
+
+// Fetch and sort all non-draft posts
+const allPosts = await getCollection("blog", ({ data }) => {
+    return import.meta.env.PROD ? data.draft !== true : true;
+});
+
+const sortedPosts = allPosts.sort(
+    (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
+);
+
+// Map down to what the Web Component needs + calculate reading time
+const serializedPosts = sortedPosts.map((post) => ({
+    title: post.data.title,
+    description: post.data.description,
+    date: post.data.date,
+    dateStr: formatDate(post.data.date),
+    category: post.data.category,
+    tags: post.data.tags || [],
+    slug: post.slug,
+    cover: post.data.cover,
+    readingTime: post.body ? getReadingTime(post.body) : undefined,
+}));
+
+// We can strip 'body' before sending to client to save bytes
+const serializableForClient = serializedPosts.map(({ body, ...rest }) => rest);
+
+// Extract Unique Categories and counts for the filter bar
+const categoryCounts = serializedPosts.reduce((acc, post) => {
+    const cat = post.category;
+    acc[cat] = (acc[cat] || 0) + 1;
+    return acc;
+}, {} as Record<string, number>);
+
+// Ensure we only have the top 5 distinct categories, plus an explicit "All"
+// Order by count descending
+const topCategories = Object.entries(categoryCounts)
+    .sort(([, a], [, b]) => b - a)
+    .slice(0, 5)
+    .map(([cat]) => cat);
+---
+
+<BaseLayout
+    title="Blog | Nishanth Muruganantham"
+    description="Writing about software engineering, building products, and lessons learned."
+>
+    <blog-filter class="max-w-[var(--wide-width)] mx-auto">
+        {/* Page Header */}
+        <header class="mb-12">
+            <h1
+                class="text-4xl md:text-5xl lg:text-6xl font-display font-bold mb-6"
+            >
+                Writing & <span class="gradient-text">Thinking</span>
+            </h1>
+            <p class="text-lg text-secondary mb-8 max-w-2xl">
+                Articles, tutorials, and thoughts on software architecture,
+                frontend development, and building tools.
+            </p>
+
+            {/* Search Input */}
+            <div class="relative max-w-md">
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                >
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                </svg>
+                <input
+                    type="text"
+                    id="search-input"
+                    placeholder="Search articles by title or tag..."
+                    class="w-full bg-bg-elevated border border-border-subtle rounded-lg py-3 pl-10 pr-4 text-text-primary placeholder:text-text-muted focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent transition-colors"
+                />
+            </div>
+        </header>
+
+        {/* Filter & Layout Bar */}
+        <div
+            class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-subtle pb-6 mb-10"
+        >
+            {/* Category Pills */}
+            <div
+                class="flex flex-wrap items-center gap-2"
+                id="category-filters"
+            >
+                <button
+                    class="category-btn btn-primary !py-1.5 !px-4 !text-sm"
+                    data-category="all"
+                >
+                    All
+                    <span class="ml-1 opacity-70 text-xs font-normal"
+                        >({sortedPosts.length})</span
+                    >
+                </button>
+                {
+                    topCategories.map((cat) => (
+                        <button
+                            class="category-btn btn-ghost !py-1.5 !px-4 !text-sm"
+                            data-category={cat.toLowerCase()}
+                        >
+                            {cat}
+                            <span class="ml-1 opacity-70 text-xs font-normal">
+                                ({categoryCounts[cat]})
+                            </span>
+                        </button>
+                    ))
+                }
+            </div>
+
+            <div class="flex items-center gap-4 hidden md:flex">
+                <span
+                    class="text-sm font-display text-text-muted"
+                    id="result-count"
+                >
+                    Showing {sortedPosts.length} posts
+                </span>
+
+                {/* Layout Toggles */}
+                <div
+                    class="flex items-center gap-1 bg-bg-elevated border border-border-subtle rounded-md p-1"
+                    id="layout-toggles"
+                >
+                    <button
+                        class="layout-btn p-1.5 rounded text-accent hover:bg-white/5 transition-colors"
+                        data-layout="grid"
+                        aria-label="Grid view"
+                    >
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="20"
+                            height="20"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            ><rect width="7" height="7" x="3" y="3" rx="1"
+                            ></rect><rect
+                                width="7"
+                                height="7"
+                                x="14"
+                                y="3"
+                                rx="1"></rect><rect
+                                width="7"
+                                height="7"
+                                x="14"
+                                y="14"
+                                rx="1"></rect><rect
+                                width="7"
+                                height="7"
+                                x="3"
+                                y="14"
+                                rx="1"></rect>
+                        </svg>
+                    </button>
+                    <button
+                        class="layout-btn p-1.5 rounded text-text-muted hover:bg-white/5 transition-colors"
+                        data-layout="list"
+                        aria-label="List view"
+                    >
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="20"
+                            height="20"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            ><line x1="8" x2="21" y1="6" y2="6"></line><line
+                                x1="8"
+                                x2="21"
+                                y1="12"
+                                y2="12"></line><line
+                                x1="8"
+                                x2="21"
+                                y1="18"
+                                y2="18"></line><line
+                                x1="3"
+                                x2="3.01"
+                                y1="6"
+                                y2="6"></line><line
+                                x1="3"
+                                x2="3.01"
+                                y1="12"
+                                y2="12"></line><line
+                                x1="3"
+                                x2="3.01"
+                                y1="18"
+                                y2="18"></line>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        {/* Initial SSR Render of Posts (Grid by default) */}
+        <div
+            id="posts-container"
+            class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+        >
+            {
+                serializedPosts.map((post) => (
+                    <PostCard
+                        title={post.title}
+                        description={post.description}
+                        date={post.date}
+                        category={post.category}
+                        tags={post.tags}
+                        slug={post.slug}
+                        readingTime={post.readingTime}
+                        cover={post.cover}
+                    />
+                ))
+            }
+        </div>
+
+        {/* Empty State (Hidden initially) */}
+        <div
+            id="empty-state"
+            class="hidden flex-col items-center justify-center py-20 text-center"
+        >
+            <div
+                class="w-16 h-16 rounded-full bg-bg-elevated flex items-center justify-center mb-4 text-text-muted border border-border-subtle"
+            >
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-8 w-8"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                >
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+                    ></path>
+                </svg>
+            </div>
+            <h3 class="text-xl font-display font-bold text-text-primary mb-2">
+                No posts found
+            </h3>
+            <p class="text-text-secondary max-w-sm mb-6">
+                We couldn't find any articles matching your current search and
+                category filters.
+            </p>
+            <button id="reset-filters" class="btn-ghost"> Clear Filters</button>
+        </div>
+    </blog-filter>
+
+    {/* Serialized Data Payload for the Web Component */}
+    <script
+        type="application/json"
+        id="post-data"
+        set:html={JSON.stringify(serializableForClient)}
+    ></script>
+
+    {/* Client-side logic */}
+    <script src="../../scripts/blog-filter.js"></script>
+</BaseLayout>
