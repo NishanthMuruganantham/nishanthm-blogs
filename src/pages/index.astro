@@ -11,6 +11,11 @@ const sortedPosts = allPosts.sort(
 );
 const featuredPosts = sortedPosts.slice(0, 3);
 
+const featuredPostsWithMeta = featuredPosts.map((post) => ({
+  ...post,
+  readingTime: post.body ? getReadingTime(post.body) : undefined,
+}));
+
 // Count posts per category
 const categories = [
   { name: "Backend", emoji: "⚙️", color: "backend" },
@@ -62,21 +67,17 @@ const categoryCounts = categories.map((cat) => ({
       <h2 class="section__title">Latest Writing</h2>
       <div class="posts-grid">
         {
-          featuredPosts.map(async (post) => {
-            const { body } = post;
-            const readTime = body ? getReadingTime(body) : undefined;
-            return (
-              <PostCard
-                title={post.data.title}
-                description={post.data.description}
-                date={post.data.date}
-                category={post.data.category}
-                tags={post.data.tags}
-                slug={post.slug}
-                readingTime={readTime}
-              />
-            );
-          })
+          featuredPostsWithMeta.map((post) => (
+            <PostCard
+              title={post.data.title}
+              description={post.data.description}
+              date={post.data.date}
+              category={post.data.category}
+              tags={post.data.tags}
+              slug={post.slug}
+              readingTime={post.readingTime}
+            />
+          ))
         }
       </div>
       <div class="section__cta">
@@ -94,7 +95,7 @@ const categoryCounts = categories.map((cat) => ({
         {
           categoryCounts.map((cat) => (
             <a
-              href={`/categories/${cat.color}/`}
+              href="/categories/"
               class={`category-card category-card--${cat.color}`}
               id={`cat-${cat.color}`}
             >
@@ -160,24 +161,11 @@ const categoryCounts = categories.map((cat) => ({
         Get notified when I publish new articles. No spam — just clean, useful
         dev content.
       </p>
-      <form
-        class="newsletter__form"
-        action="mailto:nishanthmuruganantham@gmail.com"
-        method="GET"
-        id="newsletter-form"
-      >
-        <input
-          type="email"
-          class="newsletter__input"
-          placeholder="you@example.com"
-          aria-label="Email address"
-          required
-        />
-        <button type="submit" class="btn-primary newsletter__btn">
-          Join Newsletter
-        </button>
-      </form>
-      <p class="newsletter__note">No tracking. Unsubscribe anytime.</p>
+      <div class="newsletter__form" style="justify-content: center;">
+        <a href="https://buttondown.com" target="_blank" class="btn-primary">
+          Subscribe via Buttondown
+        </a>
+      </div>
     </div>
   </section>
 </BaseLayout>
