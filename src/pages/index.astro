@@ -1,11 +1,11 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
-import PostCard from '../components/PostCard.astro';
-import { getCollection } from 'astro:content';
-import { getReadingTime } from '../lib/utils';
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PostCard from "../components/PostCard.astro";
+import { getCollection } from "astro:content";
+import { getReadingTime } from "../lib/utils";
 
 // Fetch all non-draft posts, sorted newest first
-const allPosts = await getCollection('blog', ({ data }) => !data.draft);
+const allPosts = await getCollection("blog", ({ data }) => !data.draft);
 const sortedPosts = allPosts.sort(
   (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
 );
@@ -13,11 +13,11 @@ const featuredPosts = sortedPosts.slice(0, 3);
 
 // Count posts per category
 const categories = [
-  { name: 'Backend',  emoji: '⚙️', color: 'backend'  },
-  { name: 'Frontend', emoji: '🎨', color: 'frontend' },
-  { name: 'Tools',    emoji: '🛠️', color: 'tools'    },
-  { name: 'Android',  emoji: '📱', color: 'android'  },
-  { name: 'Startup',  emoji: '🚀', color: 'startup'  },
+  { name: "Backend", emoji: "⚙️", color: "backend" },
+  { name: "Frontend", emoji: "🎨", color: "frontend" },
+  { name: "Tools", emoji: "🛠️", color: "tools" },
+  { name: "Android", emoji: "📱", color: "android" },
+  { name: "Startup", emoji: "🚀", color: "startup" },
 ];
 
 const categoryCounts = categories.map((cat) => ({
@@ -30,7 +30,6 @@ const categoryCounts = categories.map((cat) => ({
   title="Home"
   description="Personal blog by Nishanth M — backend, frontend, tools, and startup experiences."
 >
-
   <!-- ===================== HERO ===================== -->
   <section class="hero hero-gradient" id="hero-section">
     <div class="hero__dot-grid" aria-hidden="true"></div>
@@ -62,24 +61,27 @@ const categoryCounts = categories.map((cat) => ({
     <div class="section__inner">
       <h2 class="section__title">Latest Writing</h2>
       <div class="posts-grid">
-        {featuredPosts.map(async (post) => {
-          const { body } = post;
-          const readTime = body ? getReadingTime(body) : undefined;
-          return (
-            <PostCard
-              title={post.data.title}
-              description={post.data.description}
-              date={post.data.date}
-              category={post.data.category}
-              tags={post.data.tags}
-              slug={post.slug}
-              readingTime={readTime}
-            />
-          );
-        })}
+        {
+          featuredPosts.map(async (post) => {
+            const { body } = post;
+            const readTime = body ? getReadingTime(body) : undefined;
+            return (
+              <PostCard
+                title={post.data.title}
+                description={post.data.description}
+                date={post.data.date}
+                category={post.data.category}
+                tags={post.data.tags}
+                slug={post.slug}
+                readingTime={readTime}
+              />
+            );
+          })
+        }
       </div>
       <div class="section__cta">
-        <a href="/blog" class="btn-ghost" id="cta-all-posts">View all posts →</a>
+        <a href="/blog" class="btn-ghost" id="cta-all-posts">View all posts →</a
+        >
       </div>
     </div>
   </section>
@@ -89,19 +91,21 @@ const categoryCounts = categories.map((cat) => ({
     <div class="section__inner">
       <h2 class="section__title">Browse by Topic</h2>
       <div class="categories-grid">
-        {categoryCounts.map((cat) => (
-          <a
-            href={`/categories/${cat.color}/`}
-            class={`category-card category-card--${cat.color}`}
-            id={`cat-${cat.color}`}
-          >
-            <span class="category-card__emoji">{cat.emoji}</span>
-            <span class="category-card__name">{cat.name}</span>
-            <span class="category-card__count">
-              {cat.count} {cat.count === 1 ? 'post' : 'posts'}
-            </span>
-          </a>
-        ))}
+        {
+          categoryCounts.map((cat) => (
+            <a
+              href={`/categories/${cat.color}/`}
+              class={`category-card category-card--${cat.color}`}
+              id={`cat-${cat.color}`}
+            >
+              <span class="category-card__emoji">{cat.emoji}</span>
+              <span class="category-card__name">{cat.name}</span>
+              <span class="category-card__count">
+                {cat.count} {cat.count === 1 ? "post" : "posts"}
+              </span>
+            </a>
+          ))
+        }
       </div>
     </div>
   </section>
@@ -112,9 +116,10 @@ const categoryCounts = categories.map((cat) => ({
       <div class="about-text">
         <h2 class="section__title">About Me</h2>
         <p class="about-bio">
-          I’m a full-stack developer who enjoys building end-to-end systems — from
-          crafting APIs with Django to pixel-perfect UIs with React. When I’m not
-          coding, I’m documenting what I learn so others can skip the trial-and-error.
+          I’m a full-stack developer who enjoys building end-to-end systems —
+          from crafting APIs with Django to pixel-perfect UIs with React. When
+          I’m not coding, I’m documenting what I learn so others can skip the
+          trial-and-error.
         </p>
         <ul class="about-stack">
           <li><strong>Backend:</strong> Django, Python, PostgreSQL</li>
@@ -134,7 +139,8 @@ const categoryCounts = categories.map((cat) => ({
             <span class="code-snippet__dot code-snippet__dot--green"></span>
             <span class="code-snippet__filename">about.py</span>
           </div>
-          <pre class="code-snippet__body"><code><span class="code-kw">class</span> <span class="code-cls">Developer</span>:
+          <pre
+            class="code-snippet__body"><code><span class="code-kw">class</span> <span class="code-cls">Developer</span>:
     name = <span class="code-str">"Nishanth M"</span>
     role = <span class="code-str">"Full-Stack Dev"</span>
     stack = [<span class="code-str">"Django"</span>, <span class="code-str">"React"</span>, <span class="code-str">"Android"</span>]
@@ -151,7 +157,8 @@ const categoryCounts = categories.map((cat) => ({
     <div class="section__inner newsletter-inner">
       <h2 class="newsletter__title">Stay Updated</h2>
       <p class="newsletter__sub">
-        Get notified when I publish new articles. No spam — just clean, useful dev content.
+        Get notified when I publish new articles. No spam — just clean, useful
+        dev content.
       </p>
       <form
         class="newsletter__form"
@@ -167,13 +174,12 @@ const categoryCounts = categories.map((cat) => ({
           required
         />
         <button type="submit" class="btn-primary newsletter__btn">
-          Subscribe
+          Join Newsletter
         </button>
       </form>
       <p class="newsletter__note">No tracking. Unsubscribe anytime.</p>
     </div>
   </section>
-
 </BaseLayout>
 
 <style>
@@ -202,8 +208,16 @@ const categoryCounts = categories.map((cat) => ({
     background-size: 32px 32px;
     z-index: 0;
     pointer-events: none;
-    mask-image: radial-gradient(ellipse 70% 60% at 50% 50%, black 30%, transparent 80%);
-    -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 50%, black 30%, transparent 80%);
+    mask-image: radial-gradient(
+      ellipse 70% 60% at 50% 50%,
+      black 30%,
+      transparent 80%
+    );
+    -webkit-mask-image: radial-gradient(
+      ellipse 70% 60% at 50% 50%,
+      black 30%,
+      transparent 80%
+    );
   }
 
   .hero__content {
@@ -344,18 +358,43 @@ const categoryCounts = categories.map((cat) => ({
   }
 
   /* Category-specific backgrounds (10% opacity) */
-  .category-card--backend  { background: rgba(249, 115,  22, 0.06); }
-  .category-card--frontend { background: rgba( 59, 130, 246, 0.06); }
-  .category-card--tools    { background: rgba(168,  85, 247, 0.06); }
-  .category-card--android  { background: rgba( 34, 197,  94, 0.06); }
-  .category-card--startup  { background: rgba(236,  72, 153, 0.06); }
+  .category-card--backend {
+    background: rgba(249, 115, 22, 0.06);
+  }
+  .category-card--frontend {
+    background: rgba(59, 130, 246, 0.06);
+  }
+  .category-card--tools {
+    background: rgba(168, 85, 247, 0.06);
+  }
+  .category-card--android {
+    background: rgba(34, 197, 94, 0.06);
+  }
+  .category-card--startup {
+    background: rgba(236, 72, 153, 0.06);
+  }
 
   /* Hover fills */
-  .category-card--backend:hover  { background: rgba(249, 115,  22, 0.18); box-shadow: 0 8px 24px rgba(249, 115,  22, 0.12); }
-  .category-card--frontend:hover { background: rgba( 59, 130, 246, 0.18); box-shadow: 0 8px 24px rgba( 59, 130, 246, 0.12); }
-  .category-card--tools:hover    { background: rgba(168,  85, 247, 0.18); box-shadow: 0 8px 24px rgba(168,  85, 247, 0.12); }
-  .category-card--android:hover  { background: rgba( 34, 197,  94, 0.18); box-shadow: 0 8px 24px rgba( 34, 197,  94, 0.12); }
-  .category-card--startup:hover  { background: rgba(236,  72, 153, 0.18); box-shadow: 0 8px 24px rgba(236,  72, 153, 0.12); }
+  .category-card--backend:hover {
+    background: rgba(249, 115, 22, 0.18);
+    box-shadow: 0 8px 24px rgba(249, 115, 22, 0.12);
+  }
+  .category-card--frontend:hover {
+    background: rgba(59, 130, 246, 0.18);
+    box-shadow: 0 8px 24px rgba(59, 130, 246, 0.12);
+  }
+  .category-card--tools:hover {
+    background: rgba(168, 85, 247, 0.18);
+    box-shadow: 0 8px 24px rgba(168, 85, 247, 0.12);
+  }
+  .category-card--android:hover {
+    background: rgba(34, 197, 94, 0.18);
+    box-shadow: 0 8px 24px rgba(34, 197, 94, 0.12);
+  }
+  .category-card--startup:hover {
+    background: rgba(236, 72, 153, 0.18);
+    box-shadow: 0 8px 24px rgba(236, 72, 153, 0.12);
+  }
 
   .category-card__emoji {
     font-size: 1.75rem;
@@ -369,11 +408,21 @@ const categoryCounts = categories.map((cat) => ({
     color: var(--color-text-primary);
   }
 
-  .category-card--backend  .category-card__name { color: var(--color-backend);  }
-  .category-card--frontend .category-card__name { color: var(--color-frontend); }
-  .category-card--tools    .category-card__name { color: var(--color-tools);    }
-  .category-card--android  .category-card__name { color: var(--color-android);  }
-  .category-card--startup  .category-card__name { color: var(--color-startup);  }
+  .category-card--backend .category-card__name {
+    color: var(--color-backend);
+  }
+  .category-card--frontend .category-card__name {
+    color: var(--color-frontend);
+  }
+  .category-card--tools .category-card__name {
+    color: var(--color-tools);
+  }
+  .category-card--android .category-card__name {
+    color: var(--color-android);
+  }
+  .category-card--startup .category-card__name {
+    color: var(--color-startup);
+  }
 
   .category-card__count {
     font-family: var(--font-display);
@@ -421,7 +470,7 @@ const categoryCounts = categories.map((cat) => ({
   }
 
   .about-stack li::before {
-    content: '▹';
+    content: "▹";
     position: absolute;
     left: 0;
     color: var(--color-accent);
@@ -470,9 +519,15 @@ const categoryCounts = categories.map((cat) => ({
     border-radius: 50%;
   }
 
-  .code-snippet__dot--red    { background: #ff5f57; }
-  .code-snippet__dot--yellow { background: #febc2e; }
-  .code-snippet__dot--green  { background: #28c840; }
+  .code-snippet__dot--red {
+    background: #ff5f57;
+  }
+  .code-snippet__dot--yellow {
+    background: #febc2e;
+  }
+  .code-snippet__dot--green {
+    background: #28c840;
+  }
 
   .code-snippet__filename {
     margin-left: 0.5rem;
@@ -499,10 +554,18 @@ const categoryCounts = categories.map((cat) => ({
     color: inherit;
   }
 
-  .code-kw  { color: var(--color-accent-bright); }
-  .code-cls { color: #fbbf24; }
-  .code-str { color: #4ade80; }
-  .code-fn  { color: #60a5fa; }
+  .code-kw {
+    color: var(--color-accent-bright);
+  }
+  .code-cls {
+    color: #fbbf24;
+  }
+  .code-str {
+    color: #4ade80;
+  }
+  .code-fn {
+    color: #60a5fa;
+  }
 
   /* =====================================================
      NEWSLETTER
