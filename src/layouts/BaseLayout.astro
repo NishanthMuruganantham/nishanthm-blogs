@@ -17,8 +17,10 @@ const {
   canonicalURL,
 } = Astro.props;
 
+const siteUrl = 'https://nishanthm.dev';
 const siteTitle = `${title} | Nishanth M`;
 const resolvedCanonical = canonicalURL || Astro.url.href;
+const resolvedOgImage = ogImage.startsWith('http') ? ogImage : `${siteUrl}${ogImage}`;
 ---
 
 <!doctype html>
@@ -39,14 +41,14 @@ const resolvedCanonical = canonicalURL || Astro.url.href;
     <meta property="og:type" content="website" />
     <meta property="og:title" content={siteTitle} />
     <meta property="og:description" content={description} />
-    <meta property="og:image" content={ogImage} />
+    <meta property="og:image" content={resolvedOgImage} />
     <meta property="og:url" content={resolvedCanonical} />
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={siteTitle} />
     <meta name="twitter:description" content={description} />
-    <meta name="twitter:image" content={ogImage} />
+    <meta name="twitter:image" content={resolvedOgImage} />
   </head>
   <body>
     <Header />
@@ -60,6 +62,6 @@ const resolvedCanonical = canonicalURL || Astro.url.href;
 <style>
   .site-main {
     min-height: 100vh;
-    padding-top: 4rem; /* offset for fixed header */
+    padding-top: 4.5rem; /* offset for fixed header */
   }
 </style>
