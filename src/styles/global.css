@@ -462,6 +462,8 @@
   }
 
   /* Language label */
+  .prose figure[data-rehype-pretty-code-figure][data-language]::before,
+  .prose pre code[data-language]::before,
   .prose pre[data-language]::before {
     content: attr(data-language);
     position: absolute;

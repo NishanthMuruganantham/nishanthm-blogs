@@ -5,6 +5,7 @@ import PostCard from "../components/PostCard.astro";
 import Giscus from "../components/Giscus.astro";
 import { getCollection } from "astro:content";
 import { getReadingTime } from "../lib/utils";
+import { SITE_AUTHOR } from "../consts";
 
 const { frontmatter, headings, readingTime } = Astro.props;
 const categoryLower = frontmatter.category.toLowerCase();
@@ -73,7 +74,7 @@ const relatedPosts = allPosts
                     <span>·</span>
                     <span>{readingTime}</span>
                     <span>·</span>
-                    <span>Nishanth Muruganantham</span>
+                    <span>{SITE_AUTHOR}</span>
                 </div>
             </header>
 
@@ -184,64 +185,4 @@ const relatedPosts = allPosts
     </div>
 </BaseLayout>
 
-<script>
-    // Logic for reading progress and ToC scroll spy
-    document.addEventListener("DOMContentLoaded", () => {
-        const progressBar = document.getElementById("reading-progress");
-        const headings = Array.from(
-            document.querySelectorAll(".prose h2, .prose h3")
-        );
-        const tocLinks = document.querySelectorAll("#toc a");
-
-        // Reading Progress functionality
-        const updateProgress = () => {
-            const scrollPoints = window.scrollY;
-            // Calculate full document height minus viewport height for the maximum scrollable area
-            const totalHeight =
-                document.documentElement.scrollHeight -
-                document.documentElement.clientHeight;
-
-            if (totalHeight > 0) {
-                const progress = (scrollPoints / totalHeight) * 100;
-                if (progressBar) {
-                    progressBar.style.width = `${Math.min(100, progress)}%`;
-                }
-            }
-        };
-
-        window.addEventListener("scroll", updateProgress, { passive: true });
-        updateProgress(); // init
-
-        // ToC Intersection Observer highlights
-        const observerOptions = {
-            root: null,
-            rootMargin: "0px 0px -80% 0px",
-            threshold: 0,
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach((entry) => {
-                if (entry.isIntersecting) {
-                    // Remove active from all
-                    tocLinks.forEach((link) => {
-                        link.classList.remove("text-accent", "font-medium");
-                        link.classList.add("text-text-secondary");
-                    });
-
-                    // Add active to current
-                    const id = entry.target.getAttribute("id");
-                    const activeLink = document.querySelector(
-                        `#toc a[data-slug="${id}"]`
-                    );
-                    if (activeLink) {
-                        activeLink.classList.remove("text-text-secondary");
-                        activeLink.classList.add("text-accent", "font-medium");
-                    }
-                }
-            });
-        }, observerOptions);
-
-        headings.forEach((h) => observer.observe(h));
-    });
-</script>
 <script src="../scripts/post-interactivity.js"></script>

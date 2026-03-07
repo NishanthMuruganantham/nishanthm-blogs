@@ -4,7 +4,9 @@ import PostLayout from "../../layouts/PostLayout.astro";
 import { getReadingTime } from "../../lib/utils";
 
 export async function getStaticPaths() {
-    const posts = await getCollection("blog");
+    const posts = await getCollection("blog", ({ data }) => {
+        return import.meta.env.PROD ? data.draft !== true : true;
+    });
     return posts.map((post) => ({
         params: { slug: post.slug },
         props: { post },
@@ -14,7 +16,7 @@ export async function getStaticPaths() {
 const { post } = Astro.props;
 const { Content, headings } = await post.render();
 
-const readingTime = post.data.readingTime || getReadingTime(post.body);
+const readingTime = getReadingTime(post.body);
 ---
 
 <PostLayout
