@@ -508,7 +508,8 @@
     border-radius: 0.375rem;
     color: var(--color-text-muted);
     cursor: pointer;
-    opacity: 0;
+    opacity: 0.5;
+    /* Always visible, but subtle */
     transition: all 0.2s ease;
     display: flex;
     align-items: center;
