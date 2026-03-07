@@ -454,11 +454,12 @@
     background-color: #1e1e24 !important;
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 0.75rem;
-    padding: 1.5rem 1rem;
+    padding: 1.25rem 0;
+    /* Removing horizontal padding to let code grid handle it */
     overflow-x: auto;
     position: relative;
-    /* ensure there's space for copy button */
-    padding-top: 2.5rem;
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
   }
 
   /* Language label */
@@ -477,21 +478,47 @@
     background: rgba(255, 255, 255, 0.05);
     border-bottom-left-radius: 0.25rem;
     border-bottom-right-radius: 0.25rem;
+    z-index: 10;
   }
+
+  /* The actual code block */
+  .prose pre>code {
+    display: grid;
+    min-width: 100%;
+    /* Add padding here instead of pre to ensure highlighting spans full width */
+    padding-top: 2rem;
+    padding-bottom: 0.5rem;
+  }
+
+  /* Individual lines */
+  .prose pre>code>[data-line] {
+    padding: 0 1.25rem;
+    border-left: 2px solid transparent;
+  }
+
 
   /* Copy Button */
   .prose .copy-btn {
     position: absolute;
     top: 0.5rem;
     right: 0.5rem;
-    padding: 0.4rem;
+    padding: 0.35rem;
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 0.375rem;
     color: var(--color-text-muted);
     cursor: pointer;
     opacity: 0;
-    transition: all 0.2s;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+  }
+
+  .prose .copy-btn svg {
+    width: 14px;
+    height: 14px;
   }
 
   .prose pre:hover .copy-btn {
