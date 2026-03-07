@@ -1,0 +1,366 @@
+---
+const navLinks = [
+  { href: '/blog', label: 'Blog' },
+  { href: '/categories', label: 'Categories' },
+  { href: '/about', label: 'About' },
+  { href: '/stats', label: 'Stats' },
+];
+
+const currentPath = Astro.url.pathname;
+---
+
+<header class="site-header" id="site-header">
+  <div class="header-inner">
+    <!-- Logo -->
+    <a href="/" class="logo" aria-label="Home">
+      nishanth<span class="logo-dot">.</span>dev
+    </a>
+
+    <!-- Desktop Nav -->
+    <nav class="desktop-nav" aria-label="Main navigation">
+      {navLinks.map(link => (
+        <a
+          href={link.href}
+          class:list={['nav-link', { active: currentPath.startsWith(link.href) }]}
+        >
+          {link.label}
+        </a>
+      ))}
+    </nav>
+
+    <!-- Right actions -->
+    <div class="header-actions">
+      <!-- GitHub icon -->
+      <a
+        href="https://github.com/NishanthMuruganantham"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="icon-link"
+        aria-label="GitHub profile"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+        </svg>
+      </a>
+
+      <!-- Mobile hamburger -->
+      <button
+        class="hamburger"
+        id="hamburger-btn"
+        aria-label="Open menu"
+        aria-expanded="false"
+      >
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile overlay -->
+  <div class="mobile-overlay" id="mobile-overlay"></div>
+
+  <!-- Mobile nav panel -->
+  <nav class="mobile-nav" id="mobile-nav" aria-label="Mobile navigation">
+    {navLinks.map(link => (
+      <a
+        href={link.href}
+        class:list={['mobile-nav-link', { active: currentPath.startsWith(link.href) }]}
+      >
+        {link.label}
+      </a>
+    ))}
+    <a
+      href="https://github.com/NishanthMuruganantham"
+      target="_blank"
+      rel="noopener noreferrer"
+      class="mobile-nav-link mobile-github"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="margin-right:0.5rem;">
+        <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+      </svg>
+      GitHub
+    </a>
+  </nav>
+</header>
+
+<style>
+  /* ===== Header Shell ===== */
+  .site-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    background: rgba(9, 9, 14, 0.75);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--color-border);
+    transition: background var(--transition-base);
+  }
+
+  .site-header.scrolled {
+    background: rgba(9, 9, 14, 0.92);
+  }
+
+  .header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: var(--wide-width);
+    margin: 0 auto;
+    padding: 0.85rem 1.5rem;
+  }
+
+  /* ===== Logo ===== */
+  .logo {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.25rem;
+    color: var(--color-text-primary);
+    text-decoration: none;
+    letter-spacing: -0.02em;
+    transition: color var(--transition-fast);
+  }
+
+  .logo:hover {
+    color: var(--color-accent-bright);
+  }
+
+  .logo-dot {
+    color: var(--color-accent);
+    text-shadow: 0 0 8px var(--color-accent-glow);
+  }
+
+  /* ===== Desktop Nav ===== */
+  .desktop-nav {
+    display: flex;
+    gap: 2rem;
+  }
+
+  .nav-link {
+    position: relative;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 0.875rem;
+    color: var(--color-text-secondary);
+    text-decoration: none;
+    padding: 0.25rem 0;
+    transition: color var(--transition-fast);
+    letter-spacing: 0.01em;
+  }
+
+  .nav-link:hover {
+    color: var(--color-text-primary);
+  }
+
+  .nav-link.active {
+    color: var(--color-accent-bright);
+  }
+
+  /* Underline indicator */
+  .nav-link::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -2px;
+    width: 0;
+    height: 2px;
+    background: var(--color-accent);
+    border-radius: 1px;
+    transition: width var(--transition-base);
+  }
+
+  .nav-link:hover::after,
+  .nav-link.active::after {
+    width: 100%;
+  }
+
+  /* ===== Header Actions ===== */
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .icon-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-text-secondary);
+    padding: 0.35rem;
+    border-radius: 0.375rem;
+    transition: color var(--transition-fast), background var(--transition-fast);
+  }
+
+  .icon-link:hover {
+    color: var(--color-accent-bright);
+    background: var(--color-accent-glow);
+  }
+
+  /* ===== Hamburger ===== */
+  .hamburger {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    width: 28px;
+    height: 28px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    z-index: 110;
+  }
+
+  .hamburger-line {
+    display: block;
+    width: 100%;
+    height: 2px;
+    background: var(--color-text-primary);
+    border-radius: 2px;
+    transition: all 0.3s ease;
+    transform-origin: center;
+  }
+
+  /* Animate to X */
+  .hamburger.open .hamburger-line:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+  }
+
+  .hamburger.open .hamburger-line:nth-child(2) {
+    opacity: 0;
+    transform: scaleX(0);
+  }
+
+  .hamburger.open .hamburger-line:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
+  }
+
+  /* ===== Mobile Overlay ===== */
+  .mobile-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 98;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .mobile-overlay.visible {
+    display: block;
+    opacity: 1;
+  }
+
+  /* ===== Mobile Nav ===== */
+  .mobile-nav {
+    display: none;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 280px;
+    max-width: 80vw;
+    background: var(--color-bg-elevated);
+    border-left: 1px solid var(--color-border);
+    z-index: 99;
+    padding: 5rem 2rem 2rem;
+    flex-direction: column;
+    gap: 0.25rem;
+    transform: translateX(100%);
+    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .mobile-nav.open {
+    display: flex;
+    transform: translateX(0);
+  }
+
+  .mobile-nav-link {
+    display: flex;
+    align-items: center;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.15rem;
+    color: var(--color-text-secondary);
+    text-decoration: none;
+    padding: 0.85rem 0.75rem;
+    border-radius: 0.5rem;
+    transition: all var(--transition-fast);
+  }
+
+  .mobile-nav-link:hover,
+  .mobile-nav-link.active {
+    color: var(--color-accent-bright);
+    background: var(--color-accent-glow);
+  }
+
+  .mobile-github {
+    margin-top: auto;
+    border-top: 1px solid var(--color-border);
+    padding-top: 1.25rem;
+    margin-top: 1.5rem;
+  }
+
+  /* ===== Responsive ===== */
+  @media (max-width: 768px) {
+    .desktop-nav {
+      display: none;
+    }
+
+    .hamburger {
+      display: flex;
+    }
+
+    .mobile-nav {
+      display: flex;
+      /* stays translateX(100%) until .open is added */
+    }
+  }
+</style>
+
+<script>
+  // Hamburger toggle
+  const hamburger = document.getElementById('hamburger-btn');
+  const mobileNav = document.getElementById('mobile-nav');
+  const overlay = document.getElementById('mobile-overlay');
+  const header = document.getElementById('site-header');
+
+  function openMenu() {
+    hamburger?.classList.add('open');
+    hamburger?.setAttribute('aria-expanded', 'true');
+    mobileNav?.classList.add('open');
+    overlay?.classList.add('visible');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeMenu() {
+    hamburger?.classList.remove('open');
+    hamburger?.setAttribute('aria-expanded', 'false');
+    mobileNav?.classList.remove('open');
+    overlay?.classList.remove('visible');
+    document.body.style.overflow = '';
+  }
+
+  hamburger?.addEventListener('click', () => {
+    const isOpen = hamburger.classList.contains('open');
+    isOpen ? closeMenu() : openMenu();
+  });
+
+  overlay?.addEventListener('click', closeMenu);
+
+  // Close on nav link click
+  mobileNav?.querySelectorAll('.mobile-nav-link').forEach(link => {
+    link.addEventListener('click', closeMenu);
+  });
+
+  // Scroll listener — add .scrolled class
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 20) {
+      header?.classList.add('scrolled');
+    } else {
+      header?.classList.remove('scrolled');
+    }
+  }, { passive: true });
+</script>
