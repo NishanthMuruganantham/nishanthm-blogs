@@ -1,18 +1,628 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PostCard from "../components/PostCard.astro";
+import { getCollection } from "astro:content";
+import { getReadingTime } from "../lib/utils";
+
+// Fetch all non-draft posts, sorted newest first
+const allPosts = await getCollection("blog", ({ data }) => !data.draft);
+const sortedPosts = allPosts.sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
+);
+const featuredPosts = sortedPosts.slice(0, 3);
+
+const featuredPostsWithMeta = featuredPosts.map((post) => ({
+  ...post,
+  readingTime: post.body ? getReadingTime(post.body) : undefined,
+}));
+
+// Count posts per category
+const categories = [
+  { name: "Backend", emoji: "⚙️", color: "backend" },
+  { name: "Frontend", emoji: "🎨", color: "frontend" },
+  { name: "Tools", emoji: "🛠️", color: "tools" },
+  { name: "Android", emoji: "📱", color: "android" },
+  { name: "Startup", emoji: "🚀", color: "startup" },
+];
+
+const categoryCounts = categories.map((cat) => ({
+  ...cat,
+  count: allPosts.filter((p) => p.data.category === cat.name).length,
+}));
 ---
 
 <BaseLayout
   title="Home"
   description="Personal blog by Nishanth M — backend, frontend, tools, and startup experiences."
 >
-  <section class="hero hero-gradient" style="padding: var(--space-section) 1.5rem; max-width: var(--wide-width); margin: 0 auto;">
-    <h1 class="gradient-text" style="font-size: clamp(2rem, 5vw, 3.5rem); margin-bottom: 1rem;">
-      Hey, I'm Nishanth 👋
-    </h1>
-    <p style="color: var(--color-text-secondary); font-size: 1.15rem; max-width: 600px; line-height: 1.7;">
-      I build real systems and document the journey. Exploring backend, frontend,
-      mobile, and everything in between.
-    </p>
+  <!-- ===================== HERO ===================== -->
+  <section class="hero hero-gradient" id="hero-section">
+    <div class="hero__dot-grid" aria-hidden="true"></div>
+
+    <div class="hero__content">
+      <p class="hero__eyebrow anim-fade" style="--delay: 0">
+        Developer · Builder · Writer
+      </p>
+
+      <h1 class="hero__heading gradient-text anim-fade" style="--delay: 1">
+        I Build Systems and<br />Document the Journey
+      </h1>
+
+      <p class="hero__sub anim-fade" style="--delay: 2">
+        I’m Nishanth — an indie developer working across React, Django, and
+        Android. I write about real-world solutions, dev tools, and the lessons
+        learned from building production software.
+      </p>
+
+      <div class="hero__cta anim-fade" style="--delay: 3">
+        <a href="/blog" class="btn-primary" id="cta-blog">Read the Blog</a>
+        <a href="/about" class="btn-ghost" id="cta-about">About Me</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- =============== FEATURED POSTS =============== -->
+  <section class="section" id="latest-writing">
+    <div class="section__inner">
+      <h2 class="section__title">Latest Writing</h2>
+      <div class="posts-grid">
+        {
+          featuredPostsWithMeta.map((post) => (
+            <PostCard
+              title={post.data.title}
+              description={post.data.description}
+              date={post.data.date}
+              category={post.data.category}
+              tags={post.data.tags}
+              slug={post.slug}
+              readingTime={post.readingTime}
+            />
+          ))
+        }
+      </div>
+      <div class="section__cta">
+        <a href="/blog" class="btn-ghost" id="cta-all-posts">View all posts →</a
+        >
+      </div>
+    </div>
+  </section>
+
+  <!-- =============== CATEGORIES =============== -->
+  <section class="section" id="categories-section">
+    <div class="section__inner">
+      <h2 class="section__title">Browse by Topic</h2>
+      <div class="categories-grid">
+        {
+          categoryCounts.map((cat) => (
+            <a
+              href="/categories/"
+              class={`category-card category-card--${cat.color}`}
+              id={`cat-${cat.color}`}
+            >
+              <span class="category-card__emoji">{cat.emoji}</span>
+              <span class="category-card__name">{cat.name}</span>
+              <span class="category-card__count">
+                {cat.count} {cat.count === 1 ? "post" : "posts"}
+              </span>
+            </a>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- =============== ABOUT TEASER =============== -->
+  <section class="section" id="about-teaser">
+    <div class="section__inner about-grid">
+      <div class="about-text">
+        <h2 class="section__title">About Me</h2>
+        <p class="about-bio">
+          I’m a full-stack developer who enjoys building end-to-end systems —
+          from crafting APIs with Django to pixel-perfect UIs with React. When
+          I’m not coding, I’m documenting what I learn so others can skip the
+          trial-and-error.
+        </p>
+        <ul class="about-stack">
+          <li><strong>Backend:</strong> Django, Python, PostgreSQL</li>
+          <li><strong>Frontend:</strong> React, Astro, Tailwind CSS</li>
+          <li><strong>Mobile:</strong> Android (Kotlin), Gradle</li>
+          <li><strong>Tools:</strong> VS Code, Git, Docker, MCP</li>
+        </ul>
+        <a href="/about" class="about-link" id="about-link">
+          Read more about me →
+        </a>
+      </div>
+      <div class="about-visual" aria-hidden="true">
+        <div class="code-snippet-card">
+          <div class="code-snippet__header">
+            <span class="code-snippet__dot code-snippet__dot--red"></span>
+            <span class="code-snippet__dot code-snippet__dot--yellow"></span>
+            <span class="code-snippet__dot code-snippet__dot--green"></span>
+            <span class="code-snippet__filename">about.py</span>
+          </div>
+          <pre
+            class="code-snippet__body"><code><span class="code-kw">class</span> <span class="code-cls">Developer</span>:
+    name = <span class="code-str">"Nishanth M"</span>
+    role = <span class="code-str">"Full-Stack Dev"</span>
+    stack = [<span class="code-str">"Django"</span>, <span class="code-str">"React"</span>, <span class="code-str">"Android"</span>]
+
+    <span class="code-kw">def</span> <span class="code-fn">passion</span>(self):
+        <span class="code-kw">return</span> <span class="code-str">"Building &amp; Writing"</span></code></pre>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== NEWSLETTER ============== -->
+  <section class="section section--newsletter" id="newsletter-section">
+    <div class="section__inner newsletter-inner">
+      <h2 class="newsletter__title">Stay Updated</h2>
+      <p class="newsletter__sub">
+        Get notified when I publish new articles. No spam — just clean, useful
+        dev content.
+      </p>
+      <div class="newsletter__form" style="justify-content: center;">
+        <a href="https://buttondown.com" target="_blank" class="btn-primary">
+          Subscribe via Buttondown
+        </a>
+      </div>
+    </div>
   </section>
 </BaseLayout>
+
+<style>
+  /* =====================================================
+     HERO SECTION
+     ===================================================== */
+  .hero {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 85vh;
+    padding: 6rem 1.5rem 4rem;
+    text-align: center;
+    position: relative;
+  }
+
+  /* Decorative dot grid */
+  .hero__dot-grid {
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(
+      circle,
+      rgba(124, 106, 247, 0.08) 1px,
+      transparent 1px
+    );
+    background-size: 32px 32px;
+    z-index: 0;
+    pointer-events: none;
+    mask-image: radial-gradient(
+      ellipse 70% 60% at 50% 50%,
+      black 30%,
+      transparent 80%
+    );
+    -webkit-mask-image: radial-gradient(
+      ellipse 70% 60% at 50% 50%,
+      black 30%,
+      transparent 80%
+    );
+  }
+
+  .hero__content {
+    max-width: 720px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero__eyebrow {
+    font-family: var(--font-display);
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--color-accent-bright);
+    margin-bottom: 1.25rem;
+  }
+
+  .hero__heading {
+    font-size: clamp(2.2rem, 5.5vw, 3.75rem);
+    line-height: 1.1;
+    margin-bottom: 1.5rem;
+  }
+
+  .hero__sub {
+    color: var(--color-text-secondary);
+    font-size: 1.1rem;
+    line-height: 1.75;
+    max-width: 560px;
+    margin: 0 auto 2rem;
+  }
+
+  .hero__cta {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  /* Staggered fade-in animation */
+  .anim-fade {
+    opacity: 0;
+    transform: translateY(18px);
+    animation: fadeUp 0.7s ease forwards;
+    animation-delay: calc(var(--delay) * 0.15s);
+  }
+
+  @keyframes fadeUp {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* =====================================================
+     SHARED SECTION LAYOUT
+     ===================================================== */
+  .section {
+    padding: var(--space-section) 1.5rem;
+  }
+
+  .section__inner {
+    max-width: var(--wide-width);
+    margin: 0 auto;
+  }
+
+  .section__title {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    color: var(--color-text-primary);
+    margin-bottom: 2.5rem;
+  }
+
+  .section__cta {
+    text-align: center;
+    margin-top: 2.5rem;
+  }
+
+  /* =====================================================
+     POSTS GRID
+     ===================================================== */
+  .posts-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  @media (min-width: 640px) {
+    .posts-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .posts-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  /* =====================================================
+     CATEGORIES GRID
+     ===================================================== */
+  .categories-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+
+  @media (min-width: 768px) {
+    .categories-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .categories-grid {
+      grid-template-columns: repeat(5, 1fr);
+    }
+  }
+
+  .category-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 1.75rem 1rem;
+    border-radius: 0.75rem;
+    border: 1px solid var(--color-border-subtle);
+    text-decoration: none;
+    transition: all var(--transition-base);
+    cursor: pointer;
+  }
+
+  .category-card:hover {
+    transform: translateY(-3px);
+    border-color: transparent;
+  }
+
+  /* Category-specific backgrounds (10% opacity) */
+  .category-card--backend {
+    background: rgba(249, 115, 22, 0.06);
+  }
+  .category-card--frontend {
+    background: rgba(59, 130, 246, 0.06);
+  }
+  .category-card--tools {
+    background: rgba(168, 85, 247, 0.06);
+  }
+  .category-card--android {
+    background: rgba(34, 197, 94, 0.06);
+  }
+  .category-card--startup {
+    background: rgba(236, 72, 153, 0.06);
+  }
+
+  /* Hover fills */
+  .category-card--backend:hover {
+    background: rgba(249, 115, 22, 0.18);
+    box-shadow: 0 8px 24px rgba(249, 115, 22, 0.12);
+  }
+  .category-card--frontend:hover {
+    background: rgba(59, 130, 246, 0.18);
+    box-shadow: 0 8px 24px rgba(59, 130, 246, 0.12);
+  }
+  .category-card--tools:hover {
+    background: rgba(168, 85, 247, 0.18);
+    box-shadow: 0 8px 24px rgba(168, 85, 247, 0.12);
+  }
+  .category-card--android:hover {
+    background: rgba(34, 197, 94, 0.18);
+    box-shadow: 0 8px 24px rgba(34, 197, 94, 0.12);
+  }
+  .category-card--startup:hover {
+    background: rgba(236, 72, 153, 0.18);
+    box-shadow: 0 8px 24px rgba(236, 72, 153, 0.12);
+  }
+
+  .category-card__emoji {
+    font-size: 1.75rem;
+    line-height: 1;
+  }
+
+  .category-card__name {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--color-text-primary);
+  }
+
+  .category-card--backend .category-card__name {
+    color: var(--color-backend);
+  }
+  .category-card--frontend .category-card__name {
+    color: var(--color-frontend);
+  }
+  .category-card--tools .category-card__name {
+    color: var(--color-tools);
+  }
+  .category-card--android .category-card__name {
+    color: var(--color-android);
+  }
+  .category-card--startup .category-card__name {
+    color: var(--color-startup);
+  }
+
+  .category-card__count {
+    font-family: var(--font-display);
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+  }
+
+  /* =====================================================
+     ABOUT TEASER
+     ===================================================== */
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 3rem;
+    align-items: center;
+  }
+
+  @media (min-width: 768px) {
+    .about-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .about-bio {
+    color: var(--color-text-secondary);
+    font-size: 1.05rem;
+    line-height: 1.75;
+    margin-bottom: 1.25rem;
+  }
+
+  .about-stack {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .about-stack li {
+    color: var(--color-text-secondary);
+    font-size: 0.95rem;
+    padding-left: 1.25rem;
+    position: relative;
+  }
+
+  .about-stack li::before {
+    content: "▹";
+    position: absolute;
+    left: 0;
+    color: var(--color-accent);
+  }
+
+  .about-stack li strong {
+    color: var(--color-text-primary);
+    font-family: var(--font-display);
+    font-weight: 700;
+  }
+
+  .about-link {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: var(--color-accent-bright);
+    transition: color var(--transition-fast);
+  }
+
+  .about-link:hover {
+    color: var(--color-accent);
+  }
+
+  /* Code snippet card */
+  .code-snippet-card {
+    background: var(--color-bg-elevated);
+    border: 1px solid var(--color-border);
+    border-radius: 0.75rem;
+    overflow: hidden;
+    font-size: 0.85rem;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  }
+
+  .code-snippet__header {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.75rem 1rem;
+    background: rgba(0, 0, 0, 0.3);
+    border-bottom: 1px solid var(--color-border-subtle);
+  }
+
+  .code-snippet__dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+  }
+
+  .code-snippet__dot--red {
+    background: #ff5f57;
+  }
+  .code-snippet__dot--yellow {
+    background: #febc2e;
+  }
+  .code-snippet__dot--green {
+    background: #28c840;
+  }
+
+  .code-snippet__filename {
+    margin-left: 0.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+  }
+
+  .code-snippet__body {
+    padding: 1.25rem 1rem;
+    margin: 0;
+    overflow-x: auto;
+    font-family: var(--font-mono);
+    line-height: 1.7;
+    color: var(--color-text-primary);
+    background: transparent;
+    border: none;
+  }
+
+  .code-snippet__body code {
+    font-family: inherit;
+    background: transparent;
+    padding: 0;
+    color: inherit;
+  }
+
+  .code-kw {
+    color: var(--color-accent-bright);
+  }
+  .code-cls {
+    color: #fbbf24;
+  }
+  .code-str {
+    color: #4ade80;
+  }
+  .code-fn {
+    color: #60a5fa;
+  }
+
+  /* =====================================================
+     NEWSLETTER
+     ===================================================== */
+  .section--newsletter {
+    border-top: 1px solid var(--color-border-subtle);
+    text-align: center;
+  }
+
+  .newsletter-inner {
+    max-width: 520px;
+  }
+
+  .newsletter__title {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(1.25rem, 3vw, 1.75rem);
+    color: var(--color-text-primary);
+    margin-bottom: 0.75rem;
+  }
+
+  .newsletter__sub {
+    color: var(--color-text-secondary);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+  }
+
+  .newsletter__form {
+    display: flex;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .newsletter__input {
+    flex: 1;
+    padding: 0.75rem 1rem;
+    background: var(--color-bg-elevated);
+    border: 1px solid var(--color-border);
+    border-radius: 0.5rem;
+    color: var(--color-text-primary);
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    transition: border-color var(--transition-fast);
+    outline: none;
+  }
+
+  .newsletter__input::placeholder {
+    color: var(--color-text-muted);
+  }
+
+  .newsletter__input:focus {
+    border-color: var(--color-accent);
+    box-shadow: 0 0 0 3px var(--color-accent-glow);
+  }
+
+  .newsletter__btn {
+    white-space: nowrap;
+  }
+
+  .newsletter__note {
+    color: var(--color-text-muted);
+    font-size: 0.75rem;
+  }
+
+  /* Newsletter responsive */
+  @media (max-width: 480px) {
+    .newsletter__form {
+      flex-direction: column;
+    }
+  }
+</style>
