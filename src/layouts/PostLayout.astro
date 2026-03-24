@@ -24,7 +24,13 @@ const relatedPosts = allPosts
     .slice(0, 2);
 ---
 
-<BaseLayout title={frontmatter.title} description={frontmatter.description}>
+<BaseLayout
+    title={frontmatter.title}
+    description={frontmatter.description}
+    ogType="article"
+    publishedDate={frontmatter.date}
+    tags={frontmatter.tags}
+>
     {/* Reading Progress Bar */}
     <div
         id="reading-progress"
