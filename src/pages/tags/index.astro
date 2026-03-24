@@ -1,0 +1,66 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+const allPosts = await getCollection("blog", ({ data }) => {
+    return import.meta.env.PROD ? data.draft !== true : true;
+});
+
+// Extract all tags and count occurrences
+const tags = allPosts.flatMap((post) => post.data.tags || []);
+const tagCounts = tags.reduce((acc, tag) => {
+    acc[tag] = (acc[tag] || 0) + 1;
+    return acc;
+}, {} as Record<string, number>);
+
+const uniqueTags = Object.keys(tagCounts).sort((a, b) => a.localeCompare(b));
+
+// Helper to determine tag size based on frequency
+const getTagSize = (count: number) => {
+    if (count > 5) return 'text-3xl md:text-4xl';
+    if (count > 2) return 'text-xl md:text-2xl';
+    return 'text-base md:text-lg';
+};
+
+const title = "All Tags | Nishanth Muruganantham";
+const description = "Browse all blog posts by their tags.";
+---
+
+<BaseLayout title={title} description={description}>
+    <section class="max-w-wide mx-auto px-6 py-12 md:py-20">
+        <header class="mb-12 md:mb-16">
+            <h1 class="text-4xl md:text-6xl font-display font-bold mb-6">
+                Explore by <span class="gradient-text">Tags</span>
+            </h1>
+            <p class="text-lg text-secondary max-w-2xl">
+                A collection of topics I've written about. Click on any tag to see all related articles.
+            </p>
+        </header>
+
+        <div class="card p-8 md:p-12">
+            <div class="flex flex-wrap items-center justify-center gap-x-6 gap-y-8 md:gap-x-10 md:gap-y-12">
+                {
+                    uniqueTags.map((tag) => (
+                        <a
+                            href={`/tags/${tag}/`}
+                            class:list={[
+                                "font-display font-medium transition-all hover:text-accent-bright hover:scale-110",
+                                getTagSize(tagCounts[tag]),
+                                tagCounts[tag] > 2 ? "text-primary" : "text-secondary"
+                            ]}
+                        >
+                            <span class="text-accent-bright opacity-50 mr-1">#</span>{tag}
+                            <sup class="text-xs ml-1 opacity-40">{tagCounts[tag]}</sup>
+                        </a>
+                    ))
+                }
+            </div>
+        </div>
+
+        <div class="mt-12 text-center">
+            <a href="/blog" class="btn-ghost">
+                ← Back to Blog
+            </a>
+        </div>
+    </section>
+</BaseLayout>
