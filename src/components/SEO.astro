@@ -1,0 +1,73 @@
+---
+import { SITE_TITLE, SITE_DESCRIPTION, SITE_AUTHOR_FULL, SITE_URL } from '../consts';
+
+interface Props {
+  title?: string;
+  description?: string;
+  canonicalURL?: string;
+  ogImage?: string;
+  ogType?: 'website' | 'article';
+  publishedDate?: Date;
+  tags?: string[];
+}
+
+const {
+  title,
+  description = SITE_DESCRIPTION,
+  canonicalURL = Astro.url.href,
+  ogImage = '/images/og-default.png',
+  ogType = 'website',
+  publishedDate,
+  tags = [],
+} = Astro.props;
+
+const fullTitle = title ? `${title} | ${SITE_TITLE}` : SITE_TITLE;
+const resolvedOgImage = ogImage.startsWith('http') ? ogImage : `${SITE_URL}${ogImage}`;
+
+// JSON-LD structured data for articles
+const jsonLd = ogType === 'article' ? {
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": title || SITE_TITLE,
+  "image": resolvedOgImage,
+  "description": description,
+  "author": {
+    "@type": "Person",
+    "name": SITE_AUTHOR_FULL
+  },
+  "datePublished": publishedDate?.toISOString(),
+  "url": canonicalURL,
+  "keywords": tags.join(', ')
+} : null;
+---
+
+<!-- Global Metadata -->
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<link rel="icon" href="/favicon.ico" />
+<meta name="generator" content={Astro.generator} />
+
+<!-- SEO -->
+<title>{fullTitle}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonicalURL} />
+
+<!-- Open Graph / Facebook -->
+<meta property="og:type" content={ogType} />
+<meta property="og:url" content={canonicalURL} />
+<meta property="og:title" content={fullTitle} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content={resolvedOgImage} />
+
+<!-- Twitter -->
+<meta property="twitter:card" content="summary_large_image" />
+<meta property="twitter:url" content={canonicalURL} />
+<meta property="twitter:title" content={fullTitle} />
+<meta property="twitter:description" content={description} />
+<meta property="twitter:image" content={resolvedOgImage} />
+
+<!-- JSON-LD -->
+{jsonLd && (
+  <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+)}
