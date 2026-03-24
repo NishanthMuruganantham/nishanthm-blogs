@@ -1,0 +1,73 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { CATEGORIES } from "../../consts";
+
+const allPosts = await getCollection("blog", ({ data }) => {
+    return import.meta.env.PROD ? data.draft !== true : true;
+});
+
+// Count posts per category
+const categoryCounts = allPosts.reduce((acc, post) => {
+    const cat = post.data.category;
+    acc[cat] = (acc[cat] || 0) + 1;
+    return acc;
+}, {} as Record<string, number>);
+
+const title = "Categories | Nishanth Muruganantham";
+const description = "Explore articles by focused category - from Backend and Frontend to Tools and Life lessons.";
+---
+
+<BaseLayout title={title} description={description}>
+    <section class="max-w-wide mx-auto px-6 py-12 md:py-20">
+        <header class="mb-12 md:mb-16 text-center max-w-3xl mx-auto">
+            <h1 class="text-4xl md:text-6xl font-display font-bold mb-6">
+                Browse by <span class="gradient-text">Categories</span>
+            </h1>
+            <p class="text-lg text-secondary">
+                Curated articles grouped by core specialization and personal interests.
+            </p>
+        </header>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {
+                Object.entries(CATEGORIES).map(([slug, details]) => (
+                    <a href={`/categories/${slug.toLowerCase()}/`} class="group">
+                        <article class:list={[
+                            "card p-8 h-full flex flex-col transition-all hover:scale-[1.02] hover:-translate-y-1 relative overflow-hidden",
+                            `border-t-4 border-t-category-${details.color}`
+                        ]}>
+                            <div class="text-4xl mb-6">{details.icon}</div>
+                            <h2 class="text-2xl font-display font-bold mb-3 group-hover:text-accent-bright transition-colors">
+                                {slug}
+                            </h2>
+                            <p class="text-secondary mb-8 flex-grow">
+                                {details.description}
+                            </p>
+                            <div class="flex items-center justify-between text-sm mt-auto">
+                                <span class="font-medium text-accent-bright">
+                                    {categoryCounts[slug] || 0} { (categoryCounts[slug] === 1) ? 'article' : 'articles' }
+                                </span>
+                                <span class="opacity-40 group-hover:translate-x-1 transition-transform">
+                                    Explore →
+                                </span>
+                            </div>
+                            
+                            {/* Subtle background glow based on category color */}
+                            <div class:list={[
+                                "absolute -bottom-10 -right-10 w-32 h-32 blur-3xl opacity-10 transition-opacity group-hover:opacity-20",
+                                `bg-category-${details.color}`
+                            ]}></div>
+                        </article>
+                    </a>
+                ))
+            }
+        </div>
+
+        <div class="mt-20 text-center">
+            <a href="/tags" class="btn-ghost">
+                Or browse all topics via #Tags
+            </a>
+        </div>
+    </section>
+</BaseLayout>
