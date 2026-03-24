@@ -5,6 +5,11 @@ export function getReadingTime(content: string): string {
     return stats.text; // "5 min read"
 }
 
+export function getWordCount(content: string): number {
+    const stats = readingTime(content);
+    return stats.words;
+}
+
 export function formatDate(date: Date): string {
     return new Intl.DateTimeFormat('en-US', {
         year: 'numeric',
