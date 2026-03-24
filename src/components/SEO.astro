@@ -1,5 +1,5 @@
 ---
-import { SITE_TITLE, SITE_DESCRIPTION, SITE_AUTHOR_FULL } from '../consts';
+import { SITE_TITLE, SITE_DESCRIPTION, SITE_AUTHOR_FULL, SITE_URL } from '../consts';
 
 interface Props {
   title?: string;
@@ -21,15 +21,15 @@ const {
   tags = [],
 } = Astro.props;
 
-const siteUrl = 'https://nishanthm.dev';
 const fullTitle = title ? `${title} | ${SITE_TITLE}` : SITE_TITLE;
-const resolvedOgImage = ogImage.startsWith('http') ? ogImage : `${siteUrl}${ogImage}`;
+const resolvedOgImage = ogImage.startsWith('http') ? ogImage : `${SITE_URL}${ogImage}`;
 
 // JSON-LD structured data for articles
 const jsonLd = ogType === 'article' ? {
   "@context": "https://schema.org",
   "@type": "BlogPosting",
   "headline": title || SITE_TITLE,
+  "image": resolvedOgImage,
   "description": description,
   "author": {
     "@type": "Person",
