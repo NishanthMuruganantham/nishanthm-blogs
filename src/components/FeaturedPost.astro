@@ -1,0 +1,204 @@
+---
+import { formatDate } from "../lib/utils";
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  post: CollectionEntry<'blog'>;
+  readingTime?: string;
+}
+
+const { post, readingTime } = Astro.props;
+const { title, description, date, category, cover } = post.data;
+const categoryLower = category.toLowerCase();
+---
+
+<a href={`/blog/${post.slug}/`} class="featured-post-card" id={`featured-${post.slug}`}>
+  <div class="featured-badge">
+    <span class="featured-badge__icon">⭐</span>
+    <span class="featured-badge__text">Featured</span>
+  </div>
+
+  {cover && (
+    <div class="featured-post-card__cover">
+      <img src={cover} alt={title} loading="eager" decoding="async" />
+    </div>
+  )}
+
+  <div class="featured-post-card__content">
+    <div class="featured-post-card__header">
+      <span class={`tag tag-${categoryLower}`}>{category}</span>
+    </div>
+
+    <h2 class="featured-post-card__title">{title}</h2>
+    <p class="featured-post-card__description">{description}</p>
+
+    <div class="featured-post-card__meta">
+      <time datetime={date.toISOString()}>
+        {formatDate(date)}
+      </time>
+      {readingTime && <span class="featured-post-card__dot">·</span>}
+      {readingTime && <span>{readingTime}</span>}
+    </div>
+
+    <div class="featured-post-card__cta">
+      Read Featured Post <span class="cta-arrow">→</span>
+    </div>
+  </div>
+</a>
+
+<style>
+  .featured-post-card {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    background: var(--color-bg-elevated);
+    border: 1px solid var(--color-border);
+    border-left: 4px solid var(--color-accent);
+    border-radius: 1rem;
+    overflow: hidden;
+    text-decoration: none;
+    transition: all var(--transition-base);
+    margin-bottom: 3.5rem;
+    box-shadow: 0 10px 40px -15px rgba(0, 0, 0, 0.5);
+  }
+
+  .featured-post-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--color-accent-bright);
+    box-shadow: 0 20px 60px -20px var(--color-accent-glow);
+  }
+
+  .featured-badge {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    background: rgba(124, 106, 247, 0.15);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    padding: 0.4rem 0.8rem;
+    border-radius: 2rem;
+    border: 1px solid var(--color-accent-glow);
+    z-index: 2;
+  }
+
+  .featured-badge__icon {
+    font-size: 0.9rem;
+  }
+
+  .featured-badge__text {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-accent-bright);
+  }
+
+  .featured-post-card__cover {
+    width: 100%;
+    height: 240px;
+    overflow: hidden;
+    border-bottom: 1px solid var(--color-border-subtle);
+  }
+
+  .featured-post-card__cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform var(--transition-base);
+  }
+
+  .featured-post-card:hover .featured-post-card__cover img {
+    transform: scale(1.03);
+  }
+
+  .featured-post-card__content {
+    padding: 2rem;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .featured-post-card__header {
+    margin-bottom: 1.25rem;
+  }
+
+  .featured-post-card__title {
+    font-family: var(--font-display);
+    font-size: clamp(1.75rem, 4vw, 2.25rem);
+    line-height: 1.2;
+    color: var(--color-text-primary);
+    margin-bottom: 1rem;
+    font-weight: 800;
+  }
+
+  .featured-post-card__description {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: var(--color-text-secondary);
+    margin-bottom: 2rem;
+    flex-grow: 1;
+  }
+
+  .featured-post-card__meta {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    color: var(--color-text-muted);
+    margin-bottom: 1.5rem;
+  }
+
+  .featured-post-card__dot {
+    opacity: 0.5;
+  }
+
+  .featured-post-card__cta {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--color-accent-bright);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: gap var(--transition-fast);
+  }
+
+  .cta-arrow {
+    transition: transform var(--transition-fast);
+  }
+
+  .featured-post-card:hover .cta-arrow {
+    transform: translateX(4px);
+  }
+
+  @media (min-width: 768px) {
+    .featured-post-card {
+      flex-direction: row;
+      min-height: 400px;
+    }
+
+    .featured-post-card__cover {
+      width: 45%;
+      height: auto;
+      border-bottom: none;
+      border-right: 1px solid var(--color-border-subtle);
+    }
+
+    .featured-post-card__content {
+      width: 55%;
+      padding: 3rem;
+    }
+  }
+
+  @media (max-width: 767px) {
+    .featured-badge {
+      top: auto;
+      bottom: 1rem;
+      right: 1rem;
+    }
+  }
+</style>

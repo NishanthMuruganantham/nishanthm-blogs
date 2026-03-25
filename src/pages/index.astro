@@ -1,17 +1,33 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import PostCard from "../components/PostCard.astro";
+import FeaturedPost from "../components/FeaturedPost.astro";
 import { getCollection } from "astro:content";
 import { getReadingTime } from "../lib/utils";
 
-// Fetch all non-draft posts, sorted newest first
+// Fetch all non-draft posts
 const allPosts = await getCollection("blog", ({ data }) => !data.draft);
+
+// Sort newest first
 const sortedPosts = allPosts.sort(
   (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
 );
-const featuredPosts = sortedPosts.slice(0, 3);
 
-const featuredPostsWithMeta = featuredPosts.map((post) => ({
+// Get the specific featured post
+const featuredPost = sortedPosts.find((p) => p.data.featured);
+
+// Get reading time for featured post if it exists
+const featuredPostWithMeta = featuredPost ? {
+  ...featuredPost,
+  readingTime: featuredPost.body ? getReadingTime(featuredPost.body) : undefined,
+} : null;
+
+// Get latest posts (excluding the featured one)
+const latestPosts = sortedPosts
+  .filter((p) => p.slug !== featuredPost?.slug)
+  .slice(0, 3);
+
+const latestPostsWithMeta = latestPosts.map((post) => ({
   ...post,
   readingTime: post.body ? getReadingTime(post.body) : undefined,
 }));
@@ -64,10 +80,12 @@ const categoryCounts = categories.map((cat) => ({
   <!-- =============== FEATURED POSTS =============== -->
   <section class="section" id="latest-writing">
     <div class="section__inner">
+      {featuredPostWithMeta && <FeaturedPost post={featuredPostWithMeta} readingTime={featuredPostWithMeta.readingTime} />}
+      
       <h2 class="section__title">Latest Writing</h2>
       <div class="posts-grid">
         {
-          featuredPostsWithMeta.map((post) => (
+          latestPostsWithMeta.map((post) => (
             <PostCard
               title={post.data.title}
               description={post.data.description}
@@ -76,6 +94,7 @@ const categoryCounts = categories.map((cat) => ({
               tags={post.data.tags}
               slug={post.slug}
               readingTime={post.readingTime}
+              cover={post.data.cover}
             />
           ))
         }
