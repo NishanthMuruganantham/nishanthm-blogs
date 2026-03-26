@@ -53,22 +53,38 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 2. Reading Progress functionality
     const progressBar = document.getElementById("reading-progress");
+    let ticking = false;
+
     const updateProgress = () => {
-        const scrollPoints = window.scrollY;
-        // Calculate full document height minus viewport height for the maximum scrollable area
         const totalHeight =
             document.documentElement.scrollHeight -
             document.documentElement.clientHeight;
 
-        if (totalHeight > 0) {
-            const progress = (scrollPoints / totalHeight) * 100;
-            if (progressBar) {
-                progressBar.style.width = `${Math.min(100, progress)}%`;
+        if (totalHeight > 0 && progressBar) {
+            const progress = Math.min(100, (window.scrollY / totalHeight) * 100);
+            const rounded = Math.round(progress);
+            
+            progressBar.style.width = `${progress}%`;
+            progressBar.setAttribute("aria-valuenow", String(rounded));
+
+            // Color milestones: purple (<25), blue (<75), green (>=75)
+            if (progress < 25) {
+                progressBar.style.background = '#7c6af7';
+            } else if (progress < 75) {
+                progressBar.style.background = '#3b82f6';
+            } else {
+                progressBar.style.background = '#22c55e';
             }
         }
+        ticking = false;
     };
 
-    window.addEventListener("scroll", updateProgress, { passive: true });
+    window.addEventListener("scroll", () => {
+        if (!ticking) {
+            window.requestAnimationFrame(updateProgress);
+            ticking = true;
+        }
+    }, { passive: true });
     updateProgress(); // init
 
     // 3. ToC Intersection Observer highlights
