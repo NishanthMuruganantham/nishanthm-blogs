@@ -8,6 +8,7 @@ import { getReadingTime } from "../lib/utils";
 import { SITE_AUTHOR } from "../consts";
 
 import { getRelatedPosts } from "../lib/related-posts";
+import ShareButtons from "../components/ShareButtons.astro";
 
 const { post, frontmatter, headings, readingTime } = Astro.props;
 const categoryLower = frontmatter.category.toLowerCase();
@@ -115,7 +116,12 @@ const relatedPosts = getRelatedPosts(post, allPosts, 2);
                     }
                 </div>
 
-                {/* Share & Reactions mapping could go here */}
+                {/* Share Buttons */}
+                <ShareButtons
+                    title={frontmatter.title}
+                    url={`/blog/${post.slug}`}
+                    description={frontmatter.description}
+                />
 
                 <div class="mt-12">
                     <h2 class="text-2xl font-display font-bold mb-6">
