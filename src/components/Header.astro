@@ -5,7 +5,7 @@ const navLinks = [
   { label: 'Categories', href: '/categories' },
   { label: 'Tags', href: '/tags' },
   { label: 'Projects', href: '/projects' },
-  { label: 'About', href: '/about' },
+  { label: 'About', href: 'https://portfolio.nishanthm.com' },
 ];
 
 const currentPath = Astro.url.pathname;
@@ -24,6 +24,8 @@ const currentPath = Astro.url.pathname;
         navLinks.map((link) => (
           <a
             href={link.href}
+            target={link.href.startsWith("http") ? "_blank" : undefined}
+            rel={link.href.startsWith("http") ? "noopener noreferrer" : undefined}
             class:list={[
               "nav-link",
               { active: currentPath.startsWith(link.href) },
@@ -81,6 +83,8 @@ const currentPath = Astro.url.pathname;
       navLinks.map((link) => (
         <a
           href={link.href}
+          target={link.href.startsWith("http") ? "_blank" : undefined}
+          rel={link.href.startsWith("http") ? "noopener noreferrer" : undefined}
           class:list={[
             "mobile-nav-link",
             { active: currentPath.startsWith(link.href) },

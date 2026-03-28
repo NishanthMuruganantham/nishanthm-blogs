@@ -24,4 +24,6 @@ pnpm-debug.log*
 .idea/
 
 # Agent data
-.agents
+.agents/*
+!.agents/skills/
+!.agents/skills/SKILL.md
