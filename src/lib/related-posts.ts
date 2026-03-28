@@ -58,7 +58,7 @@ export function getRelatedPosts(
     // If we don't have enough, we'll pad with the most recent posts that aren't already included
     const relatedPosts = sorted.map((item) => item.post);
     const existingIds = new Set(relatedPosts.map((p) => p.slug));
-    
+
     const additionalPosts = candidates
         .filter((p) => !existingIds.has(p.slug))
         .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
