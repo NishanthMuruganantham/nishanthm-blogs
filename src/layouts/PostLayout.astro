@@ -7,21 +7,14 @@ import { getCollection } from "astro:content";
 import { getReadingTime } from "../lib/utils";
 import { SITE_AUTHOR } from "../consts";
 
-const { frontmatter, headings, readingTime } = Astro.props;
+import { getRelatedPosts } from "../lib/related-posts";
+
+const { post, frontmatter, headings, readingTime } = Astro.props;
 const categoryLower = frontmatter.category.toLowerCase();
 
-// Get related posts mapping (based on category or tags)
+// Get related posts mapping (weighted scoring)
 const allPosts = await getCollection("blog");
-const relatedPosts = allPosts
-    .filter((p) => !p.data.draft)
-    .filter(
-        (p) =>
-            p.data.title !== frontmatter.title &&
-            (p.data.category === frontmatter.category ||
-                p.data.tags.some((t) => frontmatter.tags.includes(t)))
-    )
-    .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
-    .slice(0, 2);
+const relatedPosts = getRelatedPosts(post, allPosts, 2);
 ---
 
 <BaseLayout
