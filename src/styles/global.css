@@ -260,6 +260,20 @@
     color: #06b6d4;
   }
 
+  /* Reading Progress Bar */
+  #reading-progress {
+    box-shadow: 0 0 10px rgba(124, 106, 247, 0.3);
+    transition:
+      width 150ms ease-out,
+      background 300ms ease;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    #reading-progress {
+      transition: none;
+    }
+  }
+
   /* Card — elevated glassmorphism background, hover lift */
   .card {
     background-color: rgba(19, 19, 26, 0.6);
