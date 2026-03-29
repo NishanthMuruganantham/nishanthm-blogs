@@ -125,3 +125,42 @@ document.addEventListener('DOMContentLoaded', () => {
         headings.forEach((h) => observer.observe(h));
     }
 });
+
+import mermaid from 'mermaid';
+mermaid.initialize({ startOnLoad: false, theme: 'dark' });
+
+document.addEventListener('DOMContentLoaded', async () => {
+    const mermaidBlocks = document.querySelectorAll('pre[data-language="mermaid"]');
+    
+    if (mermaidBlocks.length === 0) return;
+
+    mermaidBlocks.forEach(async (pre, index) => {
+        const codeElement = pre.querySelector('code');
+        if (!codeElement) return;
+
+        const code = codeElement.textContent;
+        const figure = pre.closest('figure');
+        
+        const div = document.createElement('div');
+        div.className = 'mermaid-rendered';
+        div.style.display = 'flex';
+        div.style.justifyContent = 'center';
+        div.style.margin = '2rem 0';
+        div.id = `mermaid-${index}`;
+
+        if (figure) {
+            figure.parentNode.insertBefore(div, figure);
+            figure.style.display = 'none';
+        } else {
+            pre.parentNode.insertBefore(div, pre);
+            pre.style.display = 'none';
+        }
+
+        try {
+            const { svg } = await mermaid.render(`mermaid-svg-${index}`, code);
+            div.innerHTML = svg;
+        } catch (err) {
+            console.error('Failed to render Mermaid diagram', err);
+        }
+    });
+});
