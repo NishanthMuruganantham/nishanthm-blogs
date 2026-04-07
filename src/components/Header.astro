@@ -128,7 +128,7 @@ import ThemeToggle from './ui/ThemeToggle.astro';
     left: 0;
     right: 0;
     z-index: 100;
-    background: rgba(9, 9, 14, 0.75);
+    background: var(--header-glass-bg);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     border-bottom: 1px solid var(--color-border);
@@ -136,7 +136,7 @@ import ThemeToggle from './ui/ThemeToggle.astro';
   }
 
   .site-header.scrolled {
-    background: rgba(9, 9, 14, 0.92);
+    background: var(--header-glass-bg-scrolled);
   }
 
   .header-inner {
