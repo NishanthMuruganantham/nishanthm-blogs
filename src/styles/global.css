@@ -51,6 +51,7 @@
   --color-android: #22c55e;
   --color-startup: #ec4899;
   --color-life: #06b6d4;
+  --color-mcp: #10b981;
 
   /* Typography */
   --font-display: 'Space Grotesk', sans-serif;
@@ -258,6 +259,11 @@
   .tag-life {
     background: rgba(6, 182, 212, 0.15);
     color: #06b6d4;
+  }
+
+  .tag-mcp {
+    background: rgba(16, 185, 129, 0.15);
+    color: #10b981;
   }
 
   /* Reading Progress Bar */

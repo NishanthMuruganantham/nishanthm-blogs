@@ -39,6 +39,7 @@ const categories = [
   { name: "Tools", emoji: "🛠️", color: "tools" },
   { name: "Android", emoji: "📱", color: "android" },
   { name: "Startup", emoji: "🚀", color: "startup" },
+  { name: "MCP", emoji: "🤖", color: "mcp" },
 ];
 
 const categoryCounts = categories.map((cat) => ({
@@ -342,7 +343,7 @@ const categoryCounts = categories.map((cat) => ({
 
   @media (min-width: 1024px) {
     .categories-grid {
-      grid-template-columns: repeat(5, 1fr);
+      grid-template-columns: repeat(6, 1fr);
     }
   }
 
@@ -380,6 +381,9 @@ const categoryCounts = categories.map((cat) => ({
   .category-card--startup {
     background: rgba(236, 72, 153, 0.06);
   }
+  .category-card--mcp {
+    background: rgba(16, 185, 129, 0.06);
+  }
 
   /* Hover fills */
   .category-card--backend:hover {
@@ -401,6 +405,10 @@ const categoryCounts = categories.map((cat) => ({
   .category-card--startup:hover {
     background: rgba(236, 72, 153, 0.18);
     box-shadow: 0 8px 24px rgba(236, 72, 153, 0.12);
+  }
+  .category-card--mcp:hover {
+    background: rgba(16, 185, 129, 0.18);
+    box-shadow: 0 8px 24px rgba(16, 185, 129, 0.12);
   }
 
   .category-card__emoji {
@@ -429,6 +437,9 @@ const categoryCounts = categories.map((cat) => ({
   }
   .category-card--startup .category-card__name {
     color: var(--color-startup);
+  }
+  .category-card--mcp .category-card__name {
+    color: var(--color-mcp);
   }
 
   .category-card__count {
