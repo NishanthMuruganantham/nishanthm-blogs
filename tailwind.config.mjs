@@ -8,6 +8,7 @@ export default {
                     DEFAULT: 'var(--color-bg)',
                     elevated: 'var(--color-bg-elevated)',
                     card: 'var(--color-bg-card)',
+                    hover: 'var(--color-bg-hover)',
                 },
                 border: {
                     DEFAULT: 'var(--color-border)',
