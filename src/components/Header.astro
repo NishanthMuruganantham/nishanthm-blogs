@@ -9,6 +9,7 @@ const navLinks = [
 ];
 
 const currentPath = Astro.url.pathname;
+import ThemeToggle from './ui/ThemeToggle.astro';
 ---
 
 <header class="site-header" id="site-header">
@@ -39,6 +40,8 @@ const currentPath = Astro.url.pathname;
 
     <!-- Right actions -->
     <div class="header-actions">
+      <ThemeToggle />
+      
       <!-- GitHub icon -->
       <a
         href="https://github.com/NishanthMuruganantham"
