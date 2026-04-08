@@ -1,0 +1,192 @@
+---
+interface Step {
+  title: string;
+  description?: string;
+  active?: boolean;
+}
+
+interface Props {
+  steps: Step[];
+}
+
+const { steps } = Astro.props;
+---
+
+<div class="process-flow">
+  {steps.map((step, index) => (
+    <div class={`process-step ${step.active ? 'is-active' : ''}`}>
+      {/* Connector line */}
+      {index !== steps.length - 1 && (
+        <div class="step-connector"></div>
+      )}
+      
+      {/* Marker */}
+      <div class="step-marker">
+        <div class="marker-inner"></div>
+        {step.active && <div class="marker-glow"></div>}
+      </div>
+
+      {/* Content */}
+      <div class="step-content">
+        <h4 class="step-title">{step.title}</h4>
+        {step.description && <p class="step-description">{step.description}</p>}
+      </div>
+    </div>
+  ))}
+</div>
+
+<style>
+  .process-flow {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin: 3rem 0;
+    padding: 1rem 0;
+  }
+
+  .process-step {
+    position: relative;
+    display: flex;
+    gap: 2rem;
+    padding-bottom: 2.5rem;
+    align-items: flex-start;
+  }
+
+  .process-step:last-child {
+    padding-bottom: 0;
+  }
+
+  /* Connector */
+  .step-connector {
+    position: absolute;
+    top: 2rem;
+    left: 0.9rem;
+    bottom: 0;
+    width: 2px;
+    background: linear-gradient(
+      to bottom,
+      var(--color-accent-20) 0%,
+      var(--color-border-subtle) 100%
+    );
+    z-index: 0;
+  }
+
+  .is-active .step-connector {
+    background: linear-gradient(
+      to bottom,
+      var(--color-accent) 0%,
+      var(--color-border-subtle) 100%
+    );
+  }
+
+  /* Marker */
+  .step-marker {
+    position: relative;
+    width: 2rem;
+    height: 2rem;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+  }
+
+  .marker-inner {
+    width: 0.75rem;
+    height: 0.75rem;
+    border-radius: 50%;
+    background-color: var(--color-bg);
+    border: 2.5px solid var(--color-border);
+    transition: all var(--transition-base);
+  }
+
+  .is-active .marker-inner {
+    background-color: var(--color-accent);
+    border-color: var(--color-accent);
+    box-shadow: 0 0 12px var(--color-accent-40);
+    transform: scale(1.2);
+  }
+
+  .marker-glow {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: var(--color-accent- glow);
+    border-radius: 50%;
+    animation: pulse 2s infinite ease-in-out;
+  }
+
+  /* Content */
+  .step-content {
+    background-color: var(--glass-bg);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid var(--glass-border);
+    border-radius: 1rem;
+    padding: 1.25rem 1.5rem;
+    flex: 1;
+    transition: all var(--transition-base);
+    box-shadow: 0 4px 12px var(--glass-shadow);
+  }
+
+  .is-active .step-content {
+    border-color: var(--color-accent-40);
+    background-color: var(--color-accent-05);
+    box-shadow: 0 0 24px var(--color-accent-glow),
+                0 4px 20px var(--glass-shadow);
+  }
+
+  .step-title {
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin: 0;
+    margin-bottom: 0.25rem;
+    color: var(--color-text-primary);
+    transition: color var(--transition-fast);
+  }
+
+  .is-active .step-title {
+    color: var(--color-accent-bright);
+  }
+
+  .step-description {
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    margin: 0;
+    color: var(--color-text-secondary);
+    line-height: 1.5;
+  }
+
+  /* Hover Effects */
+  .step-content:hover {
+    transform: translateX(8px);
+    border-color: var(--color-accent-20);
+    background-color: var(--color-bg-hover);
+  }
+
+  .is-active .step-content:hover {
+    transform: translateX(8px);
+    background-color: var(--color-accent-08);
+  }
+
+  @keyframes pulse {
+    0% {
+      transform: scale(0.8);
+      opacity: 0.8;
+    }
+    50% {
+      transform: scale(1.2);
+      opacity: 0.3;
+    }
+    100% {
+      transform: scale(0.8);
+      opacity: 0.8;
+    }
+  }
+
+  /* Dark mode specific adjustments if needed */
+  :global(.dark) .marker-inner {
+    border-color: rgba(255, 255, 255, 0.2);
+  }
+</style>

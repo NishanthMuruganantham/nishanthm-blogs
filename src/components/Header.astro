@@ -9,6 +9,7 @@ const navLinks = [
 ];
 
 const currentPath = Astro.url.pathname;
+import ThemeToggle from './ui/ThemeToggle.astro';
 ---
 
 <header class="site-header" id="site-header">
@@ -39,6 +40,8 @@ const currentPath = Astro.url.pathname;
 
     <!-- Right actions -->
     <div class="header-actions">
+      <ThemeToggle />
+      
       <!-- GitHub icon -->
       <a
         href="https://github.com/NishanthMuruganantham"
@@ -125,7 +128,7 @@ const currentPath = Astro.url.pathname;
     left: 0;
     right: 0;
     z-index: 100;
-    background: rgba(9, 9, 14, 0.75);
+    background: var(--header-glass-bg);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     border-bottom: 1px solid var(--color-border);
@@ -133,7 +136,7 @@ const currentPath = Astro.url.pathname;
   }
 
   .site-header.scrolled {
-    background: rgba(9, 9, 14, 0.92);
+    background: var(--header-glass-bg-scrolled);
   }
 
   .header-inner {
@@ -274,7 +277,7 @@ const currentPath = Astro.url.pathname;
   .mobile-overlay {
     position: fixed;
     inset: 0;
-    background: rgba(0, 0, 0, 0.5);
+    background: var(--glass-overlay);
     z-index: 98;
     opacity: 0;
     visibility: hidden;
