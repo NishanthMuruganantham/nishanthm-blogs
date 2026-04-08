@@ -70,10 +70,10 @@
   --header-glass-bg: rgba(255, 255, 255, 0.85);
   --header-glass-bg-scrolled: rgba(255, 255, 255, 0.95);
 
-  --code-bg: #f8fafc;
-  --code-border: rgba(0, 0, 0, 0.1);
-  --code-lang-bg: rgba(0, 0, 0, 0.05);
-  --code-lang-text: rgba(0, 0, 0, 0.5);
+  --code-bg: #1e1e24;
+  --code-border: rgba(255, 255, 255, 0.1);
+  --code-lang-bg: rgba(255, 255, 255, 0.05);
+  --code-lang-text: rgba(255, 255, 255, 0.4);
 
   /* Typography */
   --font-display: 'Space Grotesk', sans-serif;
@@ -665,8 +665,13 @@
   /* ============================================================
      Markdown Typography & Code Blocks (.prose)
      ============================================================ */
-  .prose pre {
+  .prose pre, 
+  .prose pre code {
     background-color: var(--code-bg) !important;
+    color: #e2e8f0 !important; /* Force light text on dark background */
+  }
+
+  .prose pre {
     border: 1px solid var(--code-border);
     border-radius: 0.75rem;
     padding: 1.25rem 0;
@@ -811,10 +816,13 @@
 
   /* Mermaid SVG styles */
   .prose svg.mermaid {
-    background: var(--glass-border);
+    display: block;
+    background: transparent;
     border-radius: 0.5rem;
-    margin: 2rem auto;
+    margin: 1.5rem auto;
     max-width: 100%;
+    width: 100%;
+    height: auto;
     color: var(--color-text-primary);
   }
 }
@@ -864,9 +872,127 @@
     50% {
       transform: translate(-1%, 2%) rotate(-0.5deg);
     }
-
     75% {
       transform: translate(-2%, -1%) rotate(0.5deg);
     }
   }
+}
+
+/* ============================================================
+   Professional Mermaid Diagrams
+   ============================================================ */
+.mermaid-rendered {
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: 1rem;
+  padding: 1.75rem;
+  margin: 2.5rem auto;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.16);
+  overflow: visible;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast), transform var(--transition-fast);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  max-width: 100%;
+  position: relative;
+  animation: mermaid-fade-in 0.6s ease-out;
+}
+
+@keyframes mermaid-fade-in {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.mermaid-rendered:hover {
+  border-color: var(--color-accent-20);
+  transform: translateY(-4px);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.18);
+}
+
+.mermaid-rendered svg {
+  max-width: 100%;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+  background: transparent;
+}
+
+/* Nodes styling */
+.mermaid-rendered rect,
+.mermaid-rendered .label-container,
+.mermaid-rendered .node rect,
+.mermaid-rendered .node circle,
+.mermaid-rendered .node ellipse,
+.mermaid-rendered .node polygon,
+.mermaid-rendered .node path {
+  fill: var(--color-bg-elevated) !important;
+  stroke: var(--color-border) !important;
+  stroke-width: 1.25px !important;
+  rx: 10px !important;
+  ry: 10px !important;
+  transition: stroke var(--transition-fast), filter var(--transition-fast);
+  filter: drop-shadow(0 2px 6px rgba(0,0,0,0.12));
+}
+
+.mermaid-rendered .node:hover rect,
+.mermaid-rendered .node:hover circle,
+.mermaid-rendered .node:hover ellipse,
+.mermaid-rendered .node:hover polygon,
+.mermaid-rendered .node:hover path {
+  stroke: var(--color-accent) !important;
+  stroke-width: 1.75px !important;
+  filter: drop-shadow(0 0 10px var(--color-accent-25));
+}
+
+/* Labels */
+.mermaid-rendered .label, 
+.mermaid-rendered text,
+.mermaid-rendered .actor text {
+  font-family: var(--font-display) !important;
+  font-weight: 600 !important;
+  fill: var(--color-text-primary) !important;
+  color: var(--color-text-primary) !important;
+}
+
+/* Edges and Markers */
+.mermaid-rendered .edgePath path {
+  stroke: var(--color-accent) !important;
+  stroke-width: 1.75px !important;
+}
+
+.mermaid-rendered .marker {
+  fill: var(--color-accent) !important;
+  stroke: var(--color-accent) !important;
+}
+
+.mermaid-rendered .edgeLabel {
+  background-color: var(--color-bg-elevated) !important;
+  color: var(--color-text-primary) !important;
+  padding: 4px 10px !important;
+  border-radius: 8px !important;
+  font-size: 0.8rem !important;
+  font-family: var(--font-display) !important;
+  font-weight: 600 !important;
+  border: 1px solid var(--color-border) !important;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08) !important;
+}
+
+/* Sequence Diagram Actors */
+.mermaid-rendered .actor {
+  stroke: var(--color-border) !important;
+  fill: var(--color-bg-elevated) !important;
+}
+
+.mermaid-rendered .actor-line {
+  stroke: var(--color-border) !important;
+  stroke-width: 1px !important;
+  stroke-dasharray: 0;
+}
+
+.mermaid-rendered .messageLine0,
+.mermaid-rendered .messageLine1 {
+  stroke: var(--color-accent) !important;
+  stroke-width: 1.5px !important;
+  stroke-dasharray: 0;
 }
