@@ -84,10 +84,10 @@
   --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
 
   /* Teal accent — secondary interactive color */
-  --color-teal: #14b8a6;
-  --color-teal-bright: #2dd4bf;
-  --color-teal-glow: rgba(20, 184, 166, 0.15);
-  --color-teal-20: rgba(20, 184, 166, 0.2);
+  --color-teal: #0d9488;
+  --color-teal-bright: #14b8a6;
+  --color-teal-glow: rgba(13, 148, 136, 0.15);
+  --color-teal-20: rgba(13, 148, 136, 0.2);
 
   /* Spacing */
   --space-section: clamp(4rem, 8vw, 8rem);
@@ -112,8 +112,8 @@
 
   /* Text */
   --color-text-primary: #ffffff;
-  --color-text-secondary: #a0a0a0;
-  --color-text-muted: #55556a;
+  --color-text-secondary: #e5e7eb;
+  --color-text-muted: #9ca3af;
 
   /* Accent */
   --color-accent: #7c6af7;
@@ -237,13 +237,15 @@
 
   /* Links */
   a {
-    color: var(--color-accent-bright);
+    color: var(--color-teal-bright);
     text-decoration: none;
-    transition: color var(--transition-fast);
+    font-weight: 600;
+    transition: all var(--transition-fast);
   }
 
   a:hover {
-    color: var(--color-teal-bright);
+    color: var(--color-teal);
+    text-decoration: underline;
   }
 }
 
@@ -285,9 +287,9 @@
     gap: 0.5rem;
     padding: 0.75rem 1.75rem;
     background-color: transparent;
-    color: var(--color-accent-bright);
+    color: var(--color-teal-bright);
     font-family: var(--font-display);
-    font-weight: 700;
+    font-weight: 600;
     font-size: 0.95rem;
     border: 1.5px solid var(--color-border);
     border-radius: 0.5rem;
@@ -299,6 +301,7 @@
     border-color: var(--color-teal);
     background-color: var(--color-teal-glow);
     color: var(--color-teal-bright);
+    text-decoration: underline;
     transform: translateY(-1px);
   }
 
@@ -380,8 +383,15 @@
   .card:hover {
     border-color: var(--color-accent-40);
     transform: translateY(-4px);
+    text-decoration: none;
     box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4),
       0 0 0 1px var(--color-accent-20);
+  }
+
+  .category-card:hover {
+    transform: translateY(-3px);
+    border-color: transparent;
+    text-decoration: none;
   }
 
   /* Gradient text — accent gradient applied to text (purple → teal) */
@@ -482,7 +492,11 @@
   }
 
   .post-card:hover .post-card__title {
-    color: var(--color-accent-bright);
+    color: var(--color-teal-bright);
+    text-decoration: none;
+  }
+  .post-card:hover {
+    text-decoration: none;
   }
 
   .post-card__header {
@@ -494,7 +508,7 @@
   .post-card__title {
     font-family: var(--font-display);
     font-weight: 700;
-    font-size: 1.4rem;
+    font-size: 1.6rem;
     line-height: 1.35;
     color: var(--color-text-primary);
     transition: color var(--transition-fast);
@@ -505,7 +519,7 @@
   .post-card__description {
     color: var(--color-text-secondary);
     font-size: 1rem;
-    line-height: 1.7;
+    line-height: 1.6;
     display: -webkit-box;
     -webkit-line-clamp: 2;
     line-clamp: 2;
@@ -520,7 +534,7 @@
     align-items: center;
     gap: 0.4rem;
     font-family: var(--font-display);
-    font-size: 0.8rem;
+    font-size: 0.875rem;
     color: var(--color-text-muted);
     margin-bottom: 0.5rem;
   }
@@ -1017,4 +1031,26 @@
   stroke: var(--color-accent) !important;
   stroke-width: 1.5px !important;
   stroke-dasharray: 0;
+}
+
+/* ============================================================
+   Dark Mode Typography Overrides
+   ============================================================ */
+html.dark .tag {
+    color: #e5e7eb; 
+}
+html.dark .category-card__name {
+    color: #ffffff !important;
+}
+html.dark .post-card__tag {
+    color: #e5e7eb;
+}
+/* Override specific tag colors to be readable in dark mode */
+html.dark .tag-backend,
+html.dark .tag-frontend,
+html.dark .tag-tools,
+html.dark .tag-android,
+html.dark .tag-startup,
+html.dark .tag-life {
+    color: #e5e7eb !important;
 }

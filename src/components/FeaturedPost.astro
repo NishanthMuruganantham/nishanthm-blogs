@@ -64,8 +64,9 @@ const categoryLower = category.toLowerCase();
 
   .featured-post-card:hover {
     transform: translateY(-4px);
-    border-color: var(--color-accent-bright);
-    box-shadow: 0 20px 60px -20px var(--color-accent-glow);
+    border-color: var(--color-teal-bright);
+    text-decoration: none;
+    box-shadow: 0 20px 60px -20px var(--color-teal-glow);
   }
 
   .featured-badge {
@@ -75,12 +76,12 @@ const categoryLower = category.toLowerCase();
     display: flex;
     align-items: center;
     gap: 0.4rem;
-    background: var(--color-accent-glow);
+    background: var(--color-bg-elevated);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
     padding: 0.4rem 0.8rem;
     border-radius: 2rem;
-    border: 1px solid var(--color-accent-glow);
+    border: 1px solid var(--color-border);
     z-index: 2;
   }
 
@@ -94,7 +95,7 @@ const categoryLower = category.toLowerCase();
     font-size: 0.75rem;
     text-transform: uppercase;
     letter-spacing: 0.05em;
-    color: var(--color-accent-bright);
+    color: var(--color-text-primary);
   }
 
   .featured-post-card__cover {
@@ -147,7 +148,7 @@ const categoryLower = category.toLowerCase();
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    font-size: 0.9rem;
+    font-size: 0.875rem;
     color: var(--color-text-muted);
     margin-bottom: 1.5rem;
   }
@@ -158,13 +159,17 @@ const categoryLower = category.toLowerCase();
 
   .featured-post-card__cta {
     font-family: var(--font-display);
-    font-weight: 700;
+    font-weight: 600;
     font-size: 1rem;
-    color: var(--color-accent-bright);
+    color: var(--color-teal-bright);
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    transition: gap var(--transition-fast);
+    transition: gap var(--transition-fast), text-decoration var(--transition-fast);
+  }
+
+  .featured-post-card:hover .featured-post-card__cta {
+    text-decoration: underline;
   }
 
   .cta-arrow {
