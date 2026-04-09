@@ -59,7 +59,7 @@ const categoryCounts = categories.map((cat) => ({
     <div class="hero__glow-blob" aria-hidden="true"></div>
 
     <!-- Animated agent network canvas -->
-    <AgentNetwork />
+    <AgentNetwork intensity="hero" />
 
     <div class="hero__content" id="hero-content">
       <p class="hero__eyebrow anim-fade" style="--delay: 0">
@@ -386,7 +386,7 @@ const categoryCounts = categories.map((cat) => ({
   .section__title {
     font-family: var(--font-display);
     font-weight: 700;
-    font-size: clamp(1.5rem, 3vw, 2rem);
+    font-size: clamp(2rem, 4vw, 2.5rem);
     color: var(--color-text-primary);
     margin-bottom: 2.5rem;
   }
@@ -510,7 +510,7 @@ const categoryCounts = categories.map((cat) => ({
 
   .category-card__name {
     font-family: var(--font-display);
-    font-weight: 700;
+    font-weight: 600;
     font-size: 1rem;
     color: var(--color-text-primary);
   }
