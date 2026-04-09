@@ -110,7 +110,8 @@
   --color-accent: #7c6af7;
   --color-accent-bright: #9d7ff9;
   --color-accent-glow: rgba(124, 106, 247, 0.15);
-  --color-accent-05: rgba(124, 106, 247, 0.08); /* slightly higher in dark mode */
+  --color-accent-05: rgba(124, 106, 247, 0.08);
+  /* slightly higher in dark mode */
   --color-accent-08: rgba(124, 106, 247, 0.1);
   --color-accent-10: rgba(124, 106, 247, 0.15);
   --color-accent-15: rgba(124, 106, 247, 0.2);
@@ -375,7 +376,7 @@
 
   /* Gradient text — accent gradient applied to text */
   .gradient-text {
-    background: linear-gradient(135deg, var(--color-accent-bright) 0%, #c084fc 50%, #60a5fa 100%);
+    background: linear-gradient(135deg, var(--color-accent-bright) 0%, #a78bfa 50%, #60a5fa 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -544,7 +545,8 @@
   /* ============================================================
      Share Buttons (Issue #30)
      ============================================================ */
-  .share-btn, .share-inline-btn {
+  .share-btn,
+  .share-inline-btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -555,7 +557,8 @@
     cursor: pointer;
   }
 
-  .share-btn:hover, .share-inline-btn:hover {
+  .share-btn:hover,
+  .share-inline-btn:hover {
     color: var(--color-text-primary);
     border-color: var(--color-accent-40);
     box-shadow: 0 4px 12px var(--color-accent-15),
@@ -665,10 +668,11 @@
   /* ============================================================
      Markdown Typography & Code Blocks (.prose)
      ============================================================ */
-  .prose pre, 
+  .prose pre,
   .prose pre code {
     background-color: var(--code-bg) !important;
-    color: #e2e8f0 !important; /* Force light text on dark background */
+    color: #e2e8f0 !important;
+    /* Force light text on dark background */
   }
 
   .prose pre {
@@ -872,6 +876,7 @@
     50% {
       transform: translate(-1%, 2%) rotate(-0.5deg);
     }
+
     75% {
       transform: translate(-2%, -1%) rotate(0.5deg);
     }
@@ -900,8 +905,15 @@
 }
 
 @keyframes mermaid-fade-in {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .mermaid-rendered:hover {
@@ -932,7 +944,7 @@
   rx: 10px !important;
   ry: 10px !important;
   transition: stroke var(--transition-fast), filter var(--transition-fast);
-  filter: drop-shadow(0 2px 6px rgba(0,0,0,0.12));
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.12));
 }
 
 .mermaid-rendered .node:hover rect,
@@ -946,7 +958,7 @@
 }
 
 /* Labels */
-.mermaid-rendered .label, 
+.mermaid-rendered .label,
 .mermaid-rendered text,
 .mermaid-rendered .actor text {
   font-family: var(--font-display) !important;
@@ -975,7 +987,7 @@
   font-family: var(--font-display) !important;
   font-weight: 600 !important;
   border: 1px solid var(--color-border) !important;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.08) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important;
 }
 
 /* Sequence Diagram Actors */
