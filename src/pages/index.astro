@@ -1,6 +1,7 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import Button from "../components/ui/Button.astro";
+import AgentNetwork from "../components/AgentNetwork.astro";
 import PostCard from "../components/PostCard.astro";
 import FeaturedPost from "../components/FeaturedPost.astro";
 import { getCollection } from "astro:content";
@@ -46,77 +47,36 @@ const categoryCounts = categories.map((cat) => ({
   ...cat,
   count: allPosts.filter((p) => p.data.category === cat.name).length,
 }));
-
-// ── Parallax Stars: generate random box-shadow positions at build time ──
-function generateBoxShadows(n: number, color: string): string {
-  const shadows: string[] = [];
-  for (let i = 0; i < n; i++) {
-    const x = Math.floor(Math.random() * 2000);
-    const y = Math.floor(Math.random() * 2000);
-    shadows.push(`${x}px ${y}px ${color}`);
-  }
-  return shadows.join(', ');
-}
-
-// Dark mode: white stars
-const starsSmall  = generateBoxShadows(700, '#FFF');
-const starsMedium = generateBoxShadows(200, '#FFF');
-const starsBig    = generateBoxShadows(100, '#FFF');
-
-// Light mode: dark indigo dots at different intensities
-const starsSmallL  = generateBoxShadows(700, '#6366f1');
-const starsMediumL = generateBoxShadows(200, '#4338ca');
-const starsBigL    = generateBoxShadows(100, '#312e81');
 ---
 
 <BaseLayout
   title="Home"
   description="Personal blog by Nishanth M, documenting engineering challenges in Django, AWS, and Agentic AI."
+  includeNetwork={false}
 >
   <!-- ===================== HERO ===================== -->
   <section class="hero hero-gradient hero--space" id="hero-section">
     <div class="hero__glow-blob" aria-hidden="true"></div>
 
-    <!-- Parallax star layers — DARK MODE (white stars) -->
-    <div class="hero__stars hero__stars--small hero__stars--dark" aria-hidden="true"
-         style={`box-shadow: ${starsSmall};`}>
-      <div class="hero__stars-after" style={`box-shadow: ${starsSmall};`}></div>
-    </div>
-    <div class="hero__stars hero__stars--medium hero__stars--dark" aria-hidden="true"
-         style={`box-shadow: ${starsMedium};`}>
-      <div class="hero__stars-after" style={`box-shadow: ${starsMedium};`}></div>
-    </div>
-    <div class="hero__stars hero__stars--big hero__stars--dark" aria-hidden="true"
-         style={`box-shadow: ${starsBig};`}>
-      <div class="hero__stars-after" style={`box-shadow: ${starsBig};`}></div>
-    </div>
-
-    <!-- Parallax star layers — LIGHT MODE (dark indigo dots) -->
-    <div class="hero__stars hero__stars--small hero__stars--light" aria-hidden="true"
-         style={`box-shadow: ${starsSmallL};`}>
-      <div class="hero__stars-after" style={`box-shadow: ${starsSmallL};`}></div>
-    </div>
-    <div class="hero__stars hero__stars--medium hero__stars--light" aria-hidden="true"
-         style={`box-shadow: ${starsMediumL};`}>
-      <div class="hero__stars-after" style={`box-shadow: ${starsMediumL};`}></div>
-    </div>
-    <div class="hero__stars hero__stars--big hero__stars--light" aria-hidden="true"
-         style={`box-shadow: ${starsBigL};`}>
-      <div class="hero__stars-after" style={`box-shadow: ${starsBigL};`}></div>
-    </div>
+    <!-- Animated agent network canvas -->
+    <AgentNetwork />
 
     <div class="hero__content" id="hero-content">
       <p class="hero__eyebrow anim-fade" style="--delay: 0">
         Developer · Builder · Writer
       </p>
 
-      <h1 class="hero__heading gradient-text anim-fade" style="--delay: 1">
-        I Build Systems and<br />Document the Journey
+      <h1 class="hero__heading anim-fade" style="--delay: 1">
+        <span class="gradient-text">I Build Autonomous</span><br />
+        <span class="gradient-text">Systems</span>
       </h1>
 
-      <p class="hero__sub anim-fade" style="--delay: 2">
-        I’m Nishanth, an indie developer and software engineer building production systems with Django, AWS, and Agentic AI. I specialize in architecting robust backends and developing autonomous workflows using N8N and the Model Context Protocol (MCP).
-      </p>
+      <div class="hero__sub anim-fade" style="--delay: 2">
+        <p>I'm Nishanth — an indie developer building<br class="hide-mobile" />
+          autonomous agents and production systems.</p>
+        <p>I architect robust backends and autonomous workflows<br class="hide-mobile" />
+          with Django, AWS, and cutting-edge AI.</p>
+      </div>
 
       <div class="hero__cta anim-fade" style="--delay: 3">
         <Button as="a" href="/blog" variant="primary" id="cta-blog">Read the Blog</Button>
@@ -125,7 +85,8 @@ const starsBigL    = generateBoxShadows(100, '#312e81');
     </div>
   </section>
 
-  <!-- =============== FEATURED POSTS =============== -->
+
+
   <section class="section" id="latest-writing">
     <div class="section__inner">
       {featuredPostWithMeta && <FeaturedPost post={featuredPostWithMeta} readingTime={featuredPostWithMeta.readingTime} />}
@@ -183,16 +144,21 @@ const starsBigL    = generateBoxShadows(100, '#312e81');
     <div class="section__inner about-grid">
       <div class="about-text">
         <h2 class="section__title">Who am I?</h2>
-        <p class="about-bio">
-          I’m a full-stack engineer focused on building end-to-end systems that scale. My current expertise lies in architecting Django-powered backends on AWS and implementing Agentic AI workflows with N8N and MCP. I document the hard-won lessons from production environments to help fellow builders ship faster.
-        </p>
-        <ul class="about-stack">
-          <li><strong>Backend:</strong> Django, Python, AWS</li>
-          <li><strong>Agentic AI:</strong> MCP, N8N, LLM Orchestration</li>
-          <li><strong>Frontend:</strong> React, Astro, Tailwind CSS</li>
-          <li><strong>Mobile:</strong> Android (Kotlin), Gradle</li>
+        <div class="about-bio">
+          <p class="font-display text-2xl text-text-primary leading-snug mb-4">
+            I’m a full-stack engineer focused on building end-to-end systems that scale.
+          </p>
+          <p class="text-lg text-text-secondary leading-relaxed mb-8">
+            My current expertise lies in architecting Django-powered backends on AWS and implementing Agentic AI workflows with N8N and MCP. I document the hard-won lessons from production environments to help fellow builders ship faster.
+          </p>
+        </div>
+        <ul class="about-stack font-mono text-sm tracking-wide">
+          <li><span class="text-accent mr-2">Backend:</span> Django, Python, AWS</li>
+          <li><span class="text-accent mr-2">Agentic AI:</span> MCP, N8N, LLMs</li>
+          <li><span class="text-accent mr-2">Frontend:</span> React, Astro, Tailwind</li>
+          <li><span class="text-accent mr-2">Mobile:</span> Android, Kotlin</li>
         </ul>
-        <a href="https://portfolio.nishanthm.com" target="_blank" rel="noopener noreferrer" class="about-link" id="about-link">
+        <a href="https://portfolio.nishanthm.com" target="_blank" rel="noopener noreferrer" class="btn-ghost mt-4 inline-flex" id="about-link">
           Read more about me →
         </a>
       </div>
@@ -278,12 +244,15 @@ const starsBigL    = generateBoxShadows(100, '#312e81');
     opacity: 0.6;
   }
 
-  /* ── Star theme visibility ── */
-  .hero__stars--dark  { display: block; }
-  .hero__stars--light { display: none;  }
-
-  :global(html:not(.dark)) .hero__stars--dark  { display: none;  }
-  :global(html:not(.dark)) .hero__stars--light { display: block; }
+  /* ── Agent Network Canvas ── */
+  .hero__network {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
+  }
 
   /* ── Light mode font contrast overrides ── */
 
@@ -292,9 +261,9 @@ const starsBigL    = generateBoxShadows(100, '#312e81');
     color: #3730a3;
   }
 
-  /* Heading gradient: dark indigo → violet → deep blue — high contrast on light bg */
-  :global(html:not(.dark)) .hero__heading {
-    background: linear-gradient(135deg, #1e1b4b 0%, #4338ca 45%, #1d4ed8 100%);
+  /* Heading gradient: dark indigo → violet → teal — high contrast on light bg */
+  :global(html:not(.dark)) .hero__heading .gradient-text {
+    background: linear-gradient(135deg, #1e1b4b 0%, #4338ca 45%, #0f766e 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -305,65 +274,9 @@ const starsBigL    = generateBoxShadows(100, '#312e81');
     color: #1e293b;
   }
 
-  /* ── Parallax Star Layers ── */
-  .hero__stars {
-    position: absolute;
-    top: 0;
-    left: 0;
-    background: transparent;
-    z-index: 0;
-    pointer-events: none;
-  }
-
-  .hero__stars-after {
-    position: absolute;
-    top: 2000px;
-    background: transparent;
-  }
-
-  /* Layer 1: Small (1px, slowest) — dim, distant */
-  .hero__stars--small,
-  .hero__stars--small .hero__stars-after {
-    width: 1px;
-    height: 1px;
-  }
-  .hero__stars--small {
-    animation: animStar 50s linear infinite;
-    opacity: 0.35;
-  }
-  :global(html:not(.dark)) .hero__stars--small { opacity: 0.55; }
-
-  /* Layer 2: Medium (2px) — mid-bright */
-  .hero__stars--medium,
-  .hero__stars--medium .hero__stars-after {
-    width: 2px;
-    height: 2px;
-  }
-  .hero__stars--medium {
-    animation: animStar 100s linear infinite;
-    opacity: 0.65;
-  }
-  :global(html:not(.dark)) .hero__stars--medium { opacity: 0.8; }
-
-  /* Layer 3: Big (3px) — bright, closest */
-  .hero__stars--big,
-  .hero__stars--big .hero__stars-after {
-    width: 3px;
-    height: 3px;
-  }
-  .hero__stars--big {
-    animation: animStar 150s linear infinite;
-    opacity: 1;
-  }
-
-  @keyframes animStar {
-    from { transform: translateY(0); }
-    to   { transform: translateY(-2000px); }
-  }
-
   /* Respect reduced motion */
   @media (prefers-reduced-motion: reduce) {
-    .hero__stars { animation: none !important; }
+    .hero__network { display: none; }
   }
 
   .hero__content {
@@ -373,27 +286,37 @@ const starsBigL    = generateBoxShadows(100, '#312e81');
   }
 
   .hero__eyebrow {
-    font-family: var(--font-display);
-    font-size: 0.85rem;
-    font-weight: 700;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    font-weight: 500;
     text-transform: uppercase;
-    letter-spacing: 0.15em;
-    color: var(--color-accent-bright);
-    margin-bottom: 1.25rem;
-  }
-
-  .hero__heading {
-    font-size: clamp(2.2rem, 5.5vw, 3.75rem);
-    line-height: 1.1;
+    letter-spacing: 0.25em;
+    color: var(--color-teal-bright);
     margin-bottom: 1.5rem;
   }
 
+  .hero__heading {
+    font-family: var(--font-serif-display);
+    font-size: clamp(2.5rem, 6vw, 4.25rem);
+    font-weight: 900;
+    line-height: 1.15;
+    margin-bottom: 1.75rem;
+  }
+
   .hero__sub {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
     color: var(--color-text-secondary);
     font-size: 1.1rem;
-    line-height: 1.75;
-    max-width: 560px;
-    margin: 0 auto 2rem;
+    line-height: 1.85;
+    letter-spacing: 0.01em;
+    max-width: 580px;
+    margin: 0 auto 2.25rem;
+  }
+
+  .hero__sub p {
+    margin: 0;
   }
 
   .hero__cta {
@@ -403,14 +326,14 @@ const starsBigL    = generateBoxShadows(100, '#312e81');
     flex-wrap: wrap;
   }
 
-  /* Glowing animated blob */
+  /* Glowing animated blob — purple + teal */
   .hero__glow-blob {
     position: absolute;
     top: 50%;
     left: 50%;
     width: 600px;
     height: 600px;
-    background: radial-gradient(circle, var(--color-accent-40) 0%, transparent 70%);
+    background: radial-gradient(circle, var(--color-accent-40) 0%, var(--color-teal-20) 40%, transparent 70%);
     transform: translate(-50%, -50%);
     filter: blur(60px);
     border-radius: 50%;
@@ -472,6 +395,14 @@ const starsBigL    = generateBoxShadows(100, '#312e81');
     text-align: center;
     margin-top: 2.5rem;
   }
+
+  /* Mobile-only line break utility */
+  .hide-mobile { display: inline; }
+  @media (max-width: 640px) {
+    .hide-mobile { display: none; }
+  }
+
+
 
   /* =====================================================
      POSTS GRID
@@ -649,7 +580,7 @@ const starsBigL    = generateBoxShadows(100, '#312e81');
     content: "▹";
     position: absolute;
     left: 0;
-    color: var(--color-accent);
+    color: var(--color-teal);
   }
 
   .about-stack li strong {
@@ -667,7 +598,7 @@ const starsBigL    = generateBoxShadows(100, '#312e81');
   }
 
   .about-link:hover {
-    color: var(--color-accent);
+    color: var(--color-teal-bright);
   }
 
   /* Code snippet card */
@@ -749,6 +680,19 @@ const starsBigL    = generateBoxShadows(100, '#312e81');
   .section--newsletter {
     border-top: 1px solid var(--color-border-subtle);
     text-align: center;
+    position: relative;
+  }
+
+  .section--newsletter::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 3px;
+    background: linear-gradient(90deg, var(--color-accent), var(--color-teal));
+    border-radius: 2px;
   }
 
   .newsletter-inner {
@@ -815,16 +759,16 @@ const starsBigL    = generateBoxShadows(100, '#312e81');
 </style>
 
 <script>
-  // Subtle parallax effect for the hero section
+  // ── Scroll parallax for hero content ──
   const heroContent = document.getElementById('hero-content');
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
   if (heroContent && !prefersReducedMotion.matches) {
     window.addEventListener('scroll', () => {
-      // Only animate if hero is in view
       if (window.scrollY < window.innerHeight) {
         requestAnimationFrame(() => {
-          const yPos = window.scrollY * 0.3; // Parallax speed multiplier
+          const yPos = window.scrollY * 0.3;
+          // Faster fade relative to scroll distance
           const opacity = 1 - (window.scrollY / window.innerHeight) * 1.5;
           heroContent.style.transform = `translateY(${yPos}px)`;
           heroContent.style.opacity = String(opacity > 0 ? opacity : 0);
