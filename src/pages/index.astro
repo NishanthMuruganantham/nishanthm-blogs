@@ -1,5 +1,7 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import Button from "../components/ui/Button.astro";
+import AgentNetwork from "../components/AgentNetwork.astro";
 import PostCard from "../components/PostCard.astro";
 import FeaturedPost from "../components/FeaturedPost.astro";
 import { getCollection } from "astro:content";
@@ -49,35 +51,42 @@ const categoryCounts = categories.map((cat) => ({
 
 <BaseLayout
   title="Home"
-  description="Personal blog by Nishanth M — backend, frontend, tools, and startup experiences."
+  description="Personal blog by Nishanth M, documenting engineering challenges in Django, AWS, and Agentic AI."
+  includeNetwork={false}
 >
   <!-- ===================== HERO ===================== -->
-  <section class="hero hero-gradient" id="hero-section">
-    <div class="hero__dot-grid" aria-hidden="true"></div>
+  <section class="hero hero-gradient hero--space" id="hero-section">
+    <div class="hero__glow-blob" aria-hidden="true"></div>
 
-    <div class="hero__content">
+    <!-- Animated agent network canvas -->
+    <AgentNetwork />
+
+    <div class="hero__content" id="hero-content">
       <p class="hero__eyebrow anim-fade" style="--delay: 0">
         Developer · Builder · Writer
       </p>
 
-      <h1 class="hero__heading gradient-text anim-fade" style="--delay: 1">
-        I Build Systems and<br />Document the Journey
+      <h1 class="hero__heading anim-fade" style="--delay: 1">
+        <span class="gradient-text">I Build Autonomous</span><br />
+        <span class="gradient-text">Systems</span>
       </h1>
 
-      <p class="hero__sub anim-fade" style="--delay: 2">
-        I’m Nishanth — an indie developer working across React, Django, and
-        Android. I write about real-world solutions, dev tools, and the lessons
-        learned from building production software.
-      </p>
+      <div class="hero__sub anim-fade" style="--delay: 2">
+        <p>I'm Nishanth — an indie developer building<br class="hide-mobile" />
+          autonomous agents and production systems.</p>
+        <p>I architect robust backends and autonomous workflows<br class="hide-mobile" />
+          with Django, AWS, and cutting-edge AI.</p>
+      </div>
 
       <div class="hero__cta anim-fade" style="--delay: 3">
-        <a href="/blog" class="btn-primary" id="cta-blog">Read the Blog</a>
-        <a href="https://portfolio.nishanthm.com" target="_blank" rel="noopener noreferrer" class="btn-ghost" id="cta-about">About Me</a>
+        <Button as="a" href="/blog" variant="primary" id="cta-blog">Read the Blog</Button>
+        <Button as="a" href="https://portfolio.nishanthm.com" target="_blank" rel="noopener noreferrer" variant="ghost" id="cta-about">About Me</Button>
       </div>
     </div>
   </section>
 
-  <!-- =============== FEATURED POSTS =============== -->
+
+
   <section class="section" id="latest-writing">
     <div class="section__inner">
       {featuredPostWithMeta && <FeaturedPost post={featuredPostWithMeta} readingTime={featuredPostWithMeta.readingTime} />}
@@ -135,19 +144,21 @@ const categoryCounts = categories.map((cat) => ({
     <div class="section__inner about-grid">
       <div class="about-text">
         <h2 class="section__title">Who am I?</h2>
-        <p class="about-bio">
-          I’m a full-stack developer who enjoys building end-to-end systems —
-          from crafting APIs with Django to pixel-perfect UIs with React. When
-          I’m not coding, I’m documenting what I learn so others can skip the
-          trial-and-error.
-        </p>
-        <ul class="about-stack">
-          <li><strong>Backend:</strong> Django, Python, PostgreSQL</li>
-          <li><strong>Frontend:</strong> React, Astro, Tailwind CSS</li>
-          <li><strong>Mobile:</strong> Android (Kotlin), Gradle</li>
-          <li><strong>Tools:</strong> VS Code, Git, Docker, MCP</li>
+        <div class="about-bio">
+          <p class="font-display text-2xl text-text-primary leading-snug mb-4">
+            I’m a full-stack engineer focused on building end-to-end systems that scale.
+          </p>
+          <p class="text-lg text-text-secondary leading-relaxed mb-8">
+            My current expertise lies in architecting Django-powered backends on AWS and implementing Agentic AI workflows with N8N and MCP. I document the hard-won lessons from production environments to help fellow builders ship faster.
+          </p>
+        </div>
+        <ul class="about-stack font-mono text-sm tracking-wide">
+          <li><span class="text-accent mr-2">Backend:</span> Django, Python, AWS</li>
+          <li><span class="text-accent mr-2">Agentic AI:</span> MCP, N8N, LLMs</li>
+          <li><span class="text-accent mr-2">Frontend:</span> React, Astro, Tailwind</li>
+          <li><span class="text-accent mr-2">Mobile:</span> Android, Kotlin</li>
         </ul>
-        <a href="https://portfolio.nishanthm.com" target="_blank" rel="noopener noreferrer" class="about-link" id="about-link">
+        <a href="https://portfolio.nishanthm.com" target="_blank" rel="noopener noreferrer" class="btn-ghost mt-4 inline-flex" id="about-link">
           Read more about me →
         </a>
       </div>
@@ -162,8 +173,8 @@ const categoryCounts = categories.map((cat) => ({
           <pre
             class="code-snippet__body"><code><span class="code-kw">class</span> <span class="code-cls">Developer</span>:
     name = <span class="code-str">"Nishanth M"</span>
-    role = <span class="code-str">"Full-Stack Dev"</span>
-    stack = [<span class="code-str">"Django"</span>, <span class="code-str">"React"</span>, <span class="code-str">"Android"</span>]
+    role = <span class="code-str">"AI &amp; Backend Engineer"</span>
+    stack = [<span class="code-str">"Django"</span>, <span class="code-str">"AWS"</span>, <span class="code-str">"Agentic AI"</span>]
 
     <span class="code-kw">def</span> <span class="code-fn">passion</span>(self):
         <span class="code-kw">return</span> <span class="code-str">"Building &amp; Writing"</span></code></pre>
@@ -197,64 +208,115 @@ const categoryCounts = categories.map((cat) => ({
     display: flex;
     align-items: center;
     justify-content: center;
-    min-height: 85vh;
-    padding: 6rem 1.5rem 4rem;
+    min-height: 90vh;
+    padding: 6rem 1.5rem 6rem;
     text-align: center;
     position: relative;
+    overflow: hidden;
   }
 
-  /* Decorative dot grid */
-  .hero__dot-grid {
+  /* Smooth bottom fade — blends hero into page content seamlessly */
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 160px;
+    background: linear-gradient(to bottom, transparent 0%, var(--color-bg) 100%);
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  /* Deep-space radial gradient — DARK mode default */
+  .hero--space {
+    background: radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%);
+  }
+
+  /* Light mode override: soft sky-dawn gradient */
+  :global(html:not(.dark)) .hero--space {
+    background: radial-gradient(ellipse at 50% 110%, #c7d7f8 0%, #dde8ff 40%, #f0f4ff 100%);
+  }
+
+  /* Light mode: tint the glow blob to a softer indigo */
+  :global(html:not(.dark)) .hero__glow-blob {
+    background: radial-gradient(circle, rgba(124, 106, 247, 0.15) 0%, transparent 70%);
+    opacity: 0.6;
+  }
+
+  /* ── Agent Network Canvas ── */
+  .hero__network {
     position: absolute;
     inset: 0;
-    background-image: radial-gradient(
-      circle,
-      var(--color-accent-08) 1px,
-      transparent 1px
-    );
-    background-size: 32px 32px;
+    width: 100%;
+    height: 100%;
     z-index: 0;
     pointer-events: none;
-    mask-image: radial-gradient(
-      ellipse 70% 60% at 50% 50%,
-      black 30%,
-      transparent 80%
-    );
-    -webkit-mask-image: radial-gradient(
-      ellipse 70% 60% at 50% 50%,
-      black 30%,
-      transparent 80%
-    );
+  }
+
+  /* ── Light mode font contrast overrides ── */
+
+  /* Eyebrow: deep indigo so it pops on lavender */
+  :global(html:not(.dark)) .hero__eyebrow {
+    color: #3730a3;
+  }
+
+  /* Heading gradient: dark indigo → violet → teal — high contrast on light bg */
+  :global(html:not(.dark)) .hero__heading .gradient-text {
+    background: linear-gradient(135deg, #1e1b4b 0%, #4338ca 45%, #0f766e 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* Subtext: near-black for maximum legibility */
+  :global(html:not(.dark)) .hero__sub {
+    color: #1e293b;
+  }
+
+  /* Respect reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    .hero__network { display: none; }
   }
 
   .hero__content {
     max-width: 720px;
     position: relative;
-    z-index: 1;
+    z-index: 2;
   }
 
   .hero__eyebrow {
-    font-family: var(--font-display);
-    font-size: 0.85rem;
-    font-weight: 700;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    font-weight: 500;
     text-transform: uppercase;
-    letter-spacing: 0.15em;
-    color: var(--color-accent-bright);
-    margin-bottom: 1.25rem;
-  }
-
-  .hero__heading {
-    font-size: clamp(2.2rem, 5.5vw, 3.75rem);
-    line-height: 1.1;
+    letter-spacing: 0.25em;
+    color: var(--color-teal-bright);
     margin-bottom: 1.5rem;
   }
 
+  .hero__heading {
+    font-family: var(--font-serif-display);
+    font-size: clamp(2.5rem, 6vw, 4.25rem);
+    font-weight: 900;
+    line-height: 1.15;
+    margin-bottom: 1.75rem;
+  }
+
   .hero__sub {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
     color: var(--color-text-secondary);
     font-size: 1.1rem;
-    line-height: 1.75;
-    max-width: 560px;
-    margin: 0 auto 2rem;
+    line-height: 1.85;
+    letter-spacing: 0.01em;
+    max-width: 580px;
+    margin: 0 auto 2.25rem;
+  }
+
+  .hero__sub p {
+    margin: 0;
   }
 
   .hero__cta {
@@ -264,17 +326,47 @@ const categoryCounts = categories.map((cat) => ({
     flex-wrap: wrap;
   }
 
+  /* Glowing animated blob — purple + teal */
+  .hero__glow-blob {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, var(--color-accent-40) 0%, var(--color-teal-20) 40%, transparent 70%);
+    transform: translate(-50%, -50%);
+    filter: blur(60px);
+    border-radius: 50%;
+    z-index: 0;
+    opacity: 0.8;
+    pointer-events: none;
+    animation: blobPulse 8s ease-in-out infinite alternate;
+  }
+
+  @keyframes blobPulse {
+    0% {
+      transform: translate(-50%, -50%) scale(1);
+      opacity: 0.6;
+    }
+    100% {
+      transform: translate(-50%, -50%) scale(1.15);
+      opacity: 0.9;
+    }
+  }
+
   /* Staggered fade-in animation */
   .anim-fade {
     opacity: 0;
-    transform: translateY(18px);
-    animation: fadeUp 0.7s ease forwards;
+    filter: blur(8px);
+    transform: translateY(24px);
+    animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     animation-delay: calc(var(--delay) * 0.15s);
   }
 
   @keyframes fadeUp {
     to {
       opacity: 1;
+      filter: blur(0);
       transform: translateY(0);
     }
   }
@@ -303,6 +395,14 @@ const categoryCounts = categories.map((cat) => ({
     text-align: center;
     margin-top: 2.5rem;
   }
+
+  /* Mobile-only line break utility */
+  .hide-mobile { display: inline; }
+  @media (max-width: 640px) {
+    .hide-mobile { display: none; }
+  }
+
+
 
   /* =====================================================
      POSTS GRID
@@ -480,7 +580,7 @@ const categoryCounts = categories.map((cat) => ({
     content: "▹";
     position: absolute;
     left: 0;
-    color: var(--color-accent);
+    color: var(--color-teal);
   }
 
   .about-stack li strong {
@@ -498,7 +598,7 @@ const categoryCounts = categories.map((cat) => ({
   }
 
   .about-link:hover {
-    color: var(--color-accent);
+    color: var(--color-teal-bright);
   }
 
   /* Code snippet card */
@@ -580,6 +680,19 @@ const categoryCounts = categories.map((cat) => ({
   .section--newsletter {
     border-top: 1px solid var(--color-border-subtle);
     text-align: center;
+    position: relative;
+  }
+
+  .section--newsletter::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 3px;
+    background: linear-gradient(90deg, var(--color-accent), var(--color-teal));
+    border-radius: 2px;
   }
 
   .newsletter-inner {
@@ -638,10 +751,29 @@ const categoryCounts = categories.map((cat) => ({
     font-size: 0.75rem;
   }
 
-  /* Newsletter responsive */
   @media (max-width: 480px) {
     .newsletter__form {
       flex-direction: column;
     }
   }
 </style>
+
+<script>
+  // ── Scroll parallax for hero content ──
+  const heroContent = document.getElementById('hero-content');
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+  if (heroContent && !prefersReducedMotion.matches) {
+    window.addEventListener('scroll', () => {
+      if (window.scrollY < window.innerHeight) {
+        requestAnimationFrame(() => {
+          const yPos = window.scrollY * 0.3;
+          // Faster fade relative to scroll distance
+          const opacity = 1 - (window.scrollY / window.innerHeight) * 1.5;
+          heroContent.style.transform = `translateY(${yPos}px)`;
+          heroContent.style.opacity = String(opacity > 0 ? opacity : 0);
+        });
+      }
+    });
+  }
+</script>

@@ -6,6 +6,8 @@
 /* --- Font Imports --- */
 @import "@fontsource/space-grotesk/400.css";
 @import "@fontsource/space-grotesk/700.css";
+@import "@fontsource/playfair-display/700.css";
+@import "@fontsource/playfair-display/900.css";
 @import "@fontsource/lora/400.css";
 @import "@fontsource/lora/400-italic.css";
 @import "@fontsource/jetbrains-mono/400.css";
@@ -77,8 +79,15 @@
 
   /* Typography */
   --font-display: 'Space Grotesk', sans-serif;
+  --font-serif-display: 'Playfair Display', Georgia, serif;
   --font-body: 'Lora', Georgia, serif;
   --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+
+  /* Teal accent — secondary interactive color */
+  --color-teal: #14b8a6;
+  --color-teal-bright: #2dd4bf;
+  --color-teal-glow: rgba(20, 184, 166, 0.15);
+  --color-teal-20: rgba(20, 184, 166, 0.2);
 
   /* Spacing */
   --space-section: clamp(4rem, 8vw, 8rem);
@@ -110,7 +119,8 @@
   --color-accent: #7c6af7;
   --color-accent-bright: #9d7ff9;
   --color-accent-glow: rgba(124, 106, 247, 0.15);
-  --color-accent-05: rgba(124, 106, 247, 0.08); /* slightly higher in dark mode */
+  --color-accent-05: rgba(124, 106, 247, 0.08);
+  /* slightly higher in dark mode */
   --color-accent-08: rgba(124, 106, 247, 0.1);
   --color-accent-10: rgba(124, 106, 247, 0.15);
   --color-accent-15: rgba(124, 106, 247, 0.2);
@@ -233,7 +243,7 @@
   }
 
   a:hover {
-    color: var(--color-accent);
+    color: var(--color-teal-bright);
   }
 }
 
@@ -242,13 +252,13 @@
    ============================================================ */
 @layer components {
 
-  /* Primary button — accent background, hover glow */
+  /* Primary button — gradient accent, hover glow */
   .btn-primary {
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
     padding: 0.75rem 1.75rem;
-    background-color: var(--color-accent);
+    background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-teal) 100%);
     color: #fff;
     font-family: var(--font-display);
     font-weight: 700;
@@ -260,11 +270,12 @@
   }
 
   .btn-primary:hover {
-    background-color: var(--color-accent-bright);
-    box-shadow: 0 0 24px var(--color-accent-glow),
-      0 0 48px var(--color-accent-08);
-    transform: translateY(-1px);
+    box-shadow: 0 0 20px var(--color-teal-glow),
+      0 0 40px var(--color-accent-glow),
+      0 4px 16px rgba(0, 0, 0, 0.2);
+    transform: translateY(-2px);
     color: #fff;
+    filter: brightness(1.1);
   }
 
   /* Ghost button — transparent, accent border */
@@ -285,9 +296,9 @@
   }
 
   .btn-ghost:hover {
-    border-color: var(--color-accent);
-    background-color: var(--color-accent-glow);
-    color: var(--color-accent-bright);
+    border-color: var(--color-teal);
+    background-color: var(--color-teal-glow);
+    color: var(--color-teal-bright);
     transform: translateY(-1px);
   }
 
@@ -373,9 +384,9 @@
       0 0 0 1px var(--color-accent-20);
   }
 
-  /* Gradient text — accent gradient applied to text */
+  /* Gradient text — accent gradient applied to text (purple → teal) */
   .gradient-text {
-    background: linear-gradient(135deg, var(--color-accent-bright) 0%, #c084fc 50%, #60a5fa 100%);
+    background: linear-gradient(135deg, var(--color-accent-bright) 0%, #a78bfa 40%, var(--color-teal-bright) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -544,7 +555,8 @@
   /* ============================================================
      Share Buttons (Issue #30)
      ============================================================ */
-  .share-btn, .share-inline-btn {
+  .share-btn,
+  .share-inline-btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -555,7 +567,8 @@
     cursor: pointer;
   }
 
-  .share-btn:hover, .share-inline-btn:hover {
+  .share-btn:hover,
+  .share-inline-btn:hover {
     color: var(--color-text-primary);
     border-color: var(--color-accent-40);
     box-shadow: 0 4px 12px var(--color-accent-15),
@@ -665,10 +678,11 @@
   /* ============================================================
      Markdown Typography & Code Blocks (.prose)
      ============================================================ */
-  .prose pre, 
+  .prose pre,
   .prose pre code {
     background-color: var(--code-bg) !important;
-    color: #e2e8f0 !important; /* Force light text on dark background */
+    color: #e2e8f0 !important;
+    /* Force light text on dark background */
   }
 
   .prose pre {
@@ -872,6 +886,7 @@
     50% {
       transform: translate(-1%, 2%) rotate(-0.5deg);
     }
+
     75% {
       transform: translate(-2%, -1%) rotate(0.5deg);
     }
@@ -900,8 +915,15 @@
 }
 
 @keyframes mermaid-fade-in {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .mermaid-rendered:hover {
@@ -932,7 +954,7 @@
   rx: 10px !important;
   ry: 10px !important;
   transition: stroke var(--transition-fast), filter var(--transition-fast);
-  filter: drop-shadow(0 2px 6px rgba(0,0,0,0.12));
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.12));
 }
 
 .mermaid-rendered .node:hover rect,
@@ -946,7 +968,7 @@
 }
 
 /* Labels */
-.mermaid-rendered .label, 
+.mermaid-rendered .label,
 .mermaid-rendered text,
 .mermaid-rendered .actor text {
   font-family: var(--font-display) !important;
@@ -975,7 +997,7 @@
   font-family: var(--font-display) !important;
   font-weight: 600 !important;
   border: 1px solid var(--color-border) !important;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.08) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important;
 }
 
 /* Sequence Diagram Actors */

@@ -2,6 +2,7 @@
 import SEO from '../components/SEO.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import AgentNetwork from '../components/AgentNetwork.astro';
 import '../styles/global.css';
 
 interface Props {
@@ -12,6 +13,7 @@ interface Props {
   ogType?: 'website' | 'article';
   publishedDate?: Date;
   tags?: string[];
+  includeNetwork?: boolean;
 }
 
 const {
@@ -22,6 +24,7 @@ const {
   ogType,
   publishedDate,
   tags,
+  includeNetwork = true,
 } = Astro.props;
 ---
 
@@ -58,6 +61,7 @@ const {
     </script>
   </head>
   <body>
+    {includeNetwork && <AgentNetwork subtle={true} fixed={true} />}
     <Header />
     <main class="site-main">
       <slot />
