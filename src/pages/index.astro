@@ -12,17 +12,21 @@ const allPosts = await getCollection("blog", ({ data }) => !data.draft);
 
 // Sort newest first
 const sortedPosts = allPosts.sort(
-  (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
 );
 
 // Get the specific featured post
 const featuredPost = sortedPosts.find((p) => p.data.featured);
 
 // Get reading time for featured post if it exists
-const featuredPostWithMeta = featuredPost ? {
-  ...featuredPost,
-  readingTime: featuredPost.body ? getReadingTime(featuredPost.body) : undefined,
-} : null;
+const featuredPostWithMeta = featuredPost
+  ? {
+      ...featuredPost,
+      readingTime: featuredPost.body
+        ? getReadingTime(featuredPost.body)
+        : undefined,
+    }
+  : null;
 
 // Get latest posts (excluding the featured one)
 const latestPosts = sortedPosts
@@ -67,30 +71,54 @@ const categoryCounts = categories.map((cat) => ({
       </p>
 
       <h1 class="hero__heading anim-fade" style="--delay: 1">
-        <span class="gradient-text">I Build Autonomous</span><br />
-        <span class="gradient-text">Systems</span>
+        <span class="hero-accent-text">I Build Autonomous</span><br />
+        <span class="hero-accent-text">Systems</span>
       </h1>
 
       <div class="hero__sub anim-fade" style="--delay: 2">
-        <p>I'm Nishanth — an indie developer building<br class="hide-mobile" />
-          autonomous agents and production systems.</p>
-        <p>I architect robust backends and autonomous workflows<br class="hide-mobile" />
-          with Django, AWS, and cutting-edge AI.</p>
+        <p>
+          This is my engineering notebook for documenting the journey from
+          backend systems to agentic AI.
+        </p>
+        <p>
+          I architect with Django and Python on AWS, automate with N8N,
+          implement RAG systems, and design autonomous agents. Currently
+          exploring Claude, Google AI Studio, and MCPs.
+        </p>
+        <p>
+          This blog captures what works: architecture patterns, infrastructure
+          decisions, AI integrations, and the documented path of shipping
+          intelligent systems.
+        </p>
       </div>
 
       <div class="hero__cta anim-fade" style="--delay: 3">
-        <Button as="a" href="/blog" variant="primary" id="cta-blog">Read the Blog</Button>
-        <Button as="a" href="https://portfolio.nishanthm.com" target="_blank" rel="noopener noreferrer" variant="ghost" id="cta-about">About Me</Button>
+        <Button as="a" href="/blog" variant="primary" id="cta-blog"
+          >Read my Blogs</Button
+        >
+        <Button
+          as="a"
+          href="https://portfolio.nishanthm.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          variant="ghost"
+          id="cta-about">About Me</Button
+        >
       </div>
     </div>
   </section>
 
-
-
   <section class="section" id="latest-writing">
     <div class="section__inner">
-      {featuredPostWithMeta && <FeaturedPost post={featuredPostWithMeta} readingTime={featuredPostWithMeta.readingTime} />}
-      
+      {
+        featuredPostWithMeta && (
+          <FeaturedPost
+            post={featuredPostWithMeta}
+            readingTime={featuredPostWithMeta.readingTime}
+          />
+        )
+      }
+
       <h2 class="section__title">Latest Writing</h2>
       <div class="posts-grid">
         {
@@ -146,19 +174,35 @@ const categoryCounts = categories.map((cat) => ({
         <h2 class="section__title">Who am I?</h2>
         <div class="about-bio">
           <p class="font-display text-2xl text-text-primary leading-snug mb-4">
-            I’m a full-stack engineer focused on building end-to-end systems that scale.
+            I’m a full-stack engineer focused on building end-to-end systems
+            that scale.
           </p>
           <p class="text-lg text-text-secondary leading-relaxed mb-8">
-            My current expertise lies in architecting Django-powered backends on AWS and implementing Agentic AI workflows with N8N and MCP. I document the hard-won lessons from production environments to help fellow builders ship faster.
+            My current expertise lies in architecting Django-powered backends on
+            AWS and implementing Agentic AI workflows with N8N and MCP. I
+            document the hard-won lessons from production environments to help
+            fellow builders ship faster.
           </p>
         </div>
         <ul class="about-stack font-mono text-sm tracking-wide">
-          <li><span class="text-accent mr-2">Backend:</span> Django, Python, AWS</li>
-          <li><span class="text-accent mr-2">Agentic AI:</span> MCP, N8N, LLMs</li>
-          <li><span class="text-accent mr-2">Frontend:</span> React, Astro, Tailwind</li>
+          <li>
+            <span class="text-accent mr-2">Backend:</span> Django, Python, AWS
+          </li>
+          <li>
+            <span class="text-accent mr-2">Agentic AI:</span> MCP, N8N, LLMs
+          </li>
+          <li>
+            <span class="text-accent mr-2">Frontend:</span> React, Astro, Tailwind
+          </li>
           <li><span class="text-accent mr-2">Mobile:</span> Android, Kotlin</li>
         </ul>
-        <a href="https://portfolio.nishanthm.com" target="_blank" rel="noopener noreferrer" class="btn-ghost mt-4 inline-flex" id="about-link">
+        <a
+          href="https://portfolio.nishanthm.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="btn-ghost mt-4 inline-flex"
+          id="about-link"
+        >
           Read more about me →
         </a>
       </div>
@@ -217,30 +261,43 @@ const categoryCounts = categories.map((cat) => ({
 
   /* Smooth bottom fade — blends hero into page content seamlessly */
   .hero::after {
-    content: '';
+    content: "";
     position: absolute;
     bottom: 0;
     left: 0;
     right: 0;
     height: 160px;
-    background: linear-gradient(to bottom, transparent 0%, var(--color-bg) 100%);
+    background: linear-gradient(
+      to bottom,
+      transparent 0%,
+      var(--color-bg) 100%
+    );
     z-index: 1;
     pointer-events: none;
   }
 
   /* Deep-space radial gradient — DARK mode default */
   .hero--space {
-    background: radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%);
+    background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
   }
 
   /* Light mode override: soft sky-dawn gradient */
   :global(html:not(.dark)) .hero--space {
-    background: radial-gradient(ellipse at 50% 110%, #c7d7f8 0%, #dde8ff 40%, #f0f4ff 100%);
+    background: radial-gradient(
+      ellipse at 50% 110%,
+      #c7d7f8 0%,
+      #dde8ff 40%,
+      #f0f4ff 100%
+    );
   }
 
   /* Light mode: tint the glow blob to a softer indigo */
   :global(html:not(.dark)) .hero__glow-blob {
-    background: radial-gradient(circle, rgba(124, 106, 247, 0.15) 0%, transparent 70%);
+    background: radial-gradient(
+      circle,
+      rgba(124, 106, 247, 0.15) 0%,
+      transparent 70%
+    );
     opacity: 0.6;
   }
 
@@ -261,12 +318,14 @@ const categoryCounts = categories.map((cat) => ({
     color: #3730a3;
   }
 
-  /* Heading gradient: dark indigo → violet → teal — high contrast on light bg */
-  :global(html:not(.dark)) .hero__heading .gradient-text {
-    background: linear-gradient(135deg, #1e1b4b 0%, #4338ca 45%, #0f766e 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+  /* Heading text: dark indigo for light theme */
+  :global(html:not(.dark)) .hero__heading .hero-accent-text {
+    color: #1e1b4b;
+  }
+
+  /* Default (dark mode) hero text: bright accent */
+  .hero-accent-text {
+    color: var(--color-accent-bright);
   }
 
   /* Subtext: near-black for maximum legibility */
@@ -276,7 +335,9 @@ const categoryCounts = categories.map((cat) => ({
 
   /* Respect reduced motion */
   @media (prefers-reduced-motion: reduce) {
-    .hero__network { display: none; }
+    .hero__network {
+      display: none;
+    }
   }
 
   .hero__content {
@@ -333,7 +394,12 @@ const categoryCounts = categories.map((cat) => ({
     left: 50%;
     width: 600px;
     height: 600px;
-    background: radial-gradient(circle, var(--color-accent-40) 0%, var(--color-teal-20) 40%, transparent 70%);
+    background: radial-gradient(
+      circle,
+      var(--color-accent-40) 0%,
+      var(--color-teal-20) 40%,
+      transparent 70%
+    );
     transform: translate(-50%, -50%);
     filter: blur(60px);
     border-radius: 50%;
@@ -397,12 +463,14 @@ const categoryCounts = categories.map((cat) => ({
   }
 
   /* Mobile-only line break utility */
-  .hide-mobile { display: inline; }
-  @media (max-width: 640px) {
-    .hide-mobile { display: none; }
+  .hide-mobile {
+    display: inline;
   }
-
-
+  @media (max-width: 640px) {
+    .hide-mobile {
+      display: none;
+    }
+  }
 
   /* =====================================================
      POSTS GRID
@@ -684,7 +752,7 @@ const categoryCounts = categories.map((cat) => ({
   }
 
   .section--newsletter::before {
-    content: '';
+    content: "";
     position: absolute;
     top: 0;
     left: 50%;
@@ -760,11 +828,13 @@ const categoryCounts = categories.map((cat) => ({
 
 <script>
   // ── Scroll parallax for hero content ──
-  const heroContent = document.getElementById('hero-content');
-  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const heroContent = document.getElementById("hero-content");
+  const prefersReducedMotion = window.matchMedia(
+    "(prefers-reduced-motion: reduce)",
+  );
 
   if (heroContent && !prefersReducedMotion.matches) {
-    window.addEventListener('scroll', () => {
+    window.addEventListener("scroll", () => {
       if (window.scrollY < window.innerHeight) {
         requestAnimationFrame(() => {
           const yPos = window.scrollY * 0.3;
