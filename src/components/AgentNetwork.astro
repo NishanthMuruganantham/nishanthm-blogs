@@ -7,7 +7,11 @@ interface Props {
 const { subtle = false, fixed = false } = Astro.props;
 ---
 
-<canvas class={`agent-network ${subtle ? 'agent-network--subtle' : ''} ${fixed ? 'agent-network--fixed' : ''}`} id="agent-network" aria-hidden="true" data-subtle={subtle ? "true" : "false"}></canvas>
+<canvas
+  class={`agent-network ${subtle ? "agent-network--subtle" : ""} ${fixed ? "agent-network--fixed" : ""}`}
+  id="agent-network"
+  aria-hidden="true"
+  data-subtle={subtle ? "true" : "false"}></canvas>
 
 <style>
   .agent-network {
@@ -18,69 +22,66 @@ const { subtle = false, fixed = false } = Astro.props;
     z-index: 0;
     pointer-events: none;
   }
-  
+
   .agent-network--fixed {
     position: fixed;
     z-index: -1;
   }
-  
+
   @media (prefers-reduced-motion: reduce) {
-    .agent-network { display: none; }
+    .agent-network {
+      display: none;
+    }
   }
 </style>
 
 <script>
-  // ── Agent Network Animation ──
+  // ── Sparks Vortex Animation ──
   // Run once per page if canvas exists
   function initAgentNetwork() {
-    const canvas = document.getElementById('agent-network') as HTMLCanvasElement;
+    const canvas = document.getElementById(
+      "agent-network",
+    ) as HTMLCanvasElement;
     if (!canvas) return;
-    
-    // Prevent double init
-    if (canvas.dataset.initialized === 'true') return;
-    canvas.dataset.initialized = 'true';
-    
-    const ctx = canvas.getContext('2d');
-    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-    const isSubtle = canvas.getAttribute('data-subtle') === 'true';
 
-    // ── Agent network canvas ──
+    // Prevent double init
+    if (canvas.dataset.initialized === "true") return;
+    canvas.dataset.initialized = "true";
+
+    const ctx = canvas.getContext("2d");
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    );
+    const isSubtle = canvas.getAttribute("data-subtle") === "true";
+
     if (ctx && !prefersReducedMotion.matches) {
       const isMobile = window.innerWidth < 768;
-      // Reduce nodes drastically if subtle
-      const NODE_COUNT = isSubtle ? (isMobile ? 12 : 25) : (isMobile ? 30 : 55);
-      const CONNECTION_DIST = isMobile ? 120 : 150;
+      // More nodes required for sparks effect
+      const NODE_COUNT = isSubtle ? (isMobile ? 30 : 60) : isMobile ? 80 : 300;
       const TARGET_FPS = isMobile ? 30 : 60;
       const FRAME_INTERVAL = 1000 / TARGET_FPS;
+
+      // Vibrant palette inspired by Google/Antigravity
+      const SPARK_COLORS = [
+        "#4285F4",
+        "#EA4335",
+        "#FBBC05",
+        "#34A853",
+        "#8A2BE2",
+        "#FF7F50",
+        "#0D9488",
+      ];
 
       let nodes: any[] = [];
       let animId = 0;
       let lastFrame = 0;
-
-      function isDark() {
-        return document.documentElement.classList.contains('dark');
-      }
-
-      function getColors() {
-        const dark = isDark();
-        
-        // If subtle mode, drop the opacities significantly so it doesn't distract readable content
-        const nodeAlpha = isSubtle ? 0.2 : (dark ? 0.6 : 0.55);
-        const pulseAlpha = isSubtle ? 0.3 : 1;
-        const lineMaxAlpha = isSubtle ? 0.15 : 0.35;
-        const glowAlpha = isSubtle ? 0.1 : (dark ? 0.4 : 0.35);
-        
-        return {
-          node: dark ? `rgba(45, 212, 191, ${nodeAlpha})` : `rgba(67, 56, 202, ${nodeAlpha})`,
-          nodePulse: dark ? `rgba(45, 212, 191, ${pulseAlpha})` : `rgba(67, 56, 202, ${pulseAlpha})`,
-          line: dark ? `rgba(45, 212, 191, __ALPHA__)` : `rgba(67, 56, 202, __ALPHA__)`,
-          lineMultiplier: lineMaxAlpha,
-          glow: dark ? `rgba(45, 212, 191, ${glowAlpha})` : `rgba(67, 56, 202, ${glowAlpha})`,
-        };
-      }
+      
+      // Mouse tracking state
+      let mouseX = -1000;
+      let mouseY = -1000;
+      let isHovering = false;
 
       function resize() {
-        // If parent has relative positioning, getBoundingClientRect returns size of parent
         const parent = canvas.parentElement || document.body;
         const rect = parent.getBoundingClientRect();
         const dpr = Math.min(window.devicePixelRatio || 1, 2);
@@ -91,20 +92,25 @@ const { subtle = false, fixed = false } = Astro.props;
 
       function initNodes() {
         const parent = canvas.parentElement || document.body;
-        const w = parent.getBoundingClientRect().width;
-        const h = parent.getBoundingClientRect().height;
+        const rect = parent.getBoundingClientRect();
+        const w = rect.width;
+        const h = rect.height;
         nodes = [];
         for (let i = 0; i < NODE_COUNT; i++) {
           nodes.push({
             x: Math.random() * w,
             y: Math.random() * h,
-            vx: (Math.random() - 0.5) * (isSubtle ? 0.2 : 0.4),
-            vy: (Math.random() - 0.5) * (isSubtle ? 0.2 : 0.4),
-            radius: 2 + Math.random() * 2,
+            vx: (Math.random() - 0.5) * 1.5,
+            vy: (Math.random() - 0.5) * 1.5,
+            length: Math.random() * 8 + 4, // 4 to 12
+            thickness: Math.random() * 2 + 1.5, // 1.5 to 3.5
+            color:
+              SPARK_COLORS[Math.floor(Math.random() * SPARK_COLORS.length)],
+            baseOpacity: Math.random() * 0.5 + 0.3,
+            pulseSpeed: Math.random() * 0.02 + 0.01,
             pulsePhase: Math.random() * Math.PI * 2,
-            pulseSpeed: 0.02 + Math.random() * 0.02,
-            isPulsing: false,
-            pulseTimer: Math.random() * 400,
+            cx: w * 0.3, // Vortex center X (slightly left)
+            cy: h * 0.5, // Vortex center Y (middle)
           });
         }
       }
@@ -126,70 +132,88 @@ const { subtle = false, fixed = false } = Astro.props;
         const rect = parent.getBoundingClientRect();
         const w = rect.width;
         const h = rect.height;
-        const colors = getColors();
+        const defaultCx = w * 0.3;
+        const defaultCy = h * 0.5;
 
         ctx!.clearRect(0, 0, w, h);
 
-        // Update node positions
+        // Update node positions and draw
         for (const node of nodes) {
+          
+          // Smoothly move the vortex center towards the mouse, or back to default
+          if (isHovering) {
+            node.cx = node.cx * 0.95 + mouseX * 0.05;
+            node.cy = node.cy * 0.95 + mouseY * 0.05;
+            
+            // Add a slight repelling force if spark gets too close to the actual cursor
+            const mdX = node.x - mouseX;
+            const mdY = node.y - mouseY;
+            const mDist = Math.sqrt(mdX * mdX + mdY * mdY) || 1;
+            if (mDist < 120) {
+              node.vx += (mdX / mDist) * 0.05;
+              node.vy += (mdY / mDist) * 0.05;
+            }
+          } else {
+            node.cx = node.cx * 0.98 + defaultCx * 0.02;
+            node.cy = node.cy * 0.98 + defaultCy * 0.02;
+          }
+
+          // Dynamic vortex center to avoid identical paths initially
+          const dx = node.x - node.cx;
+          const dy = node.y - node.cy;
+          const dist = Math.sqrt(dx * dx + dy * dy) || 1;
+
+          // Tangent vector for spiral/vortex effect
+          const tx = -dy / dist;
+          const ty = dx / dist;
+
+          // Blend current velocity with tangent vector
+          node.vx = node.vx * 0.98 + tx * 0.03;
+          node.vy = node.vy * 0.98 + ty * 0.03;
+
+          // Add a tiny bit of random drift
+          node.vx += (Math.random() - 0.5) * 0.08;
+          node.vy += (Math.random() - 0.5) * 0.08;
+
+          // Speed limit
+          const speed = Math.sqrt(node.vx * node.vx + node.vy * node.vy);
+          if (speed > 1.2) {
+            node.vx = (node.vx / speed) * 1.2;
+            node.vy = (node.vy / speed) * 1.2;
+          }
+
           node.x += node.vx;
           node.y += node.vy;
 
-          // Bounce off edges with padding
-          if (node.x < 0 || node.x > w) node.vx *= -1;
-          if (node.y < 0 || node.y > h) node.vy *= -1;
-          node.x = Math.max(0, Math.min(w, node.x));
-          node.y = Math.max(0, Math.min(h, node.y));
+          // Wrap around edges
+          if (node.x < -20) node.x = w + 20;
+          if (node.x > w + 20) node.x = -20;
+          if (node.y < -20) node.y = h + 20;
+          if (node.y > h + 20) node.y = -20;
 
-          // Pulse timer
-          node.pulseTimer--;
-          if (node.pulseTimer <= 0) {
-            node.isPulsing = true;
-            node.pulseTimer = 300 + Math.random() * 500;
-          }
+          const angle = Math.atan2(node.vy, node.vx);
           node.pulsePhase += node.pulseSpeed;
-          if (node.pulsePhase > Math.PI * 2) {
-            node.isPulsing = false;
-            node.pulsePhase -= Math.PI * 2;
-          }
-        }
+          const opacity = Math.max(
+            0,
+            Math.min(1, node.baseOpacity + Math.sin(node.pulsePhase) * 0.4),
+          );
 
-        // Draw connections
-        for (let i = 0; i < nodes.length; i++) {
-          for (let j = i + 1; j < nodes.length; j++) {
-            const dx = nodes[i].x - nodes[j].x;
-            const dy = nodes[i].y - nodes[j].y;
-            const dist = Math.sqrt(dx * dx + dy * dy);
-
-            if (dist < CONNECTION_DIST) {
-              const alpha = (1 - dist / CONNECTION_DIST) * colors.lineMultiplier;
-              ctx!.beginPath();
-              ctx!.moveTo(nodes[i].x, nodes[i].y);
-              ctx!.lineTo(nodes[j].x, nodes[j].y);
-              ctx!.strokeStyle = colors.line.replace('__ALPHA__', String(alpha));
-              ctx!.lineWidth = 1;
-              ctx!.stroke();
-            }
-          }
-        }
-
-        // Draw nodes
-        for (const node of nodes) {
-          const pulseScale = node.isPulsing ? 1 + Math.sin(node.pulsePhase) * 0.8 : 1;
-          const r = node.radius * pulseScale;
-
-          // Glow for pulsing nodes
-          if (node.isPulsing && pulseScale > 1.3) {
-            ctx!.beginPath();
-            ctx!.arc(node.x, node.y, r * 3, 0, Math.PI * 2);
-            ctx!.fillStyle = colors.glow;
-            ctx!.fill();
-          }
-
+          ctx!.save();
+          ctx!.translate(node.x, node.y);
+          ctx!.rotate(angle);
+          ctx!.globalAlpha = isSubtle ? opacity * 0.35 : opacity;
+          ctx!.fillStyle = node.color;
           ctx!.beginPath();
-          ctx!.arc(node.x, node.y, r, 0, Math.PI * 2);
-          ctx!.fillStyle = node.isPulsing ? colors.nodePulse : colors.node;
+          // Draw pill shape spark
+          ctx!.roundRect(
+            -node.length / 2,
+            -node.thickness / 2,
+            node.length,
+            node.thickness,
+            node.thickness / 2,
+          );
           ctx!.fill();
+          ctx!.restore();
         }
 
         animId = requestAnimationFrame(draw);
@@ -201,16 +225,33 @@ const { subtle = false, fixed = false } = Astro.props;
       animId = requestAnimationFrame(draw);
 
       // Resize handler
-      window.addEventListener('resize', () => {
+      window.addEventListener("resize", () => {
         resize();
         initNodes();
       });
+      
+      // Mouse interaction event listeners (Attached to window to bypass pointer-events: none on canvas)
+      window.addEventListener("mousemove", (e) => {
+        const rect = canvas.getBoundingClientRect();
+        // Only track if mouse is over the hero section/canvas bounds
+        if (
+          e.clientY >= rect.top &&
+          e.clientY <= Math.max(rect.bottom, window.innerHeight * 0.8) && 
+          e.clientX >= rect.left &&
+          e.clientX <= rect.right
+        ) {
+          mouseX = e.clientX - rect.left;
+          mouseY = e.clientY - rect.top;
+          isHovering = true;
+        } else {
+          isHovering = false;
+        }
+      });
 
-      // Theme change observer
-      const observer = new MutationObserver(() => {});
-      observer.observe(document.documentElement, {
-        attributes: true,
-        attributeFilter: ['class'],
+      window.addEventListener("mouseout", (e) => {
+        if (!e.relatedTarget && !e.toElement) {
+          isHovering = false;
+        }
       });
     }
   }
@@ -218,9 +259,12 @@ const { subtle = false, fixed = false } = Astro.props;
   // Initialize on astro page load
   document.addEventListener("astro:page-load", initAgentNetwork);
   // Also run initially if not using view transitions
-  if (document.readyState === 'complete' || document.readyState === 'interactive') {
+  if (
+    document.readyState === "complete" ||
+    document.readyState === "interactive"
+  ) {
     initAgentNetwork();
   } else {
-    document.addEventListener('DOMContentLoaded', initAgentNetwork);
+    document.addEventListener("DOMContentLoaded", initAgentNetwork);
   }
 </script>
