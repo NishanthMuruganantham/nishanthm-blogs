@@ -2,9 +2,10 @@
 interface Props {
   subtle?: boolean;
   fixed?: boolean;
+  intensity?: "hero" | "blog" | "category" | string;
 }
 
-const { subtle = false, fixed = false } = Astro.props;
+const { subtle = false, fixed = false, intensity = "default" } = Astro.props;
 ---
 
 <canvas
@@ -249,7 +250,7 @@ const { subtle = false, fixed = false } = Astro.props;
       });
 
       window.addEventListener("mouseout", (e) => {
-        if (!e.relatedTarget && !e.toElement) {
+        if (!e.relatedTarget) {
           isHovering = false;
         }
       });

@@ -1,15 +1,15 @@
 ---
 const navLinks = [
-  { label: 'Blog', href: '/blog' },
-  { label: 'Stats', href: '/stats' },
-  { label: 'Categories', href: '/categories' },
-  { label: 'Tags', href: '/tags' },
-  { label: 'Projects', href: '/projects' },
-  { label: 'About', href: 'https://portfolio.nishanthm.com' },
+  { label: "Blogs", href: "/blog" },
+  { label: "Categories", href: "/categories" },
+  { label: "Tags", href: "/tags" },
+  { label: "Stats", href: "/stats" },
+  // { label: "Projects", href: "/projects" },
+  { label: "About", href: "https://portfolio.nishanthm.com" },
 ];
 
 const currentPath = Astro.url.pathname;
-import ThemeToggle from './ui/ThemeToggle.astro';
+import ThemeToggle from "./ui/ThemeToggle.astro";
 ---
 
 <header class="site-header" id="site-header">
@@ -26,7 +26,9 @@ import ThemeToggle from './ui/ThemeToggle.astro';
           <a
             href={link.href}
             target={link.href.startsWith("http") ? "_blank" : undefined}
-            rel={link.href.startsWith("http") ? "noopener noreferrer" : undefined}
+            rel={
+              link.href.startsWith("http") ? "noopener noreferrer" : undefined
+            }
             class:list={[
               "nav-link",
               { active: currentPath.startsWith(link.href) },
@@ -41,7 +43,7 @@ import ThemeToggle from './ui/ThemeToggle.astro';
     <!-- Right actions -->
     <div class="header-actions">
       <ThemeToggle />
-      
+
       <!-- GitHub icon -->
       <a
         href="https://github.com/NishanthMuruganantham"
@@ -153,14 +155,14 @@ import ThemeToggle from './ui/ThemeToggle.astro';
     font-family: var(--font-display);
     font-weight: 700;
     font-size: 1.25rem;
-    color: var(--color-text-primary);
+    color: var(--color-accent-bright);
     text-decoration: none;
     letter-spacing: -0.02em;
     transition: color var(--transition-fast);
   }
 
   .logo:hover {
-    color: var(--color-accent-bright);
+    color: var(--color-text-primary);
   }
 
   .logo-dot {
@@ -226,7 +228,9 @@ import ThemeToggle from './ui/ThemeToggle.astro';
     color: var(--color-text-secondary);
     padding: 0.35rem;
     border-radius: 0.375rem;
-    transition: color var(--transition-fast), background var(--transition-fast);
+    transition:
+      color var(--transition-fast),
+      background var(--transition-fast);
   }
 
   .icon-link:hover {
@@ -281,8 +285,9 @@ import ThemeToggle from './ui/ThemeToggle.astro';
     z-index: 98;
     opacity: 0;
     visibility: hidden;
-    transition: opacity 0.3s ease,
-                visibility 0.3s;
+    transition:
+      opacity 0.3s ease,
+      visibility 0.3s;
   }
 
   .mobile-overlay.visible {
@@ -307,8 +312,9 @@ import ThemeToggle from './ui/ThemeToggle.astro';
     padding: 5rem 2rem 2rem;
     transform: translateX(100%);
     visibility: hidden;
-    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1),
-                visibility 0.35s;
+    transition:
+      transform 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+      visibility 0.35s;
   }
 
   .mobile-nav.open {
@@ -399,6 +405,6 @@ import ThemeToggle from './ui/ThemeToggle.astro';
         header?.classList.remove("scrolled");
       }
     },
-    { passive: true }
+    { passive: true },
   );
 </script>
