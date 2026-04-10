@@ -60,7 +60,6 @@ const categoryCounts = categories.map((cat) => ({
 >
   <!-- ===================== HERO ===================== -->
   <section class="hero hero-gradient hero--space" id="hero-section">
-    <div class="hero__glow-blob" aria-hidden="true"></div>
 
     <!-- Animated agent network canvas -->
     <AgentNetwork intensity="hero" />
@@ -327,38 +326,6 @@ const categoryCounts = categories.map((cat) => ({
     flex-wrap: wrap;
   }
 
-  /* Glowing animated blob — purple + teal */
-  .hero__glow-blob {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 600px;
-    height: 600px;
-    background: radial-gradient(
-      circle,
-      var(--color-accent-40) 0%,
-      var(--color-teal-20) 40%,
-      transparent 70%
-    );
-    transform: translate(-50%, -50%);
-    filter: blur(60px);
-    border-radius: 50%;
-    z-index: 0;
-    opacity: 0.8;
-    pointer-events: none;
-    animation: blobPulse 8s ease-in-out infinite alternate;
-  }
-
-  @keyframes blobPulse {
-    0% {
-      transform: translate(-50%, -50%) scale(1);
-      opacity: 0.6;
-    }
-    100% {
-      transform: translate(-50%, -50%) scale(1.15);
-      opacity: 0.9;
-    }
-  }
 
   /* Staggered fade-in animation */
   .anim-fade {
@@ -703,18 +670,15 @@ const categoryCounts = categories.map((cat) => ({
 </style>
 
 <script>
-  // ── Scroll parallax for hero content ──
-  const heroContent = document.getElementById("hero-content");
-  const prefersReducedMotion = window.matchMedia(
-    "(prefers-reduced-motion: reduce)",
-  );
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
+  // ── Scroll parallax for hero content ──
+  const heroContent = document.getElementById('hero-content');
   if (heroContent && !prefersReducedMotion.matches) {
-    window.addEventListener("scroll", () => {
+    window.addEventListener('scroll', () => {
       if (window.scrollY < window.innerHeight) {
         requestAnimationFrame(() => {
           const yPos = window.scrollY * 0.3;
-          // Faster fade relative to scroll distance
           const opacity = 1 - (window.scrollY / window.innerHeight) * 1.5;
           heroContent.style.transform = `translateY(${yPos}px)`;
           heroContent.style.opacity = String(opacity > 0 ? opacity : 0);
