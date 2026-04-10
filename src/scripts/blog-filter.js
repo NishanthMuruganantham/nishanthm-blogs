@@ -5,15 +5,16 @@ class BlogFilter extends HTMLElement {
         this.posts = [];
         this.activeCategory = 'all';
         this.searchQuery = '';
-        this.viewMode = 'grid'; // 'grid' | 'list'
+        this.sortBy = 'latest';
     }
 
     connectedCallback() {
         // DOM queries must happen in connectedCallback, not constructor
         this.container = this.querySelector('#posts-container');
         this.searchInput = this.querySelector('#search-input');
-        this.categoryBtns = this.querySelectorAll('.category-btn');
-        this.layoutBtns = this.querySelectorAll('.layout-btn');
+        this.categoryBtns = this.querySelectorAll('.category-item');
+        this.tagBtns = this.querySelectorAll('button.tag[data-tag]');
+        this.sortSelect = this.querySelector('[data-sort]');
         this.emptyState = this.querySelector('#empty-state');
         this.countDisplay = this.querySelector('#result-count');
 
@@ -30,7 +31,7 @@ class BlogFilter extends HTMLElement {
         // 2. Bind all event listeners
         this.bindEvents();
 
-        // 3. Optional: Read initial state from URL query params (e.g. ?q=astro&category=frontend)
+        // 3. Optional: Read initial state from URL query params
         this.syncFromURL();
 
         // 4. Run first render to match JS state
@@ -38,7 +39,7 @@ class BlogFilter extends HTMLElement {
     }
 
     bindEvents() {
-        // Search input (debounce slightly for feel)
+        // Search input
         this.searchInput?.addEventListener('input', (e) => {
             this.searchQuery = e.target.value.toLowerCase().trim();
             this.updateURL();
@@ -50,13 +51,11 @@ class BlogFilter extends HTMLElement {
             btn.addEventListener('click', (e) => {
                 const category = e.currentTarget.dataset.category;
 
-                // Update State
                 this.activeCategory = category;
 
                 // Visual Update
                 this.categoryBtns.forEach(b => {
-                    b.classList.toggle('btn-primary', b.dataset.category === category);
-                    b.classList.toggle('btn-ghost', b.dataset.category !== category);
+                    b.classList.toggle('active', b.dataset.category === category);
                 });
 
                 this.updateURL();
@@ -64,23 +63,26 @@ class BlogFilter extends HTMLElement {
             });
         });
 
-        // Layout Toggle Buttons (Grid vs List)
-        this.layoutBtns.forEach((btn) => {
+        // Popular Tags
+        this.tagBtns.forEach(btn => {
             btn.addEventListener('click', (e) => {
-                // Find closest button in case SVG is clicked
-                const targetBtn = e.target.closest('button');
-                const layout = targetBtn.dataset.layout;
-
-                // Update active class visually
-                this.layoutBtns.forEach(b => b.classList.remove('text-accent'));
-                this.layoutBtns.forEach(b => b.classList.add('text-text-muted'));
-                targetBtn.classList.remove('text-text-muted');
-                targetBtn.classList.add('text-accent');
-
-                this.viewMode = layout;
-                this.filterAndRender();
+                const tag = e.currentTarget.dataset.tag;
+                if (this.searchInput) {
+                    this.searchInput.value = tag;
+                    this.searchQuery = tag;
+                    this.updateURL();
+                    this.filterAndRender();
+                }
             });
         });
+
+        // Sort Select
+        if (this.sortSelect) {
+            this.sortSelect.addEventListener('change', (e) => {
+                this.sortBy = e.target.value;
+                this.filterAndRender();
+            });
+        }
 
         // Hook up reset button inside empty state
         const resetBtn = this.querySelector('#reset-filters');
@@ -108,11 +110,10 @@ class BlogFilter extends HTMLElement {
         if (cat) {
             const targetBtn = Array.from(this.categoryBtns).find(b => b.dataset.category === cat);
             if (targetBtn) {
-                // Set state and visual only — don't trigger click which fires double render
+                // Set state and visual only
                 this.activeCategory = cat;
                 this.categoryBtns.forEach(b => {
-                    b.classList.toggle('btn-primary', b.dataset.category === cat);
-                    b.classList.toggle('btn-ghost', b.dataset.category !== cat);
+                    b.classList.toggle('active', b.dataset.category === cat);
                 });
             }
         }
@@ -132,7 +133,7 @@ class BlogFilter extends HTMLElement {
 
     filterAndRender() {
         // 1. Filter the dataset based on state
-        const filtered = this.posts.filter((post) => {
+        let filtered = this.posts.filter((post) => {
             const matchCategory = this.activeCategory === 'all' || post.category.toLowerCase() === this.activeCategory;
             const matchSearch = !this.searchQuery ||
                 post.title.toLowerCase().includes(this.searchQuery) ||
@@ -141,12 +142,17 @@ class BlogFilter extends HTMLElement {
             return matchCategory && matchSearch;
         });
 
-        // 2. Update Result Count text
+        // 2. Sort the dataset
+        if (this.sortBy === 'latest') {
+            filtered.sort((a, b) => new Date(b.date).valueOf() - new Date(a.date).valueOf());
+        }
+
+        // 3. Update Result Count text
         if (this.countDisplay) {
             this.countDisplay.textContent = `Showing ${filtered.length} post${filtered.length === 1 ? '' : 's'}`;
         }
 
-        // 3. Handle Empty State
+        // 4. Handle Empty State
         if (filtered.length === 0) {
             this.container.innerHTML = '';
             this.emptyState.classList.remove('hidden');
@@ -157,57 +163,43 @@ class BlogFilter extends HTMLElement {
         this.emptyState.classList.add('hidden');
         this.emptyState.classList.remove('flex');
 
-        // 4. Update Container Class for Grid vs List Layout
-        if (this.viewMode === 'list') {
-            this.container.className = 'posts-list';
-        } else {
-            // Revert to default grid config via Tailwind classes passed in index.astro
-            this.container.className = 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8';
-        }
-
         // 5. Generate and inject new HTML
         this.container.innerHTML = filtered.map(post => this.generateCardHTML(post)).join('');
     }
 
     generateCardHTML(post) {
-        const categoryLower = post.category.toLowerCase();
-        const dateStr = post.dateStr;
-        const readTimeStr = post.readingTime || '';
-
         const coverHTML = post.cover ? `
-      <div class="post-card__cover">
-        <img src="${post.cover}" alt="${post.title}" loading="lazy" decoding="async" />
-      </div>
-    ` : '';
+          <img src="${post.cover}" alt="${post.title}" loading="lazy" decoding="async" />
+        ` : `<div class="image-fallback"></div>`;
 
         const tagsHTML = post.tags && post.tags.length > 0 ? `
-      <div class="post-card__tags">
-        ${post.tags.slice(0, 3).map(tag => `<span class="post-card__tag">${tag}</span>`).join('')}
-      </div>
-    ` : '';
+          <div class="card-tags">
+            ${post.tags.map(tag => `<span class="tag">#${tag}</span>`).join('')}
+          </div>
+        ` : '';
 
         return `
-      <a href="/blog/${post.slug}/" class="post-card card" id="post-${post.slug}">
-        ${coverHTML}
-        <div class="post-card__content">
-          <div class="post-card__header">
-            <span class="tag tag-${categoryLower}">${post.category}</span>
+          <div class="blog-card" data-post-slug="${post.slug}">
+            <div class="blog-card-content">
+              <span class="category-badge">${post.category}</span>
+              <h2 class="card-title">${post.title}</h2>
+              <p class="card-excerpt">${post.description}</p>
+              
+              <div class="card-metadata">
+                <time datetime="${post.date}" class="date">${post.dateStr}</time>
+                <span class="read-time">${post.readingTime || '3 min read'}</span>
+              </div>
+              
+              ${tagsHTML}
+              
+              <a href="/blog/${post.slug}/" class="read-more">Read more &rarr;</a>
+            </div>
+            
+            <div class="blog-card-image">
+              ${coverHTML}
+            </div>
           </div>
-          
-          <h3 class="post-card__title">${post.title}</h3>
-          <p class="post-card__description">${post.description}</p>
-          
-          <div class="post-card__meta">
-            <time datetime="${post.date}">
-              ${dateStr}
-            </time>
-            ${readTimeStr ? `<span class="post-card__dot">·</span><span>${readTimeStr}</span>` : ''}
-          </div>
-          
-          ${tagsHTML}
-        </div>
-      </a>
-    `;
+        `;
     }
 }
 

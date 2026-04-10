@@ -1,0 +1,72 @@
+---
+export interface CategoryData {
+  name: string;
+  count: number;
+}
+
+interface Props {
+  categories: CategoryData[];
+  allTags?: string[];
+  totalPosts: number;
+}
+
+const { categories, allTags = [], totalPosts } = Astro.props;
+---
+
+<div class="sidebar-section">
+  <h3 class="sidebar-title">Search</h3>
+  <div class="relative">
+    <svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+    >
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+    </svg>
+    <input
+      type="text"
+      id="search-input"
+      class="search-input pl-9"
+      placeholder="Search articles..."
+    />
+  </div>
+</div>
+
+<div class="sidebar-section">
+  <h3 class="sidebar-title">Categories</h3>
+  <div id="category-filters" class="flex flex-col gap-1">
+    <button class="category-item active" data-category="all">
+      <span>All</span>
+      <span class="category-count">({totalPosts})</span>
+    </button>
+    
+    {categories.map(cat => (
+      <button class="category-item" data-category={cat.name.toLowerCase()}>
+        <span>{cat.name}</span>
+        <span class="category-count">({cat.count})</span>
+      </button>
+    ))}
+  </div>
+</div>
+
+{allTags.length > 0 && (
+  <div class="sidebar-section">
+    <h3 class="sidebar-title">Popular Tags</h3>
+    <div class="card-tags">
+      {allTags.slice(0, 10).map(tag => (
+         <button class="tag hover:bg-teal-900/40 hover:text-teal-400 transition-colors" data-tag={tag.toLowerCase()}>#{tag}</button>
+      ))}
+    </div>
+  </div>
+)}
+
+<div class="sidebar-section">
+  <h3 class="sidebar-title">Sort By</h3>
+  <select class="sort-select" data-sort>
+    <option value="latest">Latest</option>
+    <option value="most_read" disabled>Most Read</option>
+    <option value="trending" disabled>Trending</option>
+  </select>
+</div>
