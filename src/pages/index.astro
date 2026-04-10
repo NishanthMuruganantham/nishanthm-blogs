@@ -98,9 +98,7 @@ const categoryCounts = categories.map((cat) => ({
         >
         <Button
           as="a"
-          href="https://portfolio.nishanthm.com"
-          target="_blank"
-          rel="noopener noreferrer"
+          href="/about"
           variant="ghost"
           id="cta-about">About Me</Button
         >
@@ -167,65 +165,7 @@ const categoryCounts = categories.map((cat) => ({
     </div>
   </section>
 
-  <!-- =============== ABOUT TEASER =============== -->
-  <section class="section" id="about-teaser">
-    <div class="section__inner about-grid">
-      <div class="about-text">
-        <h2 class="section__title">Who am I?</h2>
-        <div class="about-bio">
-          <p class="font-display text-2xl text-text-primary leading-snug mb-4">
-            I’m a full-stack engineer focused on building end-to-end systems
-            that scale.
-          </p>
-          <p class="text-lg text-text-secondary leading-relaxed mb-8">
-            My current expertise lies in architecting Django-powered backends on
-            AWS and implementing Agentic AI workflows with N8N and MCP. I
-            document the hard-won lessons from production environments to help
-            fellow builders ship faster.
-          </p>
-        </div>
-        <ul class="about-stack font-mono text-sm tracking-wide">
-          <li>
-            <span class="text-accent mr-2">Backend:</span> Django, Python, AWS
-          </li>
-          <li>
-            <span class="text-accent mr-2">Agentic AI:</span> MCP, N8N, LLMs
-          </li>
-          <li>
-            <span class="text-accent mr-2">Frontend:</span> React, Astro, Tailwind
-          </li>
-          <li><span class="text-accent mr-2">Mobile:</span> Android, Kotlin</li>
-        </ul>
-        <a
-          href="https://portfolio.nishanthm.com"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="btn-ghost mt-4 inline-flex"
-          id="about-link"
-        >
-          Read more about me →
-        </a>
-      </div>
-      <div class="about-visual" aria-hidden="true">
-        <div class="code-snippet-card">
-          <div class="code-snippet__header">
-            <span class="code-snippet__dot code-snippet__dot--red"></span>
-            <span class="code-snippet__dot code-snippet__dot--yellow"></span>
-            <span class="code-snippet__dot code-snippet__dot--green"></span>
-            <span class="code-snippet__filename">about.py</span>
-          </div>
-          <pre
-            class="code-snippet__body"><code><span class="code-kw">class</span> <span class="code-cls">Developer</span>:
-    name = <span class="code-str">"Nishanth M"</span>
-    role = <span class="code-str">"AI &amp; Backend Engineer"</span>
-    stack = [<span class="code-str">"Django"</span>, <span class="code-str">"AWS"</span>, <span class="code-str">"Agentic AI"</span>]
 
-    <span class="code-kw">def</span> <span class="code-fn">passion</span>(self):
-        <span class="code-kw">return</span> <span class="code-str">"Building &amp; Writing"</span></code></pre>
-        </div>
-      </div>
-    </div>
-  </section>
 
   <!-- ============== NEWSLETTER ============== -->
   <section class="section section--newsletter" id="newsletter-section">
@@ -603,70 +543,6 @@ const categoryCounts = categories.map((cat) => ({
     font-family: var(--font-display);
     font-size: 0.75rem;
     color: var(--color-text-muted);
-  }
-
-  /* =====================================================
-     ABOUT TEASER
-     ===================================================== */
-  .about-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 3rem;
-    align-items: center;
-  }
-
-  @media (min-width: 768px) {
-    .about-grid {
-      grid-template-columns: 1fr 1fr;
-    }
-  }
-
-  .about-bio {
-    color: var(--color-text-secondary);
-    font-size: 1.05rem;
-    line-height: 1.75;
-    margin-bottom: 1.25rem;
-  }
-
-  .about-stack {
-    list-style: none;
-    padding: 0;
-    margin: 0 0 1.5rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-  }
-
-  .about-stack li {
-    color: var(--color-text-secondary);
-    font-size: 0.95rem;
-    padding-left: 1.25rem;
-    position: relative;
-  }
-
-  .about-stack li::before {
-    content: "▹";
-    position: absolute;
-    left: 0;
-    color: var(--color-teal);
-  }
-
-  .about-stack li strong {
-    color: var(--color-text-primary);
-    font-family: var(--font-display);
-    font-weight: 700;
-  }
-
-  .about-link {
-    font-family: var(--font-display);
-    font-weight: 700;
-    font-size: 0.95rem;
-    color: var(--color-accent-bright);
-    transition: color var(--transition-fast);
-  }
-
-  .about-link:hover {
-    color: var(--color-teal-bright);
   }
 
   /* Code snippet card */
