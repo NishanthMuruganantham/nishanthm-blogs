@@ -3,6 +3,7 @@ import SEO from '../components/SEO.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import AgentNetwork from '../components/AgentNetwork.astro';
+import CursorGlow from '../components/CursorGlow.astro';
 import '../styles/global.css';
 
 interface Props {
@@ -14,6 +15,7 @@ interface Props {
   publishedDate?: Date;
   tags?: string[];
   includeNetwork?: boolean;
+  showGlow?: boolean;
 }
 
 const {
@@ -25,6 +27,7 @@ const {
   publishedDate,
   tags,
   includeNetwork = true,
+  showGlow = true,
 } = Astro.props;
 ---
 
@@ -67,6 +70,7 @@ const {
       <slot />
     </main>
     <Footer />
+    {showGlow && <CursorGlow />}
   </body>
 </html>
 
