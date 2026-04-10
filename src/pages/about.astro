@@ -1,0 +1,264 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Button from "../components/ui/Button.astro";
+---
+
+<BaseLayout
+  title="About Me"
+  description="About Nishanth M - Full-stack engineer building intelligent, autonomous systems."
+  includeNetwork={false}
+>
+  <div class="page-header" style="padding-top: 8rem; text-align: center;">
+    <h1 class="page-title">Who Am I?</h1>
+  </div>
+
+  <section class="section about-content">
+    <div class="section__inner content-wrapper">
+      <p class="intro-text">
+        I'm a full-stack engineer building intelligent, autonomous systems.
+      </p>
+
+      <div class="content-block">
+        <h2 class="content-heading">My Journey</h2>
+        <ul class="styled-list">
+          <li>
+            Started with Python automation and developed numerous Django
+            websites and APIs.
+          </li>
+          <li>
+            Built serverless solutions leveraging AWS services like Lambda, API
+            Gateway, SQS, DynamoDB, and EventBridge.
+          </li>
+          <li>
+            Advanced into intelligent automation: exploring RAG systems,
+            building agentic AI workflows, and understanding how modern LLMs can
+            reason and act autonomously.
+          </li>
+        </ul>
+        <p>
+          Today, I'm at the intersection of <strong>backend systems</strong> and <strong
+            >autonomous AI</strong
+          > by designing architectures where intelligent agents orchestrate complex
+          workflows, integrate with external tools, and operate reliably in production.
+        </p>
+      </div>
+
+      <div class="content-block">
+        <h2 class="content-heading">What I Build</h2>
+        <ul class="styled-list">
+          <li>
+            <strong>Backend:</strong> Django APIs, database optimization, AWS infrastructure
+            (Lambda, SQS, DynamoDB, EventBridge)
+          </li>
+          <li>
+            <strong>Agentic AI:</strong> Autonomous agents with Claude, reasoning
+            loops, tool orchestration, MCP integrations
+          </li>
+          <li>
+            <strong>Workflow Automation:</strong> N8N pipelines, system integrations,
+            event-driven architectures
+          </li>
+          <li>
+            <strong>RAG Systems:</strong> Semantic search, vector databases, knowledge
+            retrieval at scale
+          </li>
+          <li>
+            <strong>Sports & Data Engineering:</strong> Built specialized tools as a
+            sports enthusiast, including a Duckworth-Lewis (DLS) calculator, IPL
+            Playoff simulator, and a Kaggle data pipeline for T20I datasets
+            leveraging AWS.
+          </li>
+          <li>
+            <strong>Development Setup:</strong> Building with Anthropic Claude, Google
+            AI Studio, and modern AI tooling
+          </li>
+        </ul>
+      </div>
+
+      <div class="content-block">
+        <h2 class="content-heading">Philosophy</h2>
+        <p>
+          I believe in learning in public. This blog documents the architecture
+          decisions, debugging sessions, configuration patterns, and
+          infrastructure choices that work. Not tutorials. Not theory. Just the
+          documented path of someone building real systems and shipping them to
+          production.
+        </p>
+        <p>
+          My goal: Help other engineers navigate the shift toward intelligent,
+          autonomous systems by sharing what I've learned along the way.
+        </p>
+      </div>
+
+      <hr class="divider" />
+
+      <div class="content-block">
+        <h2 class="section__title">Expertise</h2>
+
+        <div class="expertise-grid">
+          <div class="expertise-item">
+            <h3>Backend &amp; Infrastructure</h3>
+            <p>
+              Django, Python, PostgreSQL, AWS (Lambda, SQS, DynamoDB, S3,
+              EventBridge), CI/CD, monitoring
+            </p>
+          </div>
+          <div class="expertise-item">
+            <h3>AI &amp; Autonomous Systems</h3>
+            <p>
+              Claude (Anthropic), Agentic AI, ReAct prompting, function calling,
+              tool orchestration, MCP
+            </p>
+          </div>
+          <div class="expertise-item">
+            <h3>Intelligent Automation</h3>
+            <p>
+              N8N workflows, RAG systems, semantic search, vector databases, LLM
+              integrations
+            </p>
+          </div>
+          <div class="expertise-item">
+            <h3>Frontend &amp; Tools</h3>
+            <p>
+              React, Astro, Tailwind, command-line tools, Antigravity IDE
+              (AI-assisted development)
+            </p>
+          </div>
+          <div class="expertise-item">
+            <h3>DevOps &amp; Infrastructure</h3>
+            <p>
+              AWS deployment, serverless architecture, event-driven systems,
+              monitoring, logging
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="cta-container">
+        <Button
+          as="a"
+          href="https://portfolio.nishanthm.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          variant="primary"
+        >
+          Read more about me &rarr;
+        </Button>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .page-header {
+    margin-bottom: 2rem;
+  }
+
+  .page-title {
+    font-family: var(--font-serif-display);
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    font-weight: 800;
+    color: var(--color-text-primary);
+  }
+
+  .content-wrapper {
+    max-width: 768px;
+    margin: 0 auto;
+    color: var(--color-text-secondary);
+    font-size: 1.1rem;
+    line-height: 1.8;
+  }
+
+  .intro-text {
+    font-size: 1.4rem;
+    color: var(--color-text-primary);
+    font-family: var(--font-display);
+    font-weight: 600;
+    line-height: 1.5;
+    margin-bottom: 3rem;
+  }
+
+  .content-block {
+    margin-bottom: 3rem;
+  }
+
+  .content-block p {
+    margin-bottom: 1.5rem;
+  }
+
+  .content-heading {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--color-accent-bright);
+    margin-bottom: 1rem;
+  }
+
+  .styled-list {
+    list-style: none;
+    padding: 0;
+  }
+
+  .styled-list li {
+    position: relative;
+    padding-left: 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .styled-list li::before {
+    content: "▹";
+    position: absolute;
+    left: 0;
+    color: var(--color-accent);
+  }
+
+  .styled-list li strong {
+    color: var(--color-text-primary);
+  }
+
+  .divider {
+    border: 0;
+    height: 1px;
+    background: var(--color-border);
+    margin: 4rem 0;
+  }
+
+  .section__title {
+    font-family: var(--font-display);
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--color-text-primary);
+    margin-bottom: 2rem;
+  }
+
+  .expertise-grid {
+    display: grid;
+    gap: 1.5rem;
+  }
+
+  .expertise-item {
+    background: var(--color-bg-elevated);
+    padding: 1.5rem;
+    border-radius: 0.75rem;
+    border: 1px solid var(--color-border-subtle);
+  }
+
+  .expertise-item h3 {
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--color-accent-bright);
+    margin-bottom: 0.5rem;
+  }
+
+  .expertise-item p {
+    margin: 0;
+    font-size: 0.95rem;
+  }
+
+  .cta-container {
+    margin-top: 4rem;
+    display: flex;
+    justify-content: center;
+  }
+</style>
