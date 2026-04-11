@@ -1,0 +1,66 @@
+---
+/**
+ * TableOfContents.astro
+ * Generates a clickable list of headings from the post content.
+ * Links to h2 and h3 elements with smooth scroll support.
+ */
+
+interface Heading {
+  depth: number;
+  slug: string;
+  text: string;
+}
+
+interface Props {
+  headings: Heading[];
+}
+
+const { headings } = Astro.props;
+
+// Only show h2 and h3 in the TOC
+const tocHeadings = headings.filter((h) => h.depth === 2 || h.depth === 3);
+
+// If no headings, don't render anything
+if (tocHeadings.length === 0) return null;
+---
+
+<nav class="post-toc" aria-label="Table of Contents">
+  <h3>Table of Contents</h3>
+  <ul id="toc">
+    {
+      tocHeadings.map((heading) => (
+        <li class={`toc-h${heading.depth}`}>
+          <a 
+            href={`#${heading.slug}`} 
+            data-slug={heading.slug}
+            class="toc-link"
+          >
+            {heading.text}
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</nav>
+
+<script>
+  // Simple smooth scroll handler for TOC links
+  // (Optional: CSS scroll-behavior: smooth; is usually preferred)
+  document.querySelectorAll('.toc-link').forEach(link => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      const targetId = link.getAttribute('href')?.substring(1);
+      const targetElement = document.getElementById(targetId || '');
+      
+      if (targetElement) {
+        window.scrollTo({
+          top: targetElement.offsetTop - 100, // Offset for sticky header
+          behavior: 'smooth'
+        });
+        
+        // Update URL hash without jumping
+        history.pushState(null, '', `#${targetId}`);
+      }
+    });
+  });
+</script>

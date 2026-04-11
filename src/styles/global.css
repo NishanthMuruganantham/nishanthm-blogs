@@ -51,7 +51,8 @@
   --color-accent-40: rgba(0, 230, 118, 0.40);
   /* Solid green for tag/badge backgrounds in light mode */
   --color-accent-solid: #44ef9f;
-  --color-on-accent: #021a0a;  /* near-black text that sits ON the green bg */
+  --color-on-accent: #021a0a;
+  /* near-black text that sits ON the green bg */
 
   /* Status */
   --color-success: #16a34a;
@@ -79,6 +80,10 @@
   --code-border: rgba(0, 230, 118, 0.2);
   --code-lang-bg: rgba(0, 230, 118, 0.08);
   --code-lang-text: rgba(0, 230, 118, 0.6);
+
+  /* Inline Code (Light Mode Specific) */
+  --inline-code-bg: #dcfcec;
+  --inline-code-text: #13151a;
 
   /* Typography */
   --font-display: 'Space Grotesk', sans-serif;
@@ -164,6 +169,10 @@
   --code-border: rgba(68, 239, 159, 0.15);
   --code-lang-bg: rgba(68, 239, 159, 0.08);
   --code-lang-text: rgba(0, 230, 118, 0.5);
+
+  /* Inline Code (Dark Mode - Keep Existing) */
+  --inline-code-bg: #283d3378;
+  --inline-code-text: #27bf75;
 
   /* Mobile nav glassmorphism background — near-opaque dark panel */
   --mobile-nav-glass-bg: rgba(5, 12, 8, 0.97);
@@ -518,6 +527,7 @@
     color: var(--color-teal-bright);
     text-decoration: none;
   }
+
   .post-card:hover {
     text-decoration: none;
   }
@@ -841,11 +851,18 @@
 
   /* Inline Code */
   .prose :not(pre)>code {
-    background-color: var(--color-accent-15);
-    color: var(--color-accent-bright);
+    background-color: var(--inline-code-bg) !important;
+    color: var(--inline-code-text) !important;
     padding: 0.15rem 0.35rem;
     border-radius: 0.3rem;
     font-size: 0.85em;
+  }
+
+  /* Remove highlighting for inline code in headings */
+  .prose :is(h1, h2, h3, h4, h5, h6) code {
+    background-color: transparent !important;
+    color: inherit !important;
+    padding: 0 !important;
   }
 
   /* Blockquotes */
@@ -1061,14 +1078,17 @@
    Dark Mode Typography Overrides
    ============================================================ */
 html.dark .tag {
-    color: #a8d5b8;
+  color: #a8d5b8;
 }
+
 html.dark .category-card__name {
-    color: #e8f5ee !important;
+  color: #e8f5ee !important;
 }
+
 html.dark .post-card__tag {
-    color: #a8d5b8;
+  color: #a8d5b8;
 }
+
 /* Override specific tag colors to be readable in dark mode */
 html.dark .tag-backend,
 html.dark .tag-frontend,
@@ -1076,5 +1096,5 @@ html.dark .tag-tools,
 html.dark .tag-android,
 html.dark .tag-startup,
 html.dark .tag-life {
-    color: #c8e6d4 !important;
+  color: #c8e6d4 !important;
 }

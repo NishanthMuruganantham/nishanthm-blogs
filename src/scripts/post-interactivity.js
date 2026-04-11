@@ -42,9 +42,9 @@ async function initPostInteractivity() {
         const observer = new IntersectionObserver((entries) => {
             entries.forEach((entry) => {
                 if (entry.isIntersecting) {
-                    tocLinks.forEach(link => link.classList.remove("text-accent", "font-medium"));
+                    tocLinks.forEach(link => link.classList.remove("active"));
                     const activeLink = document.querySelector(`#toc a[data-slug="${entry.target.getAttribute("id")}"]`);
-                    if (activeLink) activeLink.classList.add("text-accent", "font-medium");
+                    if (activeLink) activeLink.classList.add("active");
                 }
             });
         }, { rootMargin: "0px 0px -60% 0px" });

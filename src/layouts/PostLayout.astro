@@ -3,13 +3,14 @@ import BaseLayout from "./BaseLayout.astro";
 import { formatDate } from "../lib/utils";
 import Giscus from "../components/Giscus.astro";
 import { getCollection } from "astro:content";
-import { getReadingTime } from "../lib/utils";
 import { SITE_AUTHOR } from "../consts";
 import { getRelatedPosts } from "../lib/related-posts";
 import ShareButtons from "../components/ShareButtons.astro";
+import TableOfContents from "../components/TableOfContents.astro";
 import ProgressBar from "../components/ui/ProgressBar.astro";
 import EmailCapture from "../components/ui/EmailCapture.astro";
 import RelatedPosts from "../components/RelatedPosts.astro";
+import "../styles/post.css";
 
 const { post, frontmatter, headings, readingTime } = Astro.props;
 const categoryLower = frontmatter.category.toLowerCase();
@@ -30,11 +31,14 @@ const relatedPosts = getRelatedPosts(post, allPosts, 3);
     {/* Reading Progress Bar — dedicated component */}
     <ProgressBar />
 
-    <div
-        class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 flex flex-col lg:flex-row gap-12 relative items-start"
-    >
-        {/* Main Content */}
-        <article class="flex-1 w-full min-w-0">
+    <div class="post-container">
+        {/* LEFT SIDEBAR: Table of Contents */}
+        <aside class="post-toc-sidebar">
+            <TableOfContents headings={headings} />
+        </aside>
+
+        {/* MAIN CONTENT */}
+        <article class="post-content">
             <header class="mb-10 text-center lg:text-left">
                 <div class="mb-4">
                     <span
@@ -43,16 +47,16 @@ const relatedPosts = getRelatedPosts(post, allPosts, 3);
                     >
                 </div>
                 <h1
-                    class="text-4xl md:text-5xl lg:text-6xl font-display font-bold text-text-primary leading-tight mb-6"
+                    class="text-4xl md:text-5xl lg:text-6xl font-display font-bold text-text-primary leading-tight mb-4"
                 >
                     {frontmatter.title}
                 </h1>
-                <p class="text-xl text-text-secondary mb-6">
+                <p class="post-description">
                     {frontmatter.description}
                 </p>
 
                 <div
-                    class="flex flex-wrap items-center justify-center lg:justify-start gap-3 text-sm text-text-muted"
+                    class="flex flex-wrap items-center justify-center lg:justify-start gap-3 text-sm text-text-muted mt-6"
                 >
                     <time datetime={frontmatter.date.toISOString()}
                         >{formatDate(frontmatter.date)}</time
@@ -89,13 +93,13 @@ const relatedPosts = getRelatedPosts(post, allPosts, 3);
 
             {/* Prose Body */}
             <div
-                class="prose prose-lg max-w-[720px] mx-auto lg:mx-0 prose-headings:font-display prose-p:leading-relaxed prose-a:text-accent hover:prose-a:text-accent-bright prose-img:rounded-xl"
+                class="prose prose-lg max-w-none prose-headings:font-display prose-p:leading-relaxed prose-a:text-accent hover:prose-a:text-accent-bright prose-img:rounded-xl"
             >
                 <slot />
             </div>
 
             <footer
-                class="mt-16 pt-8 border-t border-border max-w-[720px] mx-auto lg:mx-0"
+                class="mt-16 pt-8 border-t border-border"
             >
                 <div class="flex flex-wrap gap-2 mb-8">
                     <span class="text-text-secondary mr-2">Tagged with:</span>
@@ -111,12 +115,14 @@ const relatedPosts = getRelatedPosts(post, allPosts, 3);
                     }
                 </div>
 
-                {/* Share Buttons */}
-                <ShareButtons
-                    title={frontmatter.title}
-                    url={`/blog/${post.slug}`}
-                    description={frontmatter.description}
-                />
+                {/* Share Buttons (Visible on mobile/tablet where sidebar is hidden) */}
+                <div class="lg:hidden mb-12">
+                    <ShareButtons
+                        title={frontmatter.title}
+                        url={`/blog/${post.slug}`}
+                        description={frontmatter.description}
+                    />
+                </div>
 
                 {/* Email Capture */}
                 <EmailCapture />
@@ -133,38 +139,13 @@ const relatedPosts = getRelatedPosts(post, allPosts, 3);
             </footer>
         </article>
 
-        {/* Sidebar (Table of Contents only — Related Posts moved inline) */}
-        <aside class="hidden lg:block w-80 shrink-0 sticky top-24">
-            {
-                headings && headings.length > 0 && (
-                    <nav class="mb-12 bg-bg-card p-6 rounded-2xl border border-border-subtle">
-                        <h3 class="text-lg font-bold mb-4 font-display">
-                            Table of Contents
-                        </h3>
-                        <ul class="space-y-2 text-sm" id="toc">
-                            {headings
-                                .filter(
-                                    (h: any) => h.depth === 2 || h.depth === 3
-                                )
-                                .map((heading: any) => (
-                                    <li
-                                        class={`${
-                                            heading.depth === 3 ? "ml-4" : ""
-                                        }`}
-                                    >
-                                        <a
-                                            href={`#${heading.slug}`}
-                                            class="text-text-secondary hover:text-accent transition-colors py-1 block"
-                                            data-slug={heading.slug}
-                                        >
-                                            {heading.text}
-                                        </a>
-                                    </li>
-                                ))}
-                        </ul>
-                    </nav>
-                )
-            }
+        {/* RIGHT SIDEBAR: Social Share */}
+        <aside class="post-share-sidebar">
+            <ShareButtons
+                title={frontmatter.title}
+                url={`/blog/${post.slug}`}
+                description={frontmatter.description}
+            />
         </aside>
     </div>
 </BaseLayout>
