@@ -32,21 +32,7 @@ const serializedPosts = sortedPosts.map((post) => ({
 // We can strip 'body' before sending to client to save bytes
 const serializableForClient = serializedPosts;
 
-// Extract Unique Categories and counts for the filter bar
-const categoryCounts = serializedPosts.reduce((acc, post) => {
-    const cat = post.category;
-    acc[cat] = (acc[cat] || 0) + 1;
-    return acc;
-}, {} as Record<string, number>);
-
-// Ensure we only have the top categories
-const topCategories = Object.entries(categoryCounts)
-    .sort(([, a], [, b]) => b - a)
-    .map(([name, count]) => ({ name, count }));
-
-// Extract all unique tags
-const allTags = Array.from(new Set(serializedPosts.flatMap(post => post.tags)));
-
+// Posts are already sorted and formatted for the main list
 ---
 
 <BaseLayout
@@ -61,11 +47,7 @@ const allTags = Array.from(new Set(serializedPosts.flatMap(post => post.tags)));
         <div class="blog-wrapper">
             <!-- LEFT SIDEBAR -->
             <aside class="blog-sidebar-left">
-                <BlogSidebar 
-                    categories={topCategories}
-                    allTags={allTags}
-                    totalPosts={sortedPosts.length}
-                />
+                <BlogSidebar />
             </aside>
 
             <!-- MAIN CONTENT -->

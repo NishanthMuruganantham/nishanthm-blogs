@@ -1,4 +1,8 @@
 async function initPostInteractivity() {
+    // Prevent multiple concurrent executions
+    if (window.__is_initializing_interactivity) return;
+    window.__is_initializing_interactivity = true;
+
     // 1. Copy Buttons and Line Numbers
     const codeBlocks = document.querySelectorAll('pre');
     // ... (rest of the copy button logic remains the same, I'll just keep it structured)
@@ -42,9 +46,9 @@ async function initPostInteractivity() {
         const observer = new IntersectionObserver((entries) => {
             entries.forEach((entry) => {
                 if (entry.isIntersecting) {
-                    tocLinks.forEach(link => link.classList.remove("text-accent", "font-medium"));
+                    tocLinks.forEach(link => link.classList.remove("active"));
                     const activeLink = document.querySelector(`#toc a[data-slug="${entry.target.getAttribute("id")}"]`);
-                    if (activeLink) activeLink.classList.add("text-accent", "font-medium");
+                    if (activeLink) activeLink.classList.add("active");
                 }
             });
         }, { rootMargin: "0px 0px -60% 0px" });
@@ -132,12 +136,17 @@ async function initPostInteractivity() {
                 const preElement = codeElement.closest('pre');
                 if (!preElement) continue;
 
-                // Unique ID based on code content hash to be safe, or just index if unique
+                const figure = preElement.closest('figure');
+                const targetElement = figure || preElement;
+
+                // Check if already processed
+                if (targetElement.dataset.mermaidProcessed === 'true') continue;
+                targetElement.dataset.mermaidProcessed = 'true';
+
                 const diagramId = `mermaid-render-${index}`;
                 if (document.getElementById(diagramId)) continue; 
 
                 const code = codeElement.innerText.trim();
-                const figure = preElement.closest('figure');
 
                 const container = document.createElement('div');
                 container.className = 'mermaid-rendered';
@@ -164,10 +173,19 @@ async function initPostInteractivity() {
             console.error('Failed to load mermaid library:', importErr);
         }
     }
+    window.__is_initializing_interactivity = false;
+}
+
+// Unified initialization for regular loads and View Transitions
+function setupInteractivity() {
+    initPostInteractivity();
 }
 
 if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initPostInteractivity);
+    document.addEventListener('DOMContentLoaded', setupInteractivity);
 } else {
-    initPostInteractivity();
+    setupInteractivity();
 }
+
+// Support Astro View Transitions
+document.addEventListener('astro:page-load', setupInteractivity);

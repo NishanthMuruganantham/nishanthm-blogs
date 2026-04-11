@@ -15,8 +15,11 @@ export default defineConfig({
       syntaxHighlight: false,
       rehypePlugins: [
         [rehypePrettyCode, {
-          theme: 'one-dark-pro',
-          keepBackground: true,
+          theme: {
+            light: 'light-plus',
+            dark: 'one-dark-pro',
+          },
+          keepBackground: false,
           defaultLang: {
             block: 'plaintext',
             inline: 'plaintext',
