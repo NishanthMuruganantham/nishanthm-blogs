@@ -282,7 +282,7 @@ import ThemeToggle from "./ui/ThemeToggle.astro";
     position: fixed;
     inset: 0;
     background: var(--glass-overlay);
-    z-index: 98;
+    z-index: 104;
     opacity: 0;
     visibility: hidden;
     transition:
@@ -306,15 +306,18 @@ import ThemeToggle from "./ui/ThemeToggle.astro";
     bottom: 0;
     width: 280px;
     max-width: 80vw;
-    background: var(--color-bg-elevated);
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
     border-left: 1px solid var(--color-border);
-    z-index: 99;
+    z-index: 105;
     padding: 5rem 2rem 2rem;
     transform: translateX(100%);
     visibility: hidden;
     transition:
       transform 0.35s cubic-bezier(0.4, 0, 0.2, 1),
       visibility 0.35s;
+    box-shadow: -10px 0 30px rgba(0, 0, 0, 0.2);
   }
 
   .mobile-nav.open {
