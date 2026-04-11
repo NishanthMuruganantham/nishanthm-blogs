@@ -97,6 +97,9 @@
   --content-width: 720px;
   --wide-width: 1100px;
 
+  /* Mobile nav glassmorphism background — near-opaque so page content doesn't bleed through */
+  --mobile-nav-glass-bg: rgba(245, 246, 247, 0.98);
+
   /* Transitions */
   --transition-fast: 150ms ease;
   --transition-base: 250ms ease;
@@ -113,10 +116,11 @@
   --color-border: rgba(68, 239, 159, 0.15);
   --color-border-subtle: rgba(68, 239, 159, 0.07);
 
-  /* Text */
-  --color-text-primary: #e8f5ee;
-  --color-text-secondary: #a8d5b8;
-  --color-text-muted: #5a8a6a;
+  /* Text — sophisticated gray scale (Issue #59: no pure white) */
+  --color-text-primary: #F3F4F6;
+  --color-text-secondary: #D1D5DB;
+  --color-text-muted: #9CA3AF;
+  --color-text-warm: #BFDBFE;
 
   /* Accent — bright emerald, more vivid in dark mode */
   --color-accent: #44ef9f;
@@ -160,6 +164,9 @@
   --code-border: rgba(68, 239, 159, 0.15);
   --code-lang-bg: rgba(68, 239, 159, 0.08);
   --code-lang-text: rgba(0, 230, 118, 0.5);
+
+  /* Mobile nav glassmorphism background — near-opaque dark panel */
+  --mobile-nav-glass-bg: rgba(5, 12, 8, 0.97);
 
   /* Teal maps to a slightly deeper green in dark mode */
   --color-teal: #059669;

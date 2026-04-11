@@ -1,0 +1,253 @@
+---
+// RelatedPosts.astro — Smart related posts grid
+// Issue #50: 3-column desktop, horizontal scroll mobile, card lift hover
+import { formatDate, getReadingTime } from "../lib/utils";
+
+interface Post {
+  slug: string;
+  data: {
+    title: string;
+    description: string;
+    date: Date;
+    category: string;
+    tags: string[];
+    cover?: string;
+    readingTime?: string;
+  };
+  body: string;
+}
+
+interface Props {
+  posts: Post[];
+}
+
+const { posts } = Astro.props;
+---
+
+{
+  posts.length >= 2 && (
+    <section class="related-posts" aria-label="Related posts">
+      <h2 class="related-heading">
+        <span class="related-heading-accent" aria-hidden="true">//</span>
+        You might also like
+      </h2>
+
+      <div class="related-grid">
+        {posts.slice(0, 3).map((post) => {
+          const categoryLower = post.data.category.toLowerCase();
+          const readTime =
+            post.data.readingTime ?? getReadingTime(post.body);
+          return (
+            <a
+              href={`/blog/${post.slug}`}
+              class="related-card"
+              aria-label={`Read: ${post.data.title}`}
+            >
+              {post.data.cover && (
+                <div class="related-card-cover">
+                  <img
+                    src={post.data.cover}
+                    alt=""
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </div>
+              )}
+              <div class="related-card-body">
+                <span
+                  class={`related-card-tag tag tag-${categoryLower}`}
+                >
+                  {post.data.category}
+                </span>
+                <h3 class="related-card-title">{post.data.title}</h3>
+                <p class="related-card-desc">{post.data.description}</p>
+                <div class="related-card-meta">
+                  <time datetime={post.data.date.toISOString()}>
+                    {formatDate(post.data.date)}
+                  </time>
+                  <span aria-hidden="true">·</span>
+                  <span>{readTime}</span>
+                </div>
+              </div>
+            </a>
+          );
+        })}
+      </div>
+    </section>
+  )
+}
+
+<style>
+  .related-posts {
+    margin-top: 4rem;
+    padding-top: 3rem;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .related-heading {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--color-text-primary);
+    margin: 0 0 2rem;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+
+  .related-heading-accent {
+    color: var(--color-accent);
+    font-weight: 400;
+    font-family: var(--font-mono);
+    font-size: 1.1rem;
+  }
+
+  /* ===== Three-column grid on desktop ===== */
+  .related-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+
+  /* ===== Card ===== */
+  .related-card {
+    display: flex;
+    flex-direction: column;
+    background: var(--color-bg-card);
+    border: 1px solid var(--color-border-subtle);
+    border-radius: 0.875rem;
+    text-decoration: none;
+    overflow: hidden;
+    transition:
+      transform 220ms ease,
+      box-shadow 220ms ease,
+      border-color 220ms ease;
+  }
+
+  .related-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
+    border-color: var(--color-accent-glow);
+  }
+
+  .related-card:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+  }
+
+  .related-card-cover {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+
+  .related-card-cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 400ms ease;
+  }
+
+  .related-card:hover .related-card-cover img {
+    transform: scale(1.04);
+  }
+
+  .related-card-body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 1.25rem;
+    flex: 1;
+  }
+
+  .related-card-tag {
+    font-family: var(--font-display);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 0.2rem 0.6rem;
+    border-radius: 999px;
+    width: fit-content;
+  }
+
+  .related-card-title {
+    font-family: var(--font-display);
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--color-text-primary);
+    line-height: 1.35;
+    margin: 0;
+    /* Clamp to 2 lines */
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .related-card-desc {
+    font-family: var(--font-body);
+    font-size: 0.825rem;
+    color: var(--color-text-secondary);
+    line-height: 1.55;
+    margin: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .related-card-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-family: var(--font-display);
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+    margin-top: auto;
+    padding-top: 0.5rem;
+  }
+
+  /* ===== Tablet: two columns ===== */
+  @media (max-width: 900px) {
+    .related-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  /* ===== Mobile: horizontal scroll ===== */
+  @media (max-width: 600px) {
+    .related-grid {
+      grid-template-columns: unset;
+      display: flex;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      gap: 1rem;
+      padding-bottom: 1rem;
+      /* Smooth scroll indicator */
+      scrollbar-width: thin;
+      scrollbar-color: var(--color-accent-glow) transparent;
+    }
+
+    .related-grid::-webkit-scrollbar {
+      height: 4px;
+    }
+
+    .related-grid::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .related-grid::-webkit-scrollbar-thumb {
+      background: var(--color-accent-glow);
+      border-radius: 4px;
+    }
+
+    .related-card {
+      min-width: 80vw;
+      scroll-snap-align: start;
+      flex-shrink: 0;
+    }
+  }
+</style>

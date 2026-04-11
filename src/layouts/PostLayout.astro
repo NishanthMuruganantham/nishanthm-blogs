@@ -1,21 +1,22 @@
 ---
 import BaseLayout from "./BaseLayout.astro";
 import { formatDate } from "../lib/utils";
-import PostCard from "../components/PostCard.astro";
 import Giscus from "../components/Giscus.astro";
 import { getCollection } from "astro:content";
 import { getReadingTime } from "../lib/utils";
 import { SITE_AUTHOR } from "../consts";
-
 import { getRelatedPosts } from "../lib/related-posts";
 import ShareButtons from "../components/ShareButtons.astro";
+import ProgressBar from "../components/ui/ProgressBar.astro";
+import EmailCapture from "../components/ui/EmailCapture.astro";
+import RelatedPosts from "../components/RelatedPosts.astro";
 
 const { post, frontmatter, headings, readingTime } = Astro.props;
 const categoryLower = frontmatter.category.toLowerCase();
 
-// Get related posts mapping (weighted scoring)
+// Get related posts (up to 3, weighted scoring)
 const allPosts = await getCollection("blog");
-const relatedPosts = getRelatedPosts(post, allPosts, 2);
+const relatedPosts = getRelatedPosts(post, allPosts, 3);
 ---
 
 <BaseLayout
@@ -26,18 +27,8 @@ const relatedPosts = getRelatedPosts(post, allPosts, 2);
     tags={frontmatter.tags}
     showGlow={false}
 >
-    {/* Reading Progress Bar */}
-    <div
-        id="reading-progress"
-        class="fixed left-0 h-1 bg-accent z-[101] transition-all duration-150 ease-out"
-        style="width: 0%; top: 3.55rem;"
-        role="progressbar"
-        aria-valuenow="0"
-        aria-valuemin="0"
-        aria-valuemax="100"
-        aria-label="Reading progress"
-    >
-    </div>
+    {/* Reading Progress Bar — dedicated component */}
+    <ProgressBar />
 
     <div
         class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 flex flex-col lg:flex-row gap-12 relative items-start"
@@ -127,6 +118,12 @@ const relatedPosts = getRelatedPosts(post, allPosts, 2);
                     description={frontmatter.description}
                 />
 
+                {/* Email Capture */}
+                <EmailCapture />
+
+                {/* Related Posts — full width below article */}
+                <RelatedPosts posts={relatedPosts} />
+
                 <div class="mt-12">
                     <h2 class="text-2xl font-display font-bold mb-6">
                         Discussion
@@ -136,7 +133,7 @@ const relatedPosts = getRelatedPosts(post, allPosts, 2);
             </footer>
         </article>
 
-        {/* Sidebar (Table of Contents & Related) */}
+        {/* Sidebar (Table of Contents only — Related Posts moved inline) */}
         <aside class="hidden lg:block w-80 shrink-0 sticky top-24">
             {
                 headings && headings.length > 0 && (
@@ -166,33 +163,6 @@ const relatedPosts = getRelatedPosts(post, allPosts, 2);
                                 ))}
                         </ul>
                     </nav>
-                )
-            }
-
-            {
-                relatedPosts.length > 0 && (
-                    <div>
-                        <h3 class="text-lg font-bold mb-4 font-display">
-                            Related Posts
-                        </h3>
-                        <div class="space-y-6">
-                            {relatedPosts.map((p: any) => (
-                                <PostCard
-                                    title={p.data.title}
-                                    description={p.data.description}
-                                    date={p.data.date}
-                                    category={p.data.category}
-                                    tags={p.data.tags}
-                                    slug={p.slug}
-                                    readingTime={
-                                        p.data.readingTime ||
-                                        getReadingTime(p.body)
-                                    }
-                                    cover={p.data.cover}
-                                />
-                            ))}
-                        </div>
-                    </div>
                 )
             }
         </aside>
