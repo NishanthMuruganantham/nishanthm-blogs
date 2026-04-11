@@ -1,6 +1,11 @@
 ---
 ---
-<button id="theme-toggle" class="icon-link theme-toggle" aria-label="Toggle dark mode">
+<button
+  id="theme-toggle"
+  class="icon-link theme-toggle"
+  aria-label="Switch to light mode"
+  aria-pressed="false"
+>
   <!-- Sun icon (for dark mode) -->
   <svg id="sun-icon" class="theme-icon hidden" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
     <circle cx="12" cy="12" r="5"></circle>
@@ -44,6 +49,7 @@
   const updateThemeIcon = (isDark) => {
     const sunIcon = document.getElementById("sun-icon");
     const moonIcon = document.getElementById("moon-icon");
+    const btn = document.getElementById("theme-toggle");
     
     if (sunIcon && moonIcon) {
       if (isDark) {
@@ -53,6 +59,15 @@
         sunIcon.classList.add("hidden");
         moonIcon.classList.remove("hidden");
       }
+    }
+
+    // Update ARIA state so screen readers announce the current mode
+    if (btn) {
+      btn.setAttribute("aria-pressed", String(isDark));
+      btn.setAttribute(
+        "aria-label",
+        isDark ? "Switch to light mode" : "Switch to dark mode"
+      );
     }
   };
 

@@ -35,23 +35,7 @@ async function initPostInteractivity() {
         if (lines.length > 5) pre.classList.add('show-line-numbers');
     });
 
-    // 2. Reading Progress
-    const progressBar = document.getElementById("reading-progress");
-    let ticking = false;
-    const updateProgress = () => {
-        const totalHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-        if (totalHeight > 0 && progressBar) {
-            const progress = Math.min(100, (window.scrollY / totalHeight) * 100);
-            progressBar.style.width = `${progress}%`;
-        }
-        ticking = false;
-    };
-    window.addEventListener("scroll", () => {
-        if (!ticking) { window.requestAnimationFrame(updateProgress); ticking = true; }
-    }, { passive: true });
-    updateProgress();
-
-    // 3. ToC Observer
+    // 2. ToC Observer (Reading progress is handled by ProgressBar.astro)
     const headings = Array.from(document.querySelectorAll(".prose h2, .prose h3"));
     const tocLinks = document.querySelectorAll("#toc a");
     if (headings.length > 0 && tocLinks.length > 0) {

@@ -17,7 +17,7 @@
     height: 600px;
     border-radius: 50%;
     pointer-events: none;
-    z-index: 0;
+    z-index: 99;
     background: radial-gradient(
       circle,
       rgba(68, 239, 159, 0.22) 0%,
@@ -32,9 +32,15 @@
     will-change: transform;
   }
 
-  /* Only show in dark mode */
+  /* Light mode: significantly more vivid green to cut through white background */
   :global(html:not(.dark)) #cursor-glow {
-    display: none;
+    background: radial-gradient(
+      circle,
+      rgba(52, 211, 153, 0.55) 0%,
+      rgba(52, 211, 153, 0.2) 35%,
+      transparent 65%
+    );
+    filter: blur(40px); /* Slightly sharper in light mode */
   }
 </style>
 
@@ -60,6 +66,7 @@
     });
 
     function animate() {
+      if (!glow) return;
       // Lerp: smooth lag factor — 0.08 = dreamy, organic follow
       currentX += (targetX - currentX) * 0.08;
       currentY += (targetY - currentY) * 0.08;
