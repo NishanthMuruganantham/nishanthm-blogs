@@ -7,8 +7,8 @@ import { SITE_AUTHOR } from "../consts";
 import { getRelatedPosts } from "../lib/related-posts";
 import ShareButtons from "../components/ShareButtons.astro";
 import TableOfContents from "../components/TableOfContents.astro";
+import BlogSidebar from "../components/BlogSidebar.astro";
 import ProgressBar from "../components/ui/ProgressBar.astro";
-import EmailCapture from "../components/ui/EmailCapture.astro";
 import RelatedPosts from "../components/RelatedPosts.astro";
 import "../styles/post.css";
 
@@ -32,9 +32,14 @@ const relatedPosts = getRelatedPosts(post, allPosts, 3);
     <ProgressBar />
 
     <div class="post-container">
-        {/* LEFT SIDEBAR: Table of Contents */}
+        {/* LEFT SIDEBAR: Table of Contents & Discovery */}
         <aside class="post-toc-sidebar">
-            <TableOfContents headings={headings} />
+            <div class="sticky top-24 flex flex-col gap-12">
+                <TableOfContents headings={headings} />
+                <div class="hidden lg:block border-t border-border-subtle pt-8">
+                    <BlogSidebar showSort={false} />
+                </div>
+            </div>
         </aside>
 
         {/* MAIN CONTENT */}
@@ -124,9 +129,6 @@ const relatedPosts = getRelatedPosts(post, allPosts, 3);
                     />
                 </div>
 
-                {/* Email Capture */}
-                <EmailCapture />
-
                 {/* Related Posts — full width below article */}
                 <RelatedPosts posts={relatedPosts} />
 
@@ -151,3 +153,4 @@ const relatedPosts = getRelatedPosts(post, allPosts, 3);
 </BaseLayout>
 
 <script src="../scripts/post-interactivity.js"></script>
+<script src="../scripts/sidebar-nav.js"></script>

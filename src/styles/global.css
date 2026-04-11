@@ -38,7 +38,7 @@
   --color-text-muted: #888888;
 
   /* Accent — kept as #00e676 / #44ef9f. On light bg, use as bg color with dark text on top */
-  --color-accent: #44ef9f;
+  --color-accent: #00a943;
   --color-accent-bright: #00e676;
   --color-accent-glow: rgba(0, 230, 118, 0.18);
   --color-accent-05: rgba(0, 230, 118, 0.05);
@@ -76,14 +76,14 @@
   --header-glass-bg: rgba(255, 255, 255, 0.88);
   --header-glass-bg-scrolled: rgba(255, 255, 255, 0.97);
 
-  --code-bg: #0a1f14;
-  --code-border: rgba(0, 230, 118, 0.2);
-  --code-lang-bg: rgba(0, 230, 118, 0.08);
-  --code-lang-text: rgba(0, 230, 118, 0.6);
+  --code-bg: #f8fafc;
+  --code-border: rgba(0, 0, 0, 0.1);
+  --code-lang-bg: rgba(0, 0, 0, 0.05);
+  --code-lang-text: #475569;
 
   /* Inline Code (Light Mode Specific) */
-  --inline-code-bg: #dcfcec;
-  --inline-code-text: #13151a;
+  --inline-code-bg: #f1f5f9;
+  --inline-code-text: #0f172a;
 
   /* Typography */
   --font-display: 'Space Grotesk', sans-serif;
@@ -128,7 +128,7 @@
   --color-text-warm: #BFDBFE;
 
   /* Accent — bright emerald, more vivid in dark mode */
-  --color-accent: #44ef9f;
+  --color-accent: #00a943;
   --color-accent-bright: #00e676;
   --color-accent-glow: rgba(68, 239, 159, 0.2);
   /* In dark mode: tags use transparent bg + bright green text (works on dark) */
@@ -165,14 +165,16 @@
   --header-glass-bg: rgba(5, 15, 9, 0.8);
   --header-glass-bg-scrolled: rgba(5, 15, 9, 0.95);
 
-  --code-bg: #020a05;
-  --code-border: rgba(68, 239, 159, 0.15);
-  --code-lang-bg: rgba(68, 239, 159, 0.08);
-  --code-lang-text: rgba(0, 230, 118, 0.5);
+  --code-bg: #111827;
+  /* Neutral dark gray, matching standard terminal backgrounds */
+  --code-border: rgba(255, 255, 255, 0.1);
+  --code-lang-bg: rgba(255, 255, 255, 0.08);
+  --code-lang-text: rgba(255, 255, 255, 0.6);
+  /* Brightened for better visibility */
 
-  /* Inline Code (Dark Mode - Keep Existing) */
-  --inline-code-bg: #283d3378;
-  --inline-code-text: #27bf75;
+  /* Inline Code (Dark Mode - Neutralized) */
+  --inline-code-bg: rgba(255, 255, 255, 0.08);
+  --inline-code-text: #e2e8f0;
 
   /* Mobile nav glassmorphism background — near-opaque dark panel */
   --mobile-nav-glass-bg: rgba(5, 12, 8, 0.97);
@@ -182,6 +184,29 @@
   --color-teal-bright: #10b981;
   --color-teal-glow: rgba(5, 150, 105, 0.2);
   --color-teal-20: rgba(5, 150, 105, 0.25);
+}
+
+/* Shiki Dual Theme Overrides */
+[data-rehype-pretty-code-figure] code {
+  background-color: var(--shiki-light-bg);
+}
+
+[data-rehype-pretty-code-figure] span {
+  color: var(--shiki-light);
+  font-style: var(--shiki-light-font-style);
+  font-weight: var(--shiki-light-font-weight);
+  text-decoration: var(--shiki-light-text-decoration);
+}
+
+html.dark [data-rehype-pretty-code-figure] code {
+  background-color: var(--shiki-dark-bg) !important;
+}
+
+html.dark [data-rehype-pretty-code-figure] span {
+  color: var(--shiki-dark) !important;
+  font-style: var(--shiki-dark-font-style) !important;
+  font-weight: var(--shiki-dark-font-weight) !important;
+  text-decoration: var(--shiki-dark-text-decoration) !important;
 }
 
 /* ============================================================
@@ -729,8 +754,6 @@
   .prose pre,
   .prose pre code {
     background-color: var(--code-bg) !important;
-    color: #e2e8f0 !important;
-    /* Force light text on dark background */
   }
 
   .prose pre {
