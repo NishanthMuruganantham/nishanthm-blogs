@@ -149,12 +149,9 @@
   background: linear-gradient(135deg, #0d9488 0%, #14b8a6 100%);
 }
 
-/* Blog Sidebar Layout (Component styles moved to blog-sidebar.css) */
+/* Blog Sidebar Layout (Integrated/Transparent) */
 .blog-sidebar-left {
-  background: #111827;
-  border: 1px solid #1f2937;
-  border-radius: 8px;
-  padding: 1.5rem;
+  padding: 0;
 }
 
 /* Responsive Design */
@@ -249,7 +246,6 @@ html:not(.dark) .read-more {
 }
 
 html:not(.dark) .blog-sidebar-left {
-  background: #ffffff !important;
-  border-color: #e5e7eb !important;
-  color: #1f2937 !important;
+  background: transparent !important;
+  border: none !important;
 }

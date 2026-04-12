@@ -196,26 +196,26 @@ const categoryCounts = categories.map((cat) => ({
     pointer-events: none;
   }
 
-  /* Deep-space radial gradient — DARK mode default */
+  /* Deep-forest radial gradient — DARK mode default */
   .hero--space {
-    background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
+    background: radial-gradient(ellipse at bottom, #0a2e1d 0%, var(--color-bg) 100%);
   }
 
-  /* Light mode override: soft sky-dawn gradient */
+  /* Light mode override: soft mint-dawn gradient */
   :global(html:not(.dark)) .hero--space {
     background: radial-gradient(
       ellipse at 50% 110%,
-      #c7d7f8 0%,
-      #dde8ff 40%,
-      #f0f4ff 100%
+      #d1fae5 0%, /* Emerald 100 */
+      #ecfdf5 40%, /* Emerald 50 */
+      #f9fafb 100%
     );
   }
 
-  /* Light mode: tint the glow blob to a softer indigo */
+  /* Light mode: tint the glow blob to a softer emerald */
   :global(html:not(.dark)) .hero__glow-blob {
     background: radial-gradient(
       circle,
-      rgba(124, 106, 247, 0.15) 0%,
+      rgba(16, 185, 129, 0.1) 0%,
       transparent 70%
     );
     opacity: 0.6;

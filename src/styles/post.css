@@ -37,6 +37,19 @@
   }
 }
 
+/* Mobile-only components visibility */
+.post-mobile-toc,
+.post-footer-share-container {
+  display: block;
+}
+
+@media (min-width: 1200px) {
+  .post-mobile-toc,
+  .post-footer-share-container {
+    display: none;
+  }
+}
+
 /* Table of Contents Styling */
 .post-toc h3 {
   font-size: 0.75rem;
@@ -97,10 +110,16 @@
 
 /* Share Buttons Sidebar */
 .share-sidebar-icons {
-  display: flex;
+  display: none;
   flex-direction: column;
   gap: 1.25rem;
   align-items: center;
+}
+
+@media (min-width: 1200px) {
+  .share-sidebar-icons {
+    display: flex;
+  }
 }
 
 .share-icon {
