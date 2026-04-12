@@ -31,9 +31,16 @@
     border-radius: 0 2px 2px 0;
     box-shadow: 0 0 8px var(--color-accent-glow);
     /* Smooth update on scroll */
-    transition: width 120ms linear;
+    transition: width 120ms linear, background 0.3s ease, box-shadow 0.3s ease;
     /* Hide until JS sets a width */
     transform-origin: left;
+  }
+
+  /* When reading is completed — :global() needed because JS adds this class dynamically
+     and Astro's scoped styles won't match dynamically-added classes */
+  :global(#reading-progress.is-completed) {
+    background: var(--color-accent-bright);
+    box-shadow: 0 0 14px var(--color-accent-bright), 0 0 4px var(--color-accent-bright);
   }
 
   /* Respect reduced-motion: freeze the bar but keep it visible */
@@ -55,16 +62,45 @@
     let ticking = false;
 
     const update = () => {
-      const scrollTop = window.scrollY;
-      const docHeight =
-        document.documentElement.scrollHeight -
-        document.documentElement.clientHeight;
+      // Find the main article or prose content
+      const content = document.querySelector(".prose") || document.querySelector("article");
+      
+      let pct = 0;
+      
+      if (content) {
+        const rect = content.getBoundingClientRect();
+        // Distance from top of the page to the top of the content
+        const contentTop = window.scrollY + rect.top;
+        const contentHeight = rect.height;
+        const scrollY = window.scrollY;
+        const windowHeight = window.innerHeight;
 
-      if (docHeight > 0) {
-        const pct = Math.min(100, Math.round((scrollTop / docHeight) * 100));
-        bar.style.width = `${pct}%`;
-        bar.setAttribute("aria-valuenow", String(pct));
+        // How much of the content we've scrolled past the viewport
+        const readAmount = scrollY + windowHeight - contentTop;
+
+        if (readAmount > 0) {
+          pct = Math.min(100, Math.max(0, Math.round((readAmount / contentHeight) * 100)));
+        }
+      } else {
+        // Fallback for pages without an article (e.g. homepage)
+        const docHeight =
+          document.documentElement.scrollHeight -
+          document.documentElement.clientHeight;
+
+        if (docHeight > 0) {
+          pct = Math.min(100, Math.round((window.scrollY / docHeight) * 100));
+        }
       }
+
+      bar.style.width = `${pct}%`;
+      bar.setAttribute("aria-valuenow", String(pct));
+      
+      if (pct === 100) {
+        bar.classList.add("is-completed");
+      } else {
+        bar.classList.remove("is-completed");
+      }
+
       ticking = false;
     };
 

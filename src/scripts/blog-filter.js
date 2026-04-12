@@ -192,7 +192,7 @@ class BlogFilter extends HTMLElement {
               
               ${tagsHTML}
               
-              <a href="/blog/${post.slug}/" class="read-more">Read more &rarr;</a>
+              <a href="/blogss/${post.slug}/" class="read-more">Read more &rarr;</a>
             </div>
             
             <div class="blog-card-image">

@@ -19,7 +19,7 @@ const categoryLower = category.toLowerCase();
   </div>
 
   {cover && (
-    <a href={`/blog/${post.slug}/`} class="featured-post-card__cover" tabindex="-1" aria-hidden="true">
+    <a href={`/blogs/${post.slug}/`} class="featured-post-card__cover" tabindex="-1" aria-hidden="true">
       <img src={cover} alt={title} loading="eager" decoding="async" />
     </a>
   )}
@@ -30,7 +30,7 @@ const categoryLower = category.toLowerCase();
     </div>
 
     <h2 class="featured-post-card__title">
-      <a href={`/blog/${post.slug}/`}>{title}</a>
+      <a href={`/blogs/${post.slug}/`}>{title}</a>
     </h2>
     <p class="featured-post-card__description">{description}</p>
 
@@ -42,7 +42,7 @@ const categoryLower = category.toLowerCase();
       {readingTime && <span>{readingTime}</span>}
     </div>
 
-    <a href={`/blog/${post.slug}/`} class="featured-post-card__cta" aria-hidden="true">
+    <a href={`/blogs/${post.slug}/`} class="featured-post-card__cta" aria-hidden="true">
       Read Featured Post <span class="cta-arrow">→</span>
     </a>
   </div>

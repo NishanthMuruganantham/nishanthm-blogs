@@ -20,7 +20,7 @@ const categoryLower = category.toLowerCase();
 <div class="post-card card" id={`post-${slug}`}>
   {
     cover && (
-      <a href={`/blog/${slug}/`} class="post-card__cover" tabindex="-1" aria-hidden="true">
+      <a href={`/blogs/${slug}/`} class="post-card__cover" tabindex="-1" aria-hidden="true">
         <img src={cover} alt={title} loading="lazy" decoding="async" />
       </a>
     )
@@ -31,7 +31,7 @@ const categoryLower = category.toLowerCase();
     </div>
 
     <h3 class="post-card__title">
-      <a href={`/blog/${slug}/`}>{title}</a>
+      <a href={`/blogs/${slug}/`}>{title}</a>
     </h3>
     <p class="post-card__description">{description}</p>
 
