@@ -1,23 +1,25 @@
 ---
 /**
- * CursorGlow — a fixed, page-wide cursor-following emerald spotlight.
- * Sits at z-index -1, so it never covers cards, sidebars, or any content.
- * Automatically hidden in light mode (only looks good on dark backgrounds).
+ * CursorGlow — a cursor-following emerald spotlight.
+ * Can be 'fixed' (viewport-wide) or 'absolute' (constrained to a relative container).
+ * Sits at z-index -1 by default in fixed mode, or configurable.
  */
+interface Props {
+  absolute?: boolean;
+}
+
+const { absolute = false } = Astro.props;
 ---
 
-<div id="cursor-glow" aria-hidden="true"></div>
+<div id="cursor-glow" class={absolute ? 'absolute-glow' : 'fixed-glow'} aria-hidden="true"></div>
 
 <style>
   #cursor-glow {
-    position: fixed;
-    top: 0;
-    left: 0;
     width: 600px;
     height: 600px;
     border-radius: 50%;
     pointer-events: none;
-    z-index: 99;
+    z-index: 1; /* Sits above background network but below content */
     background: radial-gradient(
       circle,
       rgba(68, 239, 159, 0.22) 0%,
@@ -26,10 +28,22 @@
     );
     filter: blur(50px);
     transform: translate(-50%, -50%);
-    /* Start off-screen until first mousemove */
     opacity: 0;
     transition: opacity 0.6s ease;
     will-change: transform;
+  }
+
+  .fixed-glow {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 99;
+  }
+
+  .absolute-glow {
+    position: absolute;
+    top: 0;
+    left: 0;
   }
 
   /* Light mode: significantly more vivid green to cut through white background */
@@ -40,42 +54,63 @@
       rgba(52, 211, 153, 0.2) 35%,
       transparent 65%
     );
-    filter: blur(40px); /* Slightly sharper in light mode */
+    filter: blur(40px);
   }
 </style>
 
 <script>
-  const glow = document.getElementById('cursor-glow') as HTMLElement | null;
-  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  function initGlow() {
+    const glow = document.getElementById('cursor-glow') as HTMLElement | null;
+    if (!glow) return;
 
-  if (glow && !prefersReducedMotion.matches) {
-    let targetX = window.innerWidth / 2;
-    let targetY = window.innerHeight / 2;
-    let currentX = targetX;
-    let currentY = targetY;
-    let visible = false;
+    const isAbsolute = glow.classList.contains('absolute-glow');
+    const container = isAbsolute ? glow.parentElement : null;
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
-    document.addEventListener('mousemove', (e: MouseEvent) => {
-      targetX = e.clientX;
-      targetY = e.clientY;
+    if (!prefersReducedMotion.matches) {
+      let targetX = 0;
+      let targetY = 0;
+      let currentX = 0;
+      let currentY = 0;
+      let visible = false;
 
-      if (!visible) {
-        glow.style.opacity = '1';
-        visible = true;
+      const updateTarget = (e: MouseEvent) => {
+        if (isAbsolute && container) {
+          const rect = container.getBoundingClientRect();
+          // Coordinates relative to the container
+          targetX = e.clientX - rect.left;
+          targetY = e.clientY - rect.top;
+        } else {
+          targetX = e.clientX;
+          targetY = e.clientY;
+        }
+
+        if (!visible) {
+          glow.style.opacity = '1';
+          visible = true;
+          // Sync current to target immediately on first move to avoid jump from (0,0)
+          currentX = targetX;
+          currentY = targetY;
+        }
+      };
+
+      document.addEventListener('mousemove', updateTarget);
+
+      function animate() {
+        if (!glow) return;
+        // Lerp: smooth lag factor
+        currentX += (targetX - currentX) * 0.08;
+        currentY += (targetY - currentY) * 0.08;
+
+        glow.style.transform = `translate(${currentX - 300}px, ${currentY - 300}px)`;
+
+        requestAnimationFrame(animate);
       }
-    });
-
-    function animate() {
-      if (!glow) return;
-      // Lerp: smooth lag factor — 0.08 = dreamy, organic follow
-      currentX += (targetX - currentX) * 0.08;
-      currentY += (targetY - currentY) * 0.08;
-
-      // Use transform instead of top/left for GPU-accelerated movement
-      glow.style.transform = `translate(${currentX - 300}px, ${currentY - 300}px)`;
-
-      requestAnimationFrame(animate);
+      animate();
     }
-    animate();
   }
+
+  // Initialize on load and on page transitions
+  document.addEventListener('astro:page-load', initGlow);
+  initGlow();
 </script>
