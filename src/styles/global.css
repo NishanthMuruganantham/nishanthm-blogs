@@ -37,9 +37,9 @@
   --color-text-secondary: #555555;
   --color-text-muted: #888888;
 
-  /* Accent — kept as #00e676 / #44ef9f. On light bg, use as bg color with dark text on top */
+  /* Accent — kept as #04bd63 / #44ef9f. On light bg, use as bg color with dark text on top */
   --color-accent: #00a943;
-  --color-accent-bright: #00e676;
+  --color-accent-bright: #04bd63;
   --color-accent-glow: rgba(0, 230, 118, 0.18);
   --color-accent-05: rgba(0, 230, 118, 0.05);
   --color-accent-08: rgba(0, 230, 118, 0.08);
