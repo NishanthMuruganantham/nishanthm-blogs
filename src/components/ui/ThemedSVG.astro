@@ -1,0 +1,141 @@
+---
+import fs from 'node:fs/promises';
+import path from 'node:path';
+
+interface Props {
+  src: string;
+  alt?: string;
+  class?: string;
+}
+
+/**
+ * ThemedSVG.astro
+ * 
+ * Inlines an SVG file from the public/ directory to allow CSS-based theming.
+ * This is essential for charts (like Draw.io SVGs) that need to adapt 
+ * to light/dark mode transitions without being hardcoded to one theme.
+ */
+
+const { src, alt, class: className } = Astro.props;
+
+// Construct path to the public asset
+const publicPath = path.join(process.cwd(), 'public');
+const filePath = path.join(publicPath, src);
+
+let svgContent = '';
+
+try {
+  svgContent = await fs.readFile(filePath, 'utf-8');
+  // Strip XML prolog and doctype for proper inlining
+  svgContent = svgContent.replace(/<\?xml.*?\?>/i, '');
+  svgContent = svgContent.replace(/<!DOCTYPE.*?>/i, '');
+} catch (error) {
+  console.error(`[ThemedSVG] Error reading file at ${filePath}:`, error);
+  svgContent = `<!-- SVG Load Error: ${src} -->`;
+}
+---
+
+<div class:list={["themed-svg-wrapper", className]} title={alt} role="img" aria-label={alt}>
+  <Fragment set:html={svgContent} />
+</div>
+
+<style is:global>
+  /* ============================================================
+     Themed SVG Styles (Draw.io Compatibility)
+     ============================================================ */
+
+  .themed-svg-wrapper svg {
+    max-width: 100%;
+    height: auto !important;
+    display: block;
+    margin: 4rem auto;
+    background: transparent !important;
+    overflow: visible !important;
+  }
+
+  .themed-svg-wrapper svg * {
+    overflow: visible !important;
+  }
+
+  /* --- Shapes (Main Boxes) --- */
+  /* Target only the main interactive boxes, not the label backgrounds */
+  .themed-svg-wrapper rect[pointer-events="all"] {
+    transition: all var(--transition-base);
+    fill: var(--color-bg) !important;
+    stroke: #94a3b8 !important; /* slate-400 for high contrast box outlines */
+    stroke-width: 2.5px !important;
+    opacity: 1 !important;
+  }
+
+  html.dark .themed-svg-wrapper rect[pointer-events="all"] {
+    fill: var(--color-bg-elevated) !important;
+    stroke: var(--color-accent-bright) !important;
+    stroke-opacity: 0.7 !important;
+    stroke-width: 2px !important;
+  }
+
+  /* --- Connecting Lines & Arrows --- */
+  .themed-svg-wrapper path[stroke] {
+    stroke: var(--color-text-primary) !important; 
+    stroke-width: 3px !important;
+    stroke-opacity: 1 !important;
+    stroke-linecap: round !important;
+    stroke-linejoin: round !important;
+    transition: stroke var(--transition-base), stroke-width var(--transition-base);
+  }
+
+  /* Arrowheads (fills) */
+  .themed-svg-wrapper path[fill]:not([fill="none"]):not([fill="transparent"]) {
+    fill: var(--color-text-primary) !important;
+    transition: fill var(--transition-base);
+  }
+
+  html.dark .themed-svg-wrapper path[stroke] {
+    stroke: var(--color-accent-bright) !important;
+    stroke-opacity: 0.8 !important;
+  }
+  
+  html.dark .themed-svg-wrapper path[fill]:not([fill="none"]):not([fill="transparent"]) {
+    fill: var(--color-accent-bright) !important;
+  }
+
+  /* --- Typography & Labels --- */
+  .themed-svg-wrapper text,
+  .themed-svg-wrapper div,
+  .themed-svg-wrapper span {
+    color: var(--color-text-primary) !important;
+    fill: var(--color-text-primary) !important;
+    font-family: var(--font-display) !important;
+    font-weight: 700 !important; 
+    font-size: 14px !important;
+    transition: color var(--transition-base), fill var(--transition-base);
+  }
+
+  /* Reset background boxes for labels (the 'disintegrated' look) */
+  /* These rects do NOT have pointer-events="all" */
+  .themed-svg-wrapper g[data-cell-id] rect:not([pointer-events="all"]) {
+    fill: var(--color-bg) !important;
+    opacity: 1 !important;
+    stroke: none !important;
+  }
+
+  /* Ensure foreignObject doesn't clip its children */
+  .themed-svg-wrapper foreignObject {
+    overflow: visible !important;
+  }
+
+  .themed-svg-wrapper foreignObject div {
+    background-color: transparent !important;
+    border: none !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-align: center !important;
+    min-width: max-content !important;
+  }
+
+  /* Tighten spacing */
+  .themed-svg-wrapper g[transform] {
+    transition: transform var(--transition-base);
+  }
+</style>

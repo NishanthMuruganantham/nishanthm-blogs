@@ -45,12 +45,17 @@
   border-radius: 8px;
   transition: all 0.3s ease;
   text-decoration: none;
+  position: relative;
 }
 
 .blog-card:hover {
   transform: scale(1.02);
   border-left-color: #14b8a6;
   box-shadow: 0 0 20px rgba(13, 148, 136, 0.3);
+}
+
+.blog-card:hover .card-title a {
+  color: #14b8a6;
 }
 
 /* Card Content (Left 60%) */
@@ -72,6 +77,14 @@
   font-weight: 600;
   text-transform: uppercase;
   margin-bottom: 0.5rem;
+  text-decoration: none;
+  position: relative;
+  z-index: 2;
+  transition: background 0.2s ease;
+}
+
+.category-badge:hover {
+  background: rgba(13, 148, 136, 0.3);
 }
 
 .card-title {
@@ -80,6 +93,14 @@
   color: #f3f4f6;
   line-height: 1.3;
   margin-bottom: 0.75rem;
+}
+
+.card-title a {
+  text-decoration: none;
+  color: inherit;
+  transition: color 0.2s ease;
+  position: relative;
+  z-index: 2;
 }
 
 .card-excerpt {
@@ -115,6 +136,14 @@
   background: rgba(13, 148, 136, 0.15);
   color: #d1d5db;
   border-radius: 3px;
+  text-decoration: none;
+  position: relative;
+  z-index: 2;
+  transition: background 0.2s ease;
+}
+
+.tag:hover {
+  background: rgba(13, 148, 136, 0.3);
 }
 
 .read-more {
@@ -123,6 +152,13 @@
   font-weight: 600;
   text-decoration: none;
   transition: color 0.2s ease;
+}
+
+.read-more::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
 }
 
 .read-more:hover {
@@ -135,12 +171,19 @@
   overflow: hidden;
   border-radius: 8px;
   height: 280px;
+  position: relative;
+  z-index: 2;
 }
 
 .blog-card-image img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.blog-card:hover .blog-card-image img {
+  transform: scale(1.05);
 }
 
 .image-fallback {
@@ -149,12 +192,9 @@
   background: linear-gradient(135deg, #0d9488 0%, #14b8a6 100%);
 }
 
-/* Blog Sidebar Layout (Component styles moved to blog-sidebar.css) */
+/* Blog Sidebar Layout (Integrated/Transparent) */
 .blog-sidebar-left {
-  background: #111827;
-  border: 1px solid #1f2937;
-  border-radius: 8px;
-  padding: 1.5rem;
+  padding: 0;
 }
 
 /* Responsive Design */
@@ -249,7 +289,6 @@ html:not(.dark) .read-more {
 }
 
 html:not(.dark) .blog-sidebar-left {
-  background: #ffffff !important;
-  border-color: #e5e7eb !important;
-  color: #1f2937 !important;
+  background: transparent !important;
+  border: none !important;
 }

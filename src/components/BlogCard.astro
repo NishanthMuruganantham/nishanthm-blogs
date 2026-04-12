@@ -1,4 +1,6 @@
 ---
+import { slugify } from '../lib/utils';
+
 interface Props {
   id?: string;
   title: string;
@@ -23,8 +25,10 @@ const dateStr = typeof date === 'string' ? date : new Date(date).toLocaleDateStr
 
 <div class="blog-card" data-post-slug={slug}>
   <div class="blog-card-content">
-    <span class="category-badge">{category}</span>
-    <h2 class="card-title">{title}</h2>
+    <a href={`/categories/${slugify(category)}/`} class="category-badge">{category}</a>
+    <h2 class="card-title">
+      <a href={`/blog/${slug}/`}>{title}</a>
+    </h2>
     <p class="card-excerpt">{description || excerpt}</p>
     
     <div class="card-metadata">
@@ -35,19 +39,19 @@ const dateStr = typeof date === 'string' ? date : new Date(date).toLocaleDateStr
     {tags.length > 0 && (
       <div class="card-tags">
         {tags.map(tag => (
-          <span class="tag">#{tag}</span>
+          <a href={`/tags/${slugify(tag)}/`} class="tag">#{tag}</a>
         ))}
       </div>
     )}
     
-    <a href={`/blog/${slug}/`} class="read-more">Read more &rarr;</a>
+    <a href={`/blog/${slug}/`} class="read-more" aria-hidden="true">Read more &rarr;</a>
   </div>
   
-  <div class="blog-card-image">
+  <a href={`/blog/${slug}/`} class="blog-card-image" tabindex="-1" aria-hidden="true">
     {cover ? (
       <img src={cover} alt={title} loading="lazy" decoding="async" />
     ) : (
       <div class="image-fallback"></div>
     )}
-  </div>
+  </a>
 </div>

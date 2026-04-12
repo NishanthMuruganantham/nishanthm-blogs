@@ -1,0 +1,163 @@
+---
+/**
+ * InThisArticle.astro
+ * Collapsible Table of Contents for mobile viewports.
+ * Follows professional technical blog standards (e.g., Medium, Dev.to).
+ */
+
+interface Heading {
+  depth: number;
+  slug: string;
+  text: string;
+}
+
+interface Props {
+  headings: Heading[];
+}
+
+const { headings } = Astro.props;
+
+// Only show h2 and h3 in the TOC
+const tocHeadings = headings.filter((h) => h.depth === 2 || h.depth === 3);
+
+// If no headings, don't render anything
+if (tocHeadings.length === 0) return null;
+---
+
+<div class="mobile-toc-wrapper mb-12">
+  <details class="mobile-toc-details group">
+    <summary class="mobile-toc-summary flex items-center justify-between p-4 cursor-pointer">
+      <div class="flex items-center gap-3">
+        <svg 
+          xmlns="http://www.w3.org/2000/svg" 
+          width="20" 
+          height="20" 
+          viewBox="0 0 24 24" 
+          fill="none" 
+          stroke="currentColor" 
+          stroke-width="2.5" 
+          stroke-linecap="round" 
+          stroke-linejoin="round" 
+          class="text-accent"
+        >
+          <line x1="21" y1="10" x2="3" y2="10"></line>
+          <line x1="21" y1="6" x2="3" y2="6"></line>
+          <line x1="21" y1="14" x2="3" y2="14"></line>
+          <line x1="21" y1="18" x2="3" y2="18"></line>
+        </svg>
+        <span class="font-display font-bold text-text-primary uppercase tracking-wider text-sm">In this article</span>
+      </div>
+      <div class="mobile-toc-arrow-bg">
+        <svg 
+          xmlns="http://www.w3.org/2000/svg" 
+          width="18" 
+          height="18" 
+          viewBox="0 0 24 24" 
+          fill="none" 
+          stroke="currentColor" 
+          stroke-width="3" 
+          stroke-linecap="round" 
+          stroke-linejoin="round" 
+          class="transition-transform duration-300 group-open:rotate-180 text-text-muted"
+        >
+          <polyline points="6 9 12 15 18 9"></polyline>
+        </svg>
+      </div>
+    </summary>
+    
+    <div class="mobile-toc-content pt-4 pb-6 px-4">
+      <ul class="mobile-toc-list space-y-3">
+        {
+          tocHeadings.map((heading) => (
+            <li class={`mobile-toc-h${heading.depth}`}>
+              <a 
+                href={`#${heading.slug}`} 
+                class="mobile-toc-link flex items-start gap-2 text-text-secondary hover:text-accent transition-all duration-200 py-1"
+              >
+                <span class="mt-2 w-1 h-1 rounded-full bg-accent opacity-50"></span>
+                <span class="flex-1">{heading.text}</span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </details>
+</div>
+
+<style>
+  .mobile-toc-wrapper {
+    background: var(--color-bg-alt);
+    border: 1px solid var(--color-border);
+    border-radius: 1rem;
+    overflow: hidden;
+    transition: all 0.3s ease;
+  }
+
+  .mobile-toc-wrapper:hover {
+    border-color: var(--color-accent);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  }
+
+  .mobile-toc-summary {
+    list-style: none;
+    user-select: none;
+  }
+
+  .mobile-toc-summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .mobile-toc-details[open] {
+    box-shadow: 0 10px 30px -10px rgba(13, 148, 136, 0.15);
+  }
+
+  .mobile-toc-details[open] .mobile-toc-summary {
+    border-bottom: 1px solid var(--color-border);
+    background: var(--color-bg-hover);
+  }
+
+  .mobile-toc-arrow-bg {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    background: var(--color-bg);
+    border: 1px solid var(--color-border);
+  }
+
+  .mobile-toc-h3 {
+    margin-left: 1.5rem;
+  }
+
+  .mobile-toc-link {
+    font-size: 0.9375rem;
+    line-height: 1.4;
+  }
+
+  .mobile-toc-h2 .mobile-toc-link {
+    font-weight: 500;
+    color: var(--color-text-primary);
+  }
+
+  /* Smooth scroll interaction handled by existing script or CSS */
+</style>
+
+<script>
+  // Close details when a link is clicked
+  const details = document.querySelector('.mobile-toc-details');
+  const links = document.querySelectorAll('.mobile-toc-link');
+  
+  links.forEach(link => {
+    link.addEventListener('click', () => {
+      if (details instanceof HTMLDetailsElement) {
+        // Optional: add a small delay for smooth feel
+        setTimeout(() => {
+          details.open = false;
+        }, 150);
+      }
+    });
+  });
+</script>

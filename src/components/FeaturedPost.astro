@@ -1,5 +1,5 @@
 ---
-import { formatDate } from "../lib/utils";
+import { formatDate, slugify } from "../lib/utils";
 import type { CollectionEntry } from 'astro:content';
 
 interface Props {
@@ -12,24 +12,26 @@ const { title, description, date, category, cover } = post.data;
 const categoryLower = category.toLowerCase();
 ---
 
-<a href={`/blog/${post.slug}/`} class="featured-post-card" id={`featured-${post.slug}`}>
+<div class="featured-post-card" id={`featured-${post.slug}`}>
   <div class="featured-badge">
     <span class="featured-badge__icon">⭐</span>
     <span class="featured-badge__text">Featured</span>
   </div>
 
   {cover && (
-    <div class="featured-post-card__cover">
+    <a href={`/blog/${post.slug}/`} class="featured-post-card__cover" tabindex="-1" aria-hidden="true">
       <img src={cover} alt={title} loading="eager" decoding="async" />
-    </div>
+    </a>
   )}
 
   <div class="featured-post-card__content">
     <div class="featured-post-card__header">
-      <span class={`tag tag-${categoryLower}`}>{category}</span>
+      <a href={`/categories/${slugify(category)}/`} class={`tag tag-${categoryLower}`}>{category}</a>
     </div>
 
-    <h2 class="featured-post-card__title">{title}</h2>
+    <h2 class="featured-post-card__title">
+      <a href={`/blog/${post.slug}/`}>{title}</a>
+    </h2>
     <p class="featured-post-card__description">{description}</p>
 
     <div class="featured-post-card__meta">
@@ -40,11 +42,11 @@ const categoryLower = category.toLowerCase();
       {readingTime && <span>{readingTime}</span>}
     </div>
 
-    <div class="featured-post-card__cta">
+    <a href={`/blog/${post.slug}/`} class="featured-post-card__cta" aria-hidden="true">
       Read Featured Post <span class="cta-arrow">→</span>
-    </div>
+    </a>
   </div>
-</a>
+</div>
 
 <style>
   .featured-post-card {

@@ -8,6 +8,8 @@ cover: "/images/blog/android-gradle.png"
 draft: false
 ---
 
+import ThemedSVG from '../../components/ui/ThemedSVG.astro';
+
 
 ## The Common Error
 
@@ -51,13 +53,9 @@ android {
 
 Understanding the Gradle lifecycle can help contextualize why these errors pop up:
 
-```mermaid
-graph TD
-    A[Initialization] -->|"Evaluates settings.gradle"| B[Configuration]
-    B -->|"Executes build.gradle scripts"| C[Execution]
-    C -->|"Runs requested tasks"| D[Build Complete]
-    
-    style B stroke:#f66,stroke-width:2px,stroke-dasharray: 5 5
-```
+<ThemedSVG 
+  src="/images/blog/charts/gradle-lifecycle.drawio.svg" 
+  alt="Gradle Build Lifecycle diagram showing Initialization, Configuration, and Execution phases" 
+/>
 
-The error we discussed happens during the **Configuration** phase (highlighted above with a dashed border) when Gradle attempts to apply the Android plugin to your `app` project. Fixing the JDK mismatch ensures Gradle can successfully configure the project before attempting any execution.
+The error we discussed happens during the **Configuration** phase when Gradle attempts to apply the Android plugin to your `app` project. Fixing the JDK mismatch ensures Gradle can successfully configure the project before attempting any execution.
