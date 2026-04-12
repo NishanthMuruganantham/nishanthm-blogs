@@ -4,6 +4,7 @@ import Button from "../components/ui/Button.astro";
 import AgentNetwork from "../components/AgentNetwork.astro";
 import PostCard from "../components/PostCard.astro";
 import FeaturedPost from "../components/FeaturedPost.astro";
+import CursorGlow from "../components/CursorGlow.astro";
 import { getCollection } from "astro:content";
 import { getReadingTime } from "../lib/utils";
 
@@ -62,6 +63,7 @@ const categoryCounts = categories.map((cat) => ({
   <section class="hero hero-gradient hero--space" id="hero-section">
     <!-- Animated agent network canvas -->
     <AgentNetwork intensity="hero" />
+    <CursorGlow absolute={true} />
 
     <div class="hero__content" id="hero-content">
       <p class="hero__eyebrow anim-fade" style="--delay: 0">
