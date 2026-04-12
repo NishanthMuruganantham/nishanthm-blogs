@@ -27,7 +27,7 @@ const dateStr = typeof date === 'string' ? date : new Date(date).toLocaleDateStr
   <div class="blog-card-content">
     <a href={`/categories/${slugify(category)}/`} class="category-badge">{category}</a>
     <h2 class="card-title">
-      <a href={`/blog/${slug}/`}>{title}</a>
+      <a href={`/blogs/${slug}/`}>{title}</a>
     </h2>
     <p class="card-excerpt">{description || excerpt}</p>
     
@@ -44,10 +44,10 @@ const dateStr = typeof date === 'string' ? date : new Date(date).toLocaleDateStr
       </div>
     )}
     
-    <a href={`/blog/${slug}/`} class="read-more" aria-hidden="true">Read more &rarr;</a>
+    <a href={`/blogs/${slug}/`} class="read-more" aria-hidden="true">Read more &rarr;</a>
   </div>
   
-  <a href={`/blog/${slug}/`} class="blog-card-image" tabindex="-1" aria-hidden="true">
+  <a href={`/blogs/${slug}/`} class="blog-card-image" tabindex="-1" aria-hidden="true">
     {cover ? (
       <img src={cover} alt={title} loading="lazy" decoding="async" />
     ) : (

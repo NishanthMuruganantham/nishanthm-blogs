@@ -39,7 +39,7 @@ const { posts } = Astro.props;
             post.data.readingTime ?? getReadingTime(post.body);
           return (
             <a
-              href={`/blog/${post.slug}`}
+              href={`/blogs/${post.slug}`}
               class="related-card"
               aria-label={`Read: ${post.data.title}`}
             >

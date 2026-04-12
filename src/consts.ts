@@ -1,6 +1,6 @@
 // Global site constants, useful for SEO and general metadata
 
-export const SITE_TITLE = 'Nishanth Muruganantham';
+export const SITE_TITLE = "Nishanth's Blogs";
 export const SITE_DESCRIPTION = 'Personal blog and portfolio of Nishanth Muruganantham';
 export const SITE_URL = 'https://blogs.nishanthm.com';
 export const SITE_AUTHOR = '@nishanthm';

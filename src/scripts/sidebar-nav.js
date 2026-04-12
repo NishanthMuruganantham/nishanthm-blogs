@@ -30,7 +30,7 @@ function initSidebarNav() {
         btn.addEventListener('click', (e) => {
             const category = e.currentTarget.dataset.category;
             if (category === 'all') {
-                window.location.href = '/blog';
+                window.location.href = '/blogs';
             } else {
                 window.location.href = `/blog?category=${encodeURIComponent(category)}`;
             }
