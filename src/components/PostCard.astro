@@ -1,5 +1,5 @@
 ---
-import { formatDate } from "../lib/utils";
+import { formatDate, slugify } from "../lib/utils";
 
 interface Props {
   title: string;
@@ -17,20 +17,22 @@ const { title, description, date, category, tags, slug, readingTime, cover } =
 const categoryLower = category.toLowerCase();
 ---
 
-<a href={`/blog/${slug}/`} class="post-card card" id={`post-${slug}`}>
+<div class="post-card card" id={`post-${slug}`}>
   {
     cover && (
-      <div class="post-card__cover">
+      <a href={`/blog/${slug}/`} class="post-card__cover" tabindex="-1" aria-hidden="true">
         <img src={cover} alt={title} loading="lazy" decoding="async" />
-      </div>
+      </a>
     )
   }
   <div class="post-card__content">
     <div class="post-card__header">
-      <span class={`tag tag-${categoryLower}`}>{category}</span>
+      <a href={`/categories/${slugify(category)}/`} class={`tag tag-${categoryLower}`}>{category}</a>
     </div>
 
-    <h3 class="post-card__title">{title}</h3>
+    <h3 class="post-card__title">
+      <a href={`/blog/${slug}/`}>{title}</a>
+    </h3>
     <p class="post-card__description">{description}</p>
 
     <div class="post-card__meta">
@@ -45,10 +47,10 @@ const categoryLower = category.toLowerCase();
       tags.length > 0 && (
         <div class="post-card__tags">
           {tags.slice(0, 3).map((tag) => (
-            <span class="post-card__tag">{tag}</span>
+            <a href={`/tags/${slugify(tag)}/`} class="post-card__tag">#{tag}</a>
           ))}
         </div>
       )
     }
   </div>
-</a>
+</div>
