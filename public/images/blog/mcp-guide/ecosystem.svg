@@ -1,0 +1,51 @@
+<svg width="840" height="420" viewBox="0 0 840 420" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;700&amp;display=swap');
+      text { font-family: 'Space Grotesk', sans-serif; }
+    </style>
+  </defs>
+
+  <rect width="840" height="420" fill="white" rx="16"/>
+
+  <!-- Core Hub -->
+  <g transform="translate(420, 210)">
+    <circle r="50" fill="#5B3FD4"/>
+    <text text-anchor="middle" y="5" fill="white" font-size="16" font-weight="700">MCP</text>
+  </g>
+
+  <!-- Category: Development -->
+  <g transform="translate(180, 100)">
+    <rect x="-100" y="-40" width="200" height="80" rx="12" fill="#f0f9ff" stroke="#0ea5e9" stroke-width="1.5"/>
+    <text text-anchor="middle" y="-5" fill="#0369a1" font-size="14" font-weight="700">Development</text>
+    <text text-anchor="middle" y="20" fill="#64748b" font-size="10">GitHub, Gitlab, Vercel, Sentry</text>
+    <path d="M100 0 L200 80" stroke="#e2e8f0" stroke-width="2" stroke-dasharray="4 4"/>
+  </g>
+
+  <!-- Category: Productivity -->
+  <g transform="translate(660, 100)">
+    <rect x="-100" y="-40" width="200" height="80" rx="12" fill="#fdf2f8" stroke="#db2777" stroke-width="1.5"/>
+    <text text-anchor="middle" y="-5" fill="#be185d" font-size="14" font-weight="700">Productivity</text>
+    <text text-anchor="middle" y="20" fill="#64748b" font-size="10">Notion, Slack, Linear, Jira</text>
+    <path d="-100 0 L-200 80" stroke="#e2e8f0" stroke-width="2" stroke-dasharray="4 4"/>
+  </g>
+
+  <!-- Category: Data & Infrastructure -->
+  <g transform="translate(180, 320)">
+    <rect x="-100" y="-40" width="200" height="80" rx="12" fill="#f0fdf4" stroke="#16a34a" stroke-width="1.5"/>
+    <text text-anchor="middle" y="-5" fill="#15803d" font-size="14" font-weight="700">Data &amp; Infra</text>
+    <text text-anchor="middle" y="20" fill="#64748b" font-size="10">Postgres, Redis, AWS, Stripe</text>
+    <path d="M100 0 L200 -80" stroke="#e2e8f0" stroke-width="2" stroke-dasharray="4 4"/>
+  </g>
+
+  <!-- Category: AI Clients -->
+  <g transform="translate(660, 320)">
+    <rect x="-100" y="-40" width="200" height="80" rx="12" fill="#f5f3ff" stroke="#7c3aed" stroke-width="1.5"/>
+    <text text-anchor="middle" y="-5" fill="#6d28d9" font-size="14" font-weight="700">AI Clients</text>
+    <text text-anchor="middle" y="20" fill="#64748b" font-size="10">Claude, Antigravity, Cursor</text>
+    <path d="-100 0 L-200 -80" stroke="#e2e8f0" stroke-width="2" stroke-dasharray="4 4"/>
+  </g>
+
+  <!-- Text at bottom -->
+  <text x="420" y="380" text-anchor="middle" fill="#94a3b8" font-size="12" font-weight="700" letter-spacing="0.05em">A GROWING OPEN STANDARD</text>
+</svg>
