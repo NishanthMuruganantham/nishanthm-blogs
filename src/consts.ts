@@ -13,6 +13,7 @@ export const CATEGORIES = {
   Android:  { description: 'Android development, Kotlin, and mobile apps', icon: '📱', color: 'android' },
   Startup:  { description: 'Building products, startups, and entrepreneurship', icon: '🚀', color: 'startup' },
   Life:     { description: 'Personal growth, reflections, and life lessons', icon: '✨', color: 'life' },
+  Guides:   { description: 'Step-by-step tutorials and in-depth explainers', icon: '📚', color: 'guides' },
 } as const;
 
 export type CategoryKey = keyof typeof CATEGORIES;
