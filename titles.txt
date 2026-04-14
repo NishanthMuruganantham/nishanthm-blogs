@@ -1,3 +1,0 @@
-Fixing Android Gradle Build Errors — Step by Step
-Setting Up MCP Servers in VS Code — Complete Guide
-Fix CORS Error in Django with React Vite Frontend
