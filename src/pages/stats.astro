@@ -80,22 +80,23 @@ const categoryData = allPosts.reduce((acc: Record<string, number>, p) => {
 const sortedCategories = Object.entries(categoryData).sort((a, b) => b[1] - a[1]);
 const maxCategoryCount = Math.max(...Object.values(categoryData));
 
-// 6. Monthly history (Last 12 months from NOW or from latest post)
+// 6. Monthly history (Strict 12-month rolling window)
 const endDate = now;
-const startDate = new Date(Math.min(now.getTime() - (365 * 24 * 60 * 60 * 1000), sortedPosts[sortedPosts.length - 1]?.data.date.getTime() || now.getTime()));
+// Calculate the start of the 12th month ago (e.g., if now is April 2026, start is May 2025)
+const startDate = new Date(now.getFullYear(), now.getMonth() - 11, 1);
 
 const monthlyHistoryMonths = [];
 let monthCursor = new Date(endDate);
 monthCursor.setDate(1);
 
-for (let i = 0; i < 15; i++) { // Show 15 months to be safe
+// Loop backwards exactly 12 times
+while (monthlyHistoryMonths.length < 12) {
   monthlyHistoryMonths.push({
     month: monthCursor.toLocaleString('default', { month: 'short' }),
     year: monthCursor.getFullYear(),
     key: `${monthCursor.getFullYear()}-${String(monthCursor.getMonth() + 1).padStart(2, '0')}`
   });
   monthCursor.setMonth(monthCursor.getMonth() - 1);
-  if (monthCursor.getTime() < startDate.getTime() && monthlyHistoryMonths.length >= 12) break;
 }
 monthlyHistoryMonths.reverse();
 
@@ -127,6 +128,12 @@ if (daysSinceLastPost < 7) {
 } else {
   motivation = { text: "It's been a while. Even a short post counts. 💪", icon: "🗓️" };
 }
+
+// 9. Heatmap Configuration
+// Always show last 12 months for consistency
+const heatmapStart = new Date(now.getFullYear(), now.getMonth() - 11, 1);
+const heatmapStartStr = heatmapStart.toISOString();
+const heatmapRange = 12;
 ---
 
 <BaseLayout title="Writing Stats" description="Analytics and publishing history for nishanthm.dev">
@@ -263,7 +270,7 @@ if (daysSinceLastPost < 7) {
   <script is:inline src="https://unpkg.com/cal-heatmap/dist/cal-heatmap.min.js"></script>
   <script is:inline src="https://unpkg.com/cal-heatmap/dist/plugins/Tooltip.min.js"></script>
 
-  <script is:inline define:vars={{ heatmapData }}>
+  <script is:inline define:vars={{ heatmapData, heatmapStartStr, heatmapRange }}>
     document.addEventListener('DOMContentLoaded', () => {
       try {
         const cal = new CalHeatmap();
@@ -282,10 +289,11 @@ if (daysSinceLastPost < 7) {
             gutter: 4 
           },
           date: { 
-            start: new Date(2025, 0, 1),
-            min: new Date(2025, 0, 1),
-            max: new Date()
+            start: new Date(heatmapStartStr),
+            min: new Date(2024, 0, 1), 
+            // Remove max restriction to ensure current month is always visible
           },
+          range: heatmapRange,
           data: {
             source: heatmapData,
             type: "json",
@@ -309,6 +317,14 @@ if (daysSinceLastPost < 7) {
             },
           ],
         ]);
+
+        // 2. Scroll to the end to show latest activity
+        setTimeout(() => {
+          const wrapper = document.querySelector('.heatmap-wrapper');
+          if (wrapper) {
+            wrapper.scrollLeft = wrapper.scrollWidth;
+          }
+        }, 500); // Increased timeout for better reliability
       } catch (e) {
         console.error("Cal-Heatmap error:", e);
       }
@@ -424,7 +440,8 @@ if (daysSinceLastPost < 7) {
 
     .heatmap-wrapper {
       overflow-x: auto;
-      padding-bottom: 1rem;
+      padding-bottom: 1.5rem; /* More space for scrollbar */
+      padding-right: 1.5rem; /* Ensure last day of latest month isn't clipped */
     }
 
     #cal-heatmap {
@@ -536,13 +553,17 @@ if (daysSinceLastPost < 7) {
     .monthly-chart {
       display: flex;
       align-items: flex-end;
-      justify-content: space-between;
+      justify-content: flex-start; /* Start from left to support overflow */
       height: 150px;
-      gap: 0.5rem;
+      gap: 0.75rem;
+      overflow-x: auto;
+      padding-bottom: 1rem;
+      scrollbar-width: thin;
+      scrollbar-color: var(--color-accent-20) transparent;
     }
 
     .month-column {
-      flex: 1;
+      flex: 0 0 45px; /* Fixed width for stability when scrolling */
       display: flex;
       flex-direction: column;
       align-items: center;
