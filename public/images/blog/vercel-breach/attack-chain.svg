@@ -1,0 +1,111 @@
+<svg width="840" height="680" viewBox="0 0 840 680" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;700&amp;display=swap');
+      text { font-family: 'Space Grotesk', sans-serif; }
+    </style>
+    <marker id="arrow-red" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#ef4444"/>
+    </marker>
+    <filter id="box-shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="4" stdDeviation="8" flood-opacity="0.08"/>
+    </filter>
+  </defs>
+
+  <rect width="840" height="680" fill="white" rx="16"/>
+
+  <!-- Title -->
+  <text x="420" y="40" text-anchor="middle" font-size="16" font-weight="700" fill="#334155" letter-spacing="0.05em">SUPPLY CHAIN ATTACK FLOW</text>
+
+  <!-- Step 1: Attacker infects Context.ai employee -->
+  <g transform="translate(250, 60)" filter="url(#box-shadow)">
+    <rect width="340" height="70" rx="12" fill="#fef2f2" stroke="#fecaca" stroke-width="2"/>
+    <circle cx="24" cy="20" r="12" fill="#ef4444"/>
+    <text x="24" y="25" text-anchor="middle" font-size="11" font-weight="700" fill="white">1</text>
+    <text x="170" y="32" text-anchor="middle" font-size="13" font-weight="700" fill="#991b1b">LUMMA STEALER INFECTION</text>
+    <text x="170" y="52" text-anchor="middle" font-size="11" fill="#7f1d1d">Attacker infects Context.ai employee's computer</text>
+  </g>
+
+  <!-- Arrow 1→2 -->
+  <path d="M420 130 L420 155" stroke="#ef4444" stroke-width="2" marker-end="url(#arrow-red)"/>
+
+  <!-- Step 2: Steals OAuth tokens -->
+  <g transform="translate(250, 160)" filter="url(#box-shadow)">
+    <rect width="340" height="70" rx="12" fill="#fef2f2" stroke="#fecaca" stroke-width="2"/>
+    <circle cx="24" cy="20" r="12" fill="#ef4444"/>
+    <text x="24" y="25" text-anchor="middle" font-size="11" font-weight="700" fill="white">2</text>
+    <text x="170" y="32" text-anchor="middle" font-size="13" font-weight="700" fill="#991b1b">CREDENTIAL THEFT</text>
+    <text x="170" y="52" text-anchor="middle" font-size="11" fill="#7f1d1d">Steals Context.ai OAuth tokens and credentials</text>
+  </g>
+
+  <!-- Arrow 2→3 -->
+  <path d="M420 230 L420 255" stroke="#ef4444" stroke-width="2" marker-end="url(#arrow-red)"/>
+
+  <!-- Step 3: Compromises Context.ai platform -->
+  <g transform="translate(250, 260)" filter="url(#box-shadow)">
+    <rect width="340" height="70" rx="12" fill="#fff7ed" stroke="#fed7aa" stroke-width="2"/>
+    <circle cx="24" cy="20" r="12" fill="#f97316"/>
+    <text x="24" y="25" text-anchor="middle" font-size="11" font-weight="700" fill="white">3</text>
+    <text x="170" y="32" text-anchor="middle" font-size="13" font-weight="700" fill="#9a3412">PLATFORM COMPROMISE</text>
+    <text x="170" y="52" text-anchor="middle" font-size="11" fill="#7c2d12">Context.ai platform is now under attacker control</text>
+  </g>
+
+  <!-- Arrow 3→4 -->
+  <path d="M420 330 L420 355" stroke="#ef4444" stroke-width="2" marker-end="url(#arrow-red)"/>
+
+  <!-- Step 4: Vercel employee uses compromised Context.ai -->
+  <g transform="translate(250, 360)" filter="url(#box-shadow)">
+    <rect width="340" height="70" rx="12" fill="#fff7ed" stroke="#fed7aa" stroke-width="2"/>
+    <circle cx="24" cy="20" r="12" fill="#f97316"/>
+    <text x="24" y="25" text-anchor="middle" font-size="11" font-weight="700" fill="white">4</text>
+    <text x="170" y="32" text-anchor="middle" font-size="13" font-weight="700" fill="#9a3412">OAUTH ABUSE</text>
+    <text x="170" y="52" text-anchor="middle" font-size="11" fill="#7c2d12">Vercel employee grants Context.ai Google access</text>
+  </g>
+
+  <!-- Arrow 4→5 -->
+  <path d="M420 430 L420 455" stroke="#ef4444" stroke-width="2" marker-end="url(#arrow-red)"/>
+
+  <!-- Step 5: Attacker accesses Vercel's Google Workspace -->
+  <g transform="translate(250, 460)" filter="url(#box-shadow)">
+    <rect width="340" height="70" rx="12" fill="#faf5ff" stroke="#e9d5ff" stroke-width="2"/>
+    <circle cx="24" cy="20" r="12" fill="#7c3aed"/>
+    <text x="24" y="25" text-anchor="middle" font-size="11" font-weight="700" fill="white">5</text>
+    <text x="170" y="32" text-anchor="middle" font-size="13" font-weight="700" fill="#5b21b6">LATERAL MOVEMENT</text>
+    <text x="170" y="52" text-anchor="middle" font-size="11" fill="#4c1d95">Attacker inside Vercel's Google Workspace</text>
+  </g>
+
+  <!-- Arrow 5→6 -->
+  <path d="M420 530 L420 555" stroke="#ef4444" stroke-width="2" marker-end="url(#arrow-red)"/>
+
+  <!-- Step 6: Environment variables exposed -->
+  <g transform="translate(250, 560)" filter="url(#box-shadow)">
+    <rect width="340" height="70" rx="12" fill="#1e1b4b" stroke="#4338ca" stroke-width="2"/>
+    <circle cx="24" cy="20" r="12" fill="#ef4444"/>
+    <text x="24" y="25" text-anchor="middle" font-size="11" font-weight="700" fill="white">6</text>
+    <text x="170" y="32" text-anchor="middle" font-size="13" font-weight="700" fill="#f87171">DATA EXFILTRATION</text>
+    <text x="170" y="52" text-anchor="middle" font-size="11" fill="#fca5a5">Non-sensitive env vars, API keys, internal systems</text>
+  </g>
+
+  <!-- Side labels -->
+  <g transform="translate(40, 120)">
+    <rect width="180" height="120" rx="12" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1.5"/>
+    <text x="90" y="25" text-anchor="middle" font-size="11" font-weight="700" fill="#64748b" letter-spacing="0.05em">CONTEXT.AI</text>
+    <text x="90" y="50" text-anchor="middle" font-size="10" fill="#94a3b8">Third-party AI tool</text>
+    <text x="90" y="70" text-anchor="middle" font-size="10" fill="#94a3b8">used by Vercel employee</text>
+    <text x="90" y="95" text-anchor="middle" font-size="10" font-weight="700" fill="#ef4444">⚠ COMPROMISED FIRST</text>
+  </g>
+
+  <g transform="translate(620, 420)">
+    <rect width="180" height="120" rx="12" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1.5"/>
+    <text x="90" y="25" text-anchor="middle" font-size="11" font-weight="700" fill="#64748b" letter-spacing="0.05em">VERCEL</text>
+    <text x="90" y="50" text-anchor="middle" font-size="10" fill="#94a3b8">Cloud platform</text>
+    <text x="90" y="70" text-anchor="middle" font-size="10" fill="#94a3b8">hosting millions of sites</text>
+    <text x="90" y="95" text-anchor="middle" font-size="10" font-weight="700" fill="#f97316">⚠ SECONDARY TARGET</text>
+  </g>
+
+  <!-- Connecting dashes from side labels -->
+  <path d="M220 180 L250 180" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="4 4"/>
+  <path d="M620 490 L590 490" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="4 4"/>
+
+  <text x="420" y="660" text-anchor="middle" font-size="13" font-weight="400" fill="#9ca3af">The Supply Chain Attack Path</text>
+</svg>
