@@ -1,0 +1,210 @@
+---
+title: "Vercel Got Breached. You Probably Missed It (But You Shouldn't)"
+description: "Vercel was breached through a supply chain attack via Context.ai. Here's what happened, what was compromised, and exactly what you should do right now."
+date: "2026-04-20"
+category: "Tools"
+tags: ["security", "vercel", "supply-chain", "devops", "breach"]
+cover: "/images/blog/vercel-security-breach.png"
+draft: false
+readingTime: "7 min"
+featured: true
+---
+
+> **Disclaimer:** This post reflects information available as of April 20, 2026. The situation is evolving — check [Vercel's official security bulletin](https://vercel.com/kb/bulletin/vercel-april-2026-security-incident) for the latest updates.
+
+So imagine this: you're casually scrolling Twitter on a weekend, and boom. Your entire feed is on fire. Vercel. Breach. API keys. GitHub tokens. The usual nightmare fuel.
+
+If you're seeing these posts for the first time, don't panic. You're not being targeted. But you probably should pay attention for the next 5 minutes. Here's why.
+
+## What the Heck is Vercel (Quick Context)
+
+Vercel is a cloud platform that provides hosting and deployment infrastructure for developers, with a strong focus on JavaScript frameworks. It's the place where you deploy your Next.js apps, your React frontends, your portfolio, your side projects.
+
+I host my projects there too: my portfolio, my Cricket IQ API backend, this blog. If you've ever deployed something with `vercel deploy`, that's this company we're talking about.
+
+It's basically the easiest way to go from "idea on my laptop" to "live on the internet" in 2026.
+
+**Which is why a breach here hits different.**
+
+## What Actually Happened (The Supply Chain Plot Twist)
+
+Here's the wild part: Vercel didn't get breached because of a Vercel vulnerability.
+
+They got breached because an employee used an AI tool called **Context.ai**.
+
+A Context.ai employee's computer was compromised with a malware called **Lumma Stealer**. The attacker then used those stolen credentials to compromise the Context.ai platform itself. When a Vercel employee later used Context.ai and granted it access to their Google Workspace account, the attacker used that connection to take over the employee's Google account, which gave them access to Vercel's internal systems.
+
+Let me break this down because it's actually important:
+
+```
+Attacker infects Context.ai employee's computer
+    ↓
+Steals Context.ai's OAuth tokens
+    ↓
+Uses those tokens to compromise Context.ai's platform
+    ↓
+Vercel employee uses Context.ai (grants it Google Workspace access)
+    ↓
+Attacker uses the compromised Context.ai to access Vercel employee's account
+    ↓
+Attacker now inside Vercel's Google Workspace
+    ↓
+Attacker can see environment variables, API keys, internal systems
+    ↓
+😱
+```
+
+**This is called a supply chain attack.** It's when hackers target someone's trusted vendors instead of going after them directly. And honestly? It's becoming the new normal.
+
+## The Damage Report (What Actually Got Leaked)
+
+Here's the good news and the "okay, maybe not so good" news.
+
+**The Good News:**
+Sensitive environment variables in Vercel are encrypted at rest. If you marked your secrets as sensitive, they were **NOT** compromised. No evidence of access to those values was found.
+
+**The Not-So-Good News:**
+A limited subset of customers had their **non-sensitive environment variables** (those stored as plaintext) compromised. This includes API keys, tokens, database credentials, and signing keys that weren't marked as "sensitive."
+
+A threat actor claiming ShinyHunters affiliation posted on BreachForums claiming they had Vercel access keys, source code, NPM tokens, and GitHub tokens, asking **$2 million** for the data.
+
+However, ShinyHunters later denied involvement in the breach, suggesting someone was impersonating them.
+
+**What wasn't compromised:**
+No npm packages published by Vercel were compromised. There is no evidence of tampering, and the supply chain remains safe. So Next.js is fine. Vercel's open-source projects are fine. Your code is probably fine (unless you stored secrets in your code, but we don't do that... right?).
+
+## Who's Behind This? (The Villain Origin Story)
+
+As of April 20, 2026, the attacker linked to Context.ai was confirmed through an infostealer infection at Context.ai, following a broader pattern: the attacker compromised a Context.ai employee's computer, stole their credentials, and used that access to laterally move into Vercel.
+
+The attacker is "highly sophisticated" according to Vercel CEO Guillermo Rauch, and likely "accelerated by AI" — which is... ironic, given Context.ai is an AI tool.
+
+In short: someone got into Context.ai first, used that to get into Vercel, and is now probably trying to sell the data. Classic 2026 cybercrime.
+
+## The Latest Updates (As of April 20, 2026)
+
+Vercel has deployed extensive protection measures and monitoring. Services remain operational.
+
+Here's what they're rolling out:
+
+- An **overview page** of environment variables in the dashboard
+- A better UI for **sensitive environment variable** creation and management
+- Environment variable creation now **defaults to "sensitive"**
+- **Enhanced team-wide management** of environment variables
+
+Translation: Vercel is updating their product to make it harder for this to happen again.
+
+## What Vercel Says (Official Response)
+
+Here's the official guidance from Vercel:
+
+> If any of your environment variables contain secrets (API keys, tokens, database credentials, signing keys) that were not marked as sensitive, those values should be treated as potentially exposed and rotated as a priority.
+
+And the remediation steps they recommend:
+
+1. Review the activity log for your account and environments for suspicious activity
+2. Review and rotate environment variables
+3. Take advantage of the sensitive environment variables feature going forward
+4. Investigate recent deployments for unexpected or suspicious looking deployments
+5. Ensure that Deployment Protection is set to Standard at a minimum
+6. Enable two-factor authentication (2FA)
+
+**In normal English:** Rotate your secrets, turn on 2FA, mark secrets as sensitive, and watch for weird stuff in your audit logs.
+
+## What Should You Actually Do (Right Now)
+
+### Step 1: Did Vercel Contact You? (5 minutes)
+
+Check your email. If Vercel reached out directly, you were in the affected "limited subset." You need to rotate credentials **immediately**.
+
+If you didn't get an email, it doesn't mean you're safe. Vercel's warning applies to everyone anyway.
+
+### Step 2: Rotate Your Environment Variables (30-45 minutes)
+
+For every environment variable that contains a secret (API keys, database URLs, auth tokens):
+
+1. Go to your third-party service (Neon, MongoDB, Stripe, etc.)
+2. Generate a new credential (new database password, new API key, etc.)
+3. Go to Vercel dashboard → Project Settings → Environment Variables
+4. Edit the variable with the new value
+5. Ensure it's marked as **"sensitive"** (new default as of today)
+
+**Do this for:**
+- Database credentials (Postgres, MongoDB, etc.)
+- API keys (Stripe, OpenAI, Anthropic, etc.)
+- OAuth tokens (GitHub, Google, etc.)
+- Any authentication tokens
+
+### Step 3: Enable 2FA on Your Vercel Account (10 minutes)
+
+Go to **Vercel Account Settings → Security** and enable two-factor authentication. Use an authenticator app (not SMS).
+
+### Step 4: Audit Recent Deployments (10 minutes)
+
+In the Vercel dashboard, check:
+- **Deployments section:** Look for unexpected deployments
+- **Activity logs:** Look for unusual access (logins from weird IPs, etc.)
+
+If something looks sus, delete that deployment.
+
+### Step 5: Check Your Code (If You Stored Secrets in Code)
+
+This is the scary one. If you accidentally committed API keys to GitHub, they're now potentially exposed.
+
+Use a tool like [GitGuardian](https://www.gitguardian.com) or TruffleHog to scan your repo for leaked secrets.
+
+If you find anything:
+1. Delete from GitHub history (force push, or use BFG)
+2. Rotate those credentials immediately
+3. Delete that old deployment from Vercel just in case
+
+## Why This Matters (The Bigger Picture)
+
+This breach illustrates how trusted third-party apps and platform environment variables can bypass traditional defenses and amplify blast radius. The period from March to April 2026 has seen an unprecedented concentration of software supply chain attacks.
+
+Translation: We're in a "supply chain attack era" right now. It's not just Vercel. It's the whole ecosystem.
+
+The lesson? **You can't just trust your own security anymore.** You have to trust everyone else's too. And when someone else messes up (like Context.ai getting hacked), it cascades.
+
+## For Crypto Projects Specifically
+
+This incident is drawing particular scrutiny because many Web3 teams host critical wallet interfaces and dashboards on Vercel. They rely on environment variables to store credentials that connect their frontends to blockchain data providers.
+
+If you're running a crypto project on Vercel, this is **extra critical**. Rotate everything. Now.
+
+## Should You Panic? (The Honest Answer)
+
+No. But also, yes. Let me explain.
+
+**You should NOT panic because:**
+- Vercel's services are still up and operational
+- They're fixing it proactively
+- If you used "sensitive" variables, you're safe
+- This is fixable in 30-45 minutes
+
+**You SHOULD take it seriously because:**
+- Non-sensitive environment variables were compromised
+- If you store API keys in environment variables (which you should), rotate them
+- Supply chain attacks are becoming the norm, not the exception
+- Waiting gives the attacker more time to use your credentials
+
+**TL;DR:** Spend the next 30 minutes rotating credentials, then move on with your day. This isn't a "rebuild everything" situation. It's a "take 30 minutes to be safer" situation.
+
+## What I'm Doing
+
+I'm rotating my credentials. I'm marking everything as "sensitive" going forward. I'm enabling 2FA everywhere. And I'm building an automated credential rotation system so I don't have to think about this every time someone gets hacked.
+
+In my next blog post, I'm going to share that system. Stay tuned.
+
+For now: go rotate your credentials, enable 2FA, and relax. You've got this.
+
+## Quick Links
+
+- [Vercel's Official Security Bulletin](https://vercel.com/kb/bulletin/vercel-april-2026-security-incident)
+- [GitGuardian Secret Scanner](https://www.gitguardian.com) — scan your code for leaked secrets
+
+---
+
+**TL;DR:** Vercel got breached via a third-party AI tool. Non-sensitive environment variables were exposed. Rotate your API keys, enable 2FA, mark secrets as sensitive, and move on. Takes 30 minutes. Worth it.
+
+Stay secure. 🔐
