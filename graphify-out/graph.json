@@ -1,0 +1,467 @@
+{
+  "directed": false,
+  "multigraph": false,
+  "graph": {},
+  "nodes": [
+    {
+      "label": "tailwind.config.mjs",
+      "file_type": "code",
+      "source_file": "tailwind.config.mjs",
+      "source_location": "L1",
+      "id": "tailwind_config_mjs",
+      "community": 6,
+      "norm_label": "tailwind.config.mjs"
+    },
+    {
+      "label": "astro.config.mjs",
+      "file_type": "code",
+      "source_file": "astro.config.mjs",
+      "source_location": "L1",
+      "id": "astro_config_mjs",
+      "community": 7,
+      "norm_label": "astro.config.mjs"
+    },
+    {
+      "label": "consts.ts",
+      "file_type": "code",
+      "source_file": "src/consts.ts",
+      "source_location": "L1",
+      "id": "src_consts_ts",
+      "community": 8,
+      "norm_label": "consts.ts"
+    },
+    {
+      "label": "rss.xml.ts",
+      "file_type": "code",
+      "source_file": "src/pages/rss.xml.ts",
+      "source_location": "L1",
+      "id": "src_pages_rss_xml_ts",
+      "community": 3,
+      "norm_label": "rss.xml.ts"
+    },
+    {
+      "label": "GET()",
+      "file_type": "code",
+      "source_file": "src/pages/rss.xml.ts",
+      "source_location": "L6",
+      "id": "pages_rss_xml_get",
+      "community": 3,
+      "norm_label": "get()"
+    },
+    {
+      "label": "config.ts",
+      "file_type": "code",
+      "source_file": "src/content/config.ts",
+      "source_location": "L1",
+      "id": "src_content_config_ts",
+      "community": 9,
+      "norm_label": "config.ts"
+    },
+    {
+      "label": "utils.ts",
+      "file_type": "code",
+      "source_file": "src/lib/utils.ts",
+      "source_location": "L1",
+      "id": "src_lib_utils_ts",
+      "community": 1,
+      "norm_label": "utils.ts"
+    },
+    {
+      "label": "getReadingTime()",
+      "file_type": "code",
+      "source_file": "src/lib/utils.ts",
+      "source_location": "L3",
+      "id": "lib_utils_getreadingtime",
+      "community": 1,
+      "norm_label": "getreadingtime()"
+    },
+    {
+      "label": "getWordCount()",
+      "file_type": "code",
+      "source_file": "src/lib/utils.ts",
+      "source_location": "L8",
+      "id": "lib_utils_getwordcount",
+      "community": 1,
+      "norm_label": "getwordcount()"
+    },
+    {
+      "label": "formatDate()",
+      "file_type": "code",
+      "source_file": "src/lib/utils.ts",
+      "source_location": "L13",
+      "id": "lib_utils_formatdate",
+      "community": 1,
+      "norm_label": "formatdate()"
+    },
+    {
+      "label": "slugify()",
+      "file_type": "code",
+      "source_file": "src/lib/utils.ts",
+      "source_location": "L21",
+      "id": "lib_utils_slugify",
+      "community": 1,
+      "norm_label": "slugify()"
+    },
+    {
+      "label": "related-posts.ts",
+      "file_type": "code",
+      "source_file": "src/lib/related-posts.ts",
+      "source_location": "L1",
+      "id": "src_lib_related_posts_ts",
+      "community": 4,
+      "norm_label": "related-posts.ts"
+    },
+    {
+      "label": "getRelatedPosts()",
+      "file_type": "code",
+      "source_file": "src/lib/related-posts.ts",
+      "source_location": "L11",
+      "id": "lib_related_posts_getrelatedposts",
+      "community": 4,
+      "norm_label": "getrelatedposts()"
+    },
+    {
+      "label": "post-interactivity.js",
+      "file_type": "code",
+      "source_file": "src/scripts/post-interactivity.js",
+      "source_location": "L1",
+      "id": "src_scripts_post_interactivity_js",
+      "community": 2,
+      "norm_label": "post-interactivity.js"
+    },
+    {
+      "label": "initPostInteractivity()",
+      "file_type": "code",
+      "source_file": "src/scripts/post-interactivity.js",
+      "source_location": "L1",
+      "id": "scripts_post_interactivity_initpostinteractivity",
+      "community": 2,
+      "norm_label": "initpostinteractivity()"
+    },
+    {
+      "label": "setupInteractivity()",
+      "file_type": "code",
+      "source_file": "src/scripts/post-interactivity.js",
+      "source_location": "L180",
+      "id": "scripts_post_interactivity_setupinteractivity",
+      "community": 2,
+      "norm_label": "setupinteractivity()"
+    },
+    {
+      "label": "sidebar-nav.js",
+      "file_type": "code",
+      "source_file": "src/scripts/sidebar-nav.js",
+      "source_location": "L1",
+      "id": "src_scripts_sidebar_nav_js",
+      "community": 5,
+      "norm_label": "sidebar-nav.js"
+    },
+    {
+      "label": "initSidebarNav()",
+      "file_type": "code",
+      "source_file": "src/scripts/sidebar-nav.js",
+      "source_location": "L7",
+      "id": "scripts_sidebar_nav_initsidebarnav",
+      "community": 5,
+      "norm_label": "initsidebarnav()"
+    },
+    {
+      "label": "blog-filter.js",
+      "file_type": "code",
+      "source_file": "src/scripts/blog-filter.js",
+      "source_location": "L1",
+      "id": "src_scripts_blog_filter_js",
+      "community": 0,
+      "norm_label": "blog-filter.js"
+    },
+    {
+      "label": "BlogFilter",
+      "file_type": "code",
+      "source_file": "src/scripts/blog-filter.js",
+      "source_location": "L1",
+      "id": "scripts_blog_filter_blogfilter",
+      "community": 0,
+      "norm_label": "blogfilter"
+    },
+    {
+      "label": ".constructor()",
+      "file_type": "code",
+      "source_file": "src/scripts/blog-filter.js",
+      "source_location": "L2",
+      "id": "scripts_blog_filter_blogfilter_constructor",
+      "community": 0,
+      "norm_label": ".constructor()"
+    },
+    {
+      "label": ".connectedCallback()",
+      "file_type": "code",
+      "source_file": "src/scripts/blog-filter.js",
+      "source_location": "L11",
+      "id": "scripts_blog_filter_blogfilter_connectedcallback",
+      "community": 0,
+      "norm_label": ".connectedcallback()"
+    },
+    {
+      "label": ".bindEvents()",
+      "file_type": "code",
+      "source_file": "src/scripts/blog-filter.js",
+      "source_location": "L41",
+      "id": "scripts_blog_filter_blogfilter_bindevents",
+      "community": 0,
+      "norm_label": ".bindevents()"
+    },
+    {
+      "label": ".syncFromURL()",
+      "file_type": "code",
+      "source_file": "src/scripts/blog-filter.js",
+      "source_location": "L100",
+      "id": "scripts_blog_filter_blogfilter_syncfromurl",
+      "community": 0,
+      "norm_label": ".syncfromurl()"
+    },
+    {
+      "label": ".updateURL()",
+      "file_type": "code",
+      "source_file": "src/scripts/blog-filter.js",
+      "source_location": "L122",
+      "id": "scripts_blog_filter_blogfilter_updateurl",
+      "community": 0,
+      "norm_label": ".updateurl()"
+    },
+    {
+      "label": ".filterAndRender()",
+      "file_type": "code",
+      "source_file": "src/scripts/blog-filter.js",
+      "source_location": "L134",
+      "id": "scripts_blog_filter_blogfilter_filterandrender",
+      "community": 0,
+      "norm_label": ".filterandrender()"
+    },
+    {
+      "label": ".generateCardHTML()",
+      "file_type": "code",
+      "source_file": "src/scripts/blog-filter.js",
+      "source_location": "L170",
+      "id": "scripts_blog_filter_blogfilter_generatecardhtml",
+      "community": 0,
+      "norm_label": ".generatecardhtml()"
+    }
+  ],
+  "links": [
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/rss.xml.ts",
+      "source_location": "L6",
+      "weight": 1.0,
+      "source": "src_pages_rss_xml_ts",
+      "target": "pages_rss_xml_get",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/utils.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "src_lib_utils_ts",
+      "target": "lib_utils_getreadingtime",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/utils.ts",
+      "source_location": "L8",
+      "weight": 1.0,
+      "source": "src_lib_utils_ts",
+      "target": "lib_utils_getwordcount",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/utils.ts",
+      "source_location": "L13",
+      "weight": 1.0,
+      "source": "src_lib_utils_ts",
+      "target": "lib_utils_formatdate",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/utils.ts",
+      "source_location": "L21",
+      "weight": 1.0,
+      "source": "src_lib_utils_ts",
+      "target": "lib_utils_slugify",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/related-posts.ts",
+      "source_location": "L11",
+      "weight": 1.0,
+      "source": "src_lib_related_posts_ts",
+      "target": "lib_related_posts_getrelatedposts",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/scripts/post-interactivity.js",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "src_scripts_post_interactivity_js",
+      "target": "scripts_post_interactivity_initpostinteractivity",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/scripts/post-interactivity.js",
+      "source_location": "L180",
+      "weight": 1.0,
+      "source": "src_scripts_post_interactivity_js",
+      "target": "scripts_post_interactivity_setupinteractivity",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/scripts/post-interactivity.js",
+      "source_location": "L181",
+      "weight": 1.0,
+      "source": "scripts_post_interactivity_setupinteractivity",
+      "target": "scripts_post_interactivity_initpostinteractivity",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/scripts/sidebar-nav.js",
+      "source_location": "L7",
+      "weight": 1.0,
+      "source": "src_scripts_sidebar_nav_js",
+      "target": "scripts_sidebar_nav_initsidebarnav",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/scripts/blog-filter.js",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "src_scripts_blog_filter_js",
+      "target": "scripts_blog_filter_blogfilter",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "src/scripts/blog-filter.js",
+      "source_location": "L2",
+      "weight": 1.0,
+      "source": "scripts_blog_filter_blogfilter",
+      "target": "scripts_blog_filter_blogfilter_constructor",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "src/scripts/blog-filter.js",
+      "source_location": "L11",
+      "weight": 1.0,
+      "source": "scripts_blog_filter_blogfilter",
+      "target": "scripts_blog_filter_blogfilter_connectedcallback",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "src/scripts/blog-filter.js",
+      "source_location": "L41",
+      "weight": 1.0,
+      "source": "scripts_blog_filter_blogfilter",
+      "target": "scripts_blog_filter_blogfilter_bindevents",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "src/scripts/blog-filter.js",
+      "source_location": "L100",
+      "weight": 1.0,
+      "source": "scripts_blog_filter_blogfilter",
+      "target": "scripts_blog_filter_blogfilter_syncfromurl",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "src/scripts/blog-filter.js",
+      "source_location": "L122",
+      "weight": 1.0,
+      "source": "scripts_blog_filter_blogfilter",
+      "target": "scripts_blog_filter_blogfilter_updateurl",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "src/scripts/blog-filter.js",
+      "source_location": "L134",
+      "weight": 1.0,
+      "source": "scripts_blog_filter_blogfilter",
+      "target": "scripts_blog_filter_blogfilter_filterandrender",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "src/scripts/blog-filter.js",
+      "source_location": "L170",
+      "weight": 1.0,
+      "source": "scripts_blog_filter_blogfilter",
+      "target": "scripts_blog_filter_blogfilter_generatecardhtml",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/scripts/blog-filter.js",
+      "source_location": "L32",
+      "weight": 1.0,
+      "source": "scripts_blog_filter_blogfilter_connectedcallback",
+      "target": "scripts_blog_filter_blogfilter_bindevents",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/scripts/blog-filter.js",
+      "source_location": "L35",
+      "weight": 1.0,
+      "source": "scripts_blog_filter_blogfilter_connectedcallback",
+      "target": "scripts_blog_filter_blogfilter_syncfromurl",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/scripts/blog-filter.js",
+      "source_location": "L38",
+      "weight": 1.0,
+      "source": "scripts_blog_filter_blogfilter_connectedcallback",
+      "target": "scripts_blog_filter_blogfilter_filterandrender",
+      "confidence_score": 1.0
+    }
+  ],
+  "hyperedges": []
+}
